@@ -52,9 +52,25 @@ public class Room {
 
     //メインで使うもの
 
-    public void do_consume_room(){}
+    public int[] do_consume_room(){
 
-    public void do_replenishment_room(){}
+        int sales = 0;
+        int shortage = 0;
+        for(Goods aGoods: goodsList){
+            int tmp[] = aGoods.do_consume_goods();
+            sales += tmp[0];
+            shortage += tmp[1];
+        }
+
+        return new int[]{sales, shortage};
+    }
+
+    public void do_replenishment_room(){
+
+        for(Goods aGoods: goodsList){
+            aGoods.do_replenishment_goods();
+        }
+    }
 
 
 
@@ -83,5 +99,4 @@ public class Room {
         goodsList.add(new Goods(roomType, goodsType, setting, simulatiorType));
     }
 
-    
 }
