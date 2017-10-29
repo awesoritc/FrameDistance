@@ -22,7 +22,7 @@ public class Room {
         this.simulatiorType = simulatorType;
 
         this.roomType = roomType;
-
+        this.distance_to_gravity = new int[setting.area];
 
 
         //重心との距離を設定
