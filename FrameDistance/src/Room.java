@@ -4,7 +4,7 @@ public class Room {
     Setting setting;
     String simulatiorType;
 
-    int roomType, roomId, areaNumber, x_pos, y_pos;
+    private int roomType, roomId, areaNumber, x_pos, y_pos;
     int[] distance_to_gravity;
 
     ArrayList<Goods> goodsList = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Room {
 
         int interval = Util.get_interval(current_area, areaNumber);
 
-        int expect = 0;
+        double expect = 0;
         for (Goods aGoods_list : goodsList) {
             expect += aGoods_list.expect_shortage_goods(interval);
         }
@@ -99,4 +99,22 @@ public class Room {
         goodsList.add(new Goods(roomType, goodsType, setting, simulatiorType));
     }
 
+
+
+
+
+
+    //getter,setter
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public int getX_pos() {
+        return x_pos;
+    }
+
+    public int getY_pos() {
+        return y_pos;
+    }
 }

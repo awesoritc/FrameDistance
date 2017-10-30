@@ -8,6 +8,8 @@ public class Setting {
     final int day = 100;//日数
     final int room = 100;//部屋の数
     final int area = 5;//エリア数
+    final int rooms_area = 20;//エリアあたりの部屋数
+    final int limit = 20;//1日に回れる部屋の数
 
     final int x_map_size = 20;//mapの大きさx
     final int y_map_size = 20;//mapの大きさy

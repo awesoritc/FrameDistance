@@ -23,6 +23,8 @@ public class Goods {
         this.variance = setting.goods[goodsType][1];
         this.max = setting.goods[goodsType][2];
 
+        this.stock = max;
+
         this.ratio = setting.demand_mul[roomType];
     }
 
@@ -122,4 +124,15 @@ public class Goods {
 
     //TODO:商品設置数の調整用メソッド
     public void adjust_goods(){}
+
+
+
+
+
+
+    //getter,setter
+
+    public int getStock() {
+        return stock;
+    }
 }

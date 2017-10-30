@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class Simulator {
 
-    Room[] rooms;
-    Setting setting;
-    String simulatiorType;
+    private Room[] rooms;
+    private Setting setting;
+    private String simulatiorType;
 
     Simulator(Room[] rooms, Setting setting, String simulatiorType){
 
@@ -17,16 +17,21 @@ public class Simulator {
 
     int total_sales = 0;
     int total_shortage = 0;
+    ArrayList<Integer> routeTime = new ArrayList<>();
 
     //当日の補充ルート
     ArrayList<Room> rep_route = new ArrayList<>();
-    public void create_route(){
+    public void create_route(int day){
 
         //TODO:ルート専用のファイルを作成
         //部屋を選択
         //id順に並び替え
         //巡回した時の距離を計算
-        rep_route 
+        RouteHandler handle = new RouteHandler(day, setting, simulatiorType);
+        ArrayList<Room> route = handle.route_creator(rooms);
+        routeTime.add(handle.calculate_route_time(route));
+
+        rep_route = route;
     }
 
     public void do_consume_simulator(){
@@ -50,4 +55,26 @@ public class Simulator {
         }
     }
 
+
+
+
+
+
+    //getter,setter
+
+    public int getTotal_sales() {
+        return total_sales;
+    }
+
+    public int getTotal_shortage() {
+        return total_shortage;
+    }
+
+    public int getTotal_time(){
+        int time = 0;
+        for (int t: routeTime) {
+            time += t;
+        }
+        return time;
+    }
 }
