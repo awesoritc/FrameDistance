@@ -33,7 +33,7 @@ public class RoomFileCreator {
                 int total_x_pos = 0;
                 int total_y_pos = 0;
 
-                for(int j = 0; j < ((int)(setting.room/setting.area)); j++){
+                for(int j = 0; j < ((setting.room/setting.area)); j++){
 
                     Random random = new Random();
                     int x_start = setting.area_borders[i][0];
@@ -49,9 +49,9 @@ public class RoomFileCreator {
                     Random rand = new Random();
                     int ranInt = rand.nextInt(10);
                     int roomType;
-                    if(ranInt < 5){
+                    if(ranInt < setting.rooms_distribution[0]){
                         roomType = 0;
-                    }else if(ranInt < 7){
+                    }else if(ranInt < setting.rooms_distribution[0] + setting.rooms_distribution[1]){
                         roomType = 1;
                     }else{
                         roomType = 2;

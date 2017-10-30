@@ -30,8 +30,10 @@ public class Setting {
 
 
     final int[][] goods = {{0, 1, 10}, {1, 1, 10}, {2, 2, 10}};//商品(7:2:1)
-    final int[] max_room = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
+    final int[] goods_distribution = {7, 2, 1};
+    final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
+    final int[] rooms_distribution = {5, 3, 2};
 
 
 

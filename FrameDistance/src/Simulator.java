@@ -6,6 +6,10 @@ public class Simulator {
     private Setting setting;
     private String simulatiorType;
 
+    //ファイル用のデータ
+    ArrayList<Integer> routeTime = new ArrayList<>();
+    ArrayList<>
+
     Simulator(Room[] rooms, Setting setting, String simulatiorType){
 
         this.rooms = rooms;
@@ -17,13 +21,11 @@ public class Simulator {
 
     int total_sales = 0;
     int total_shortage = 0;
-    ArrayList<Integer> routeTime = new ArrayList<>();
 
     //当日の補充ルート
     ArrayList<Room> rep_route = new ArrayList<>();
     public void create_route(int day){
 
-        //TODO:ルート専用のファイルを作成
         //部屋を選択
         //id順に並び替え
         //巡回した時の距離を計算
@@ -76,5 +78,9 @@ public class Simulator {
             time += t;
         }
         return time;
+    }
+
+    public ArrayList<Integer> getRouteTime() {
+        return routeTime;
     }
 }

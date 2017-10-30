@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
 public class Goods {
-    Setting setting;
-    String simulationType;
+    private Setting setting;
+    private String simulationType;
 
     //商品の設定
-    int average, variance, max;
-    double ratio;
+    private int average, variance, max;
+    private double ratio;
 
     //動かすもの
-    int stock;
+    private int stock;
 
-    int goodsType;
+    private int goodsType;
 
     Goods(int roomType, int goodsType, Setting setting, String simulatorType){
 
@@ -134,5 +134,9 @@ public class Goods {
 
     public int getStock() {
         return stock;
+    }
+
+    public int getMax() {
+        return max;
     }
 }

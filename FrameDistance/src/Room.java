@@ -5,6 +5,7 @@ public class Room {
     String simulatiorType;
 
     private int roomType, roomId, areaNumber, x_pos, y_pos;
+    private int roomMax;
     int[] distance_to_gravity;
 
     ArrayList<Goods> goodsList = new ArrayList<>();
@@ -22,6 +23,7 @@ public class Room {
         this.simulatiorType = simulatorType;
 
         this.roomType = roomType;
+        this.roomMax = setting.room_max[roomType];
         this.distance_to_gravity = new int[setting.area];
 
 
@@ -45,7 +47,6 @@ public class Room {
             }
             this.distance_to_gravity[i] = distance;
         }
-
 
     }
 
@@ -87,6 +88,21 @@ public class Room {
         }
 
         return (expect / (double)distance_to_gravity[current_area]);
+    }
+
+
+
+    //部屋の商品充足率を返す
+    public double suf_rate(){
+
+        int max = 0;
+        double amount = 0;
+        for(Goods aGoods: goodsList){
+            max += aGoods.getMax();
+            amount += aGoods.getStock();
+        }
+
+        return amount / max;
     }
 
 

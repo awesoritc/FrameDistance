@@ -26,7 +26,8 @@ public class RouteHandler {
             }
         }else if(simulatorType.equals(setting.simulatorType_dynamic)){
             //変動のルート
-            route = basedOnValue(rooms, current_area);
+            //route = setIdOrder(basedOnValue(rooms, current_area));
+            route = setIdOrder(basedOnSuf_rate(rooms, current_area));
         }
 
         return route;
@@ -75,8 +76,11 @@ public class RouteHandler {
 
 
     //ルート作成用のメソッド
+
+    //補充優先度
     private ArrayList<Room> basedOnValue(Room[] r, int current_area){
 
+        //value大きい順に並べる
         for (int i = 0; i < r.length; i++) {
             for (int j = 0; j < r.length; j++) {
                 if(i < j){
@@ -107,6 +111,38 @@ public class RouteHandler {
     }
 
 
+    //商品が少なくなったところを回る
+    public ArrayList<Room> basedOnSuf_rate(Room[] r, int current_area){
+
+        //suf_rate小さい順に並べる
+        for (int i = 0; i < r.length; i++) {
+            for (int j = 0; j < r.length; j++) {
+                if(i < j){
+                    if(r[i].suf_rate() > r[j].suf_rate()){
+                        Room tmp = r[i];
+                        r[i] = r[j];
+                        r[j] = tmp;
+                    }
+                }
+            }
+        }
+
+        ArrayList<Room> route = new ArrayList<>();
+        for (int i = 0; i < setting.limit; i++) {
+            if(r[i].suf_rate() < 1){
+                route.add(r[i]);
+            }
+        }
+
+        //補充しなければいけない場所がなければ、エリア補充をする
+        if(route.size() == 0){
+            for (int i = 0; i < setting.rooms_area; i++) {
+                route.add(r[i+(current_area*setting.rooms_area)]);
+            }
+        }
+
+        return route;
+    }
 
 
 
