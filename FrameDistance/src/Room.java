@@ -126,6 +126,10 @@ public class Room {
         return roomId;
     }
 
+    public int getAreaNumber() {
+        return areaNumber;
+    }
+
     public int getX_pos() {
         return x_pos;
     }

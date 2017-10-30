@@ -8,7 +8,10 @@ public class Simulator {
 
     //ファイル用のデータ
     ArrayList<Integer> routeTime = new ArrayList<>();
-    ArrayList<>
+    ArrayList<ArrayList<Room>> routeHistory = new ArrayList<>();
+    ArrayList<Integer> salesHistory = new ArrayList<>();
+    ArrayList<Integer> shortageHistory = new ArrayList<>();
+
 
     Simulator(Room[] rooms, Setting setting, String simulatiorType){
 
@@ -49,9 +52,13 @@ public class Simulator {
 
         total_sales += sales;
         total_shortage += shortage;
+
+        salesHistory.add(sales);
+        shortageHistory.add(shortage);
     }
 
     public void do_replenishment_simulator(){
+        routeHistory.add(rep_route);
         for(Room aRooms: rep_route){
             aRooms.do_replenishment_room();
         }
@@ -82,5 +89,17 @@ public class Simulator {
 
     public ArrayList<Integer> getRouteTime() {
         return routeTime;
+    }
+
+    public ArrayList<ArrayList<Room>> getRouteHistory() {
+        return routeHistory;
+    }
+
+    public ArrayList<Integer> getSalesHistory() {
+        return salesHistory;
+    }
+
+    public ArrayList<Integer> getShortageHistory() {
+        return shortageHistory;
     }
 }

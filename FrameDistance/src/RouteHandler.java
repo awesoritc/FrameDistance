@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RouteHandler {
@@ -21,13 +20,19 @@ public class RouteHandler {
 
         if(simulatorType.equals(setting.simulatorType_static)){
             //固定のルート
-            for (int i = 0; i < setting.rooms_area; i++) {
-                route.add(rooms[i+(current_area*setting.rooms_area)]);
+            for (int i = 0; i < setting.room; i++) {
+                if(rooms[i].getAreaNumber() == current_area){
+                    route.add(rooms[i]);
+                }
             }
         }else if(simulatorType.equals(setting.simulatorType_dynamic)){
             //変動のルート
-            //route = setIdOrder(basedOnValue(rooms, current_area));
-            route = setIdOrder(basedOnSuf_rate(rooms, current_area));
+            if(setting.routeType.equals(setting.routeType_value)){
+                route = setIdOrder(basedOnValue(rooms, current_area));
+            }else if(setting.routeType.equals(setting.routeType_greedy)){
+                route = setIdOrder(basedOnSuf_rate(rooms, current_area));
+            }
+
         }
 
         return route;
@@ -60,6 +65,9 @@ public class RouteHandler {
                 }
 
                 routetime += next_time;
+
+                current_x = next_x;
+                current_y = next_y;
             }
 
             return routetime;
@@ -102,8 +110,10 @@ public class RouteHandler {
 
         //補充しなければいけない場所がなければ、エリア補充をする
         if(route.size() == 0){
-            for (int i = 0; i < setting.rooms_area; i++) {
-                route.add(r[i+(current_area*setting.rooms_area)]);
+            for (int i = 0; i < setting.room; i++) {
+                if(r[i].getAreaNumber() == current_area){
+                    route.add(r[i]);
+                }
             }
         }
 

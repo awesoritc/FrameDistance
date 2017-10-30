@@ -1,9 +1,16 @@
 public class Setting {
 
     final String filename = "rooms1";
+    //final String filename = "rooms2";
+    //final String filename = "random_room";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
+
+    final String routeType = "value";
+
+    final String routeType_value = "value";
+    final String routeType_greedy = "greedy";
 
     final int day = 100;//日数
     final int room = 100;//部屋の数

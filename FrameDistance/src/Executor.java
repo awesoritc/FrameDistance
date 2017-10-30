@@ -78,6 +78,8 @@ public class Executor {
         ArrayList<Integer> time_st = simulator_static.getRouteTime();
         ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
 
+        ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
+
         try{
             PrintWriter pw_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("Time_static.csv"), true)));
             for (int i = 0; i < time_st.size(); i++) {
@@ -95,6 +97,43 @@ public class Executor {
                 pw_dy.write(time_dy.get(i) + "\n");
             }
             pw_dy.close();
+
+            PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_dynamic.csv"), true)));
+            for (int i = 0; i < time_route_dy.size(); i++) {
+                ArrayList<Room> tmp = time_route_dy.get(i);
+                pw_route_dy.write("Day:" + i + "\n");
+                for (int j = 0; j < tmp.size(); j++) {
+                    pw_route_dy.write(tmp.get(j).getRoomId() + ", (" + tmp.get(j).getX_pos() + "," + tmp.get(j).getY_pos() + ")" + "\n");
+                }
+                pw_route_dy.write("\n");
+            }
+            pw_route_dy.close();
+
+            ArrayList<Integer> a = simulator_dynamic.getSalesHistory();
+            ArrayList<Integer> b = simulator_dynamic.getShortageHistory();
+            PrintWriter pw_history_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss_dynamic.csv"), true)));
+            pw_history_dy.write("sales,shortage" + "\n");
+            for (int i = 0; i < a.size(); i++) {
+                pw_history_dy.write(a.get(i) + "," + b.get(i) + "\n");
+            }
+            pw_history_dy.write("\n");
+            pw_history_dy.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        try{
+            ArrayList<Integer> sales_st = simulator_static.getSalesHistory();
+            ArrayList<Integer> shortage_st = simulator_static.getShortageHistory();
+            PrintWriter pw_history_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss_static.csv"), true)));
+            pw_history_st.write("sales,shortage" + "\n");
+            for (int i = 0; i < sales_st.size(); i++) {
+                pw_history_st.write(sales_st.get(i) + "," + shortage_st.get(i) + "\n");
+            }
+            pw_history_st.write("\n");
+            pw_history_st.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
