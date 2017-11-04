@@ -35,6 +35,8 @@ public class Setting {
                     {0, x_top_divider[0], y_divider, y_map_size}
             };
 
+    final int[] hub_point = {10, 10};//営業所の位置
+
 
     final int[][] goods = {{0, 1, 10}, {1, 1, 10}, {2, 2, 10}};//商品(7:2:1)
     final int[] goods_distribution = {7, 2, 1};

@@ -44,11 +44,15 @@ public class RouteHandler {
 
         if(route.size() != 0){
 
-            int current_x = route.get(0).getX_pos();
-            int current_y = route.get(0).getY_pos();
+            int[] hub_point = setting.hub_point;
+            int current_x = hub_point[0];
+            int current_y = hub_point[1];
+
+            /*int current_x = route.get(0).getX_pos();
+            int current_y = route.get(0).getY_pos();*/
 
             int routetime = 0;
-            for (int i = 1; i < route.size(); i++) {
+            for (int i = 0; i < route.size(); i++) {
 
                 int next_x = route.get(i).getX_pos();
                 int next_y = route.get(i).getY_pos();
@@ -69,6 +73,23 @@ public class RouteHandler {
                 current_x = next_x;
                 current_y = next_y;
             }
+
+            //最後ハブに戻る
+            int next_x = hub_point[0];
+            int next_y = hub_point[1];
+            int next_time = 0;
+            if(current_x > next_x){
+                next_time += current_x - next_x;
+            }else{
+                next_time += next_x - current_x;
+            }
+            if(current_y > next_y){
+                next_time += current_y - next_y;
+            }else{
+                next_time += next_y - current_y;
+            }
+
+            routetime += next_time;
 
             return routetime;
         }
