@@ -59,10 +59,12 @@ public class Executor {
 
         //結果出力
         System.out.println();
+        System.out.println("static");
         System.out.println(simulator_static.getTotal_sales());
         System.out.println(simulator_static.getTotal_shortage());
         System.out.println(simulator_static.getTotal_time());
         System.out.println();
+        System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
         System.out.println(simulator_dynamic.getTotal_shortage());
         System.out.println(simulator_dynamic.getTotal_time());
@@ -74,7 +76,7 @@ public class Executor {
 
 
 
-        //結果の出力
+        //結果の書き出し
         ArrayList<Integer> time_st = simulator_static.getRouteTime();
         ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
 
@@ -102,13 +104,14 @@ public class Executor {
 
             new FileWriter(new File("Route_dynamic.csv")).write("");
             PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_dynamic.csv"), true)));
+            pw_route_dy.write("roomId,pos,day\n");
             for (int i = 0; i < time_route_dy.size(); i++) {
                 ArrayList<Room> tmp = time_route_dy.get(i);
-                pw_route_dy.write("Day:" + i + "\n");
+                //pw_route_dy.write("Day:" + i + "\n");
                 for (int j = 0; j < tmp.size(); j++) {
-                    pw_route_dy.write(tmp.get(j).getRoomId() + ", (" + tmp.get(j).getX_pos() + "," + tmp.get(j).getY_pos() + ")" + "\n");
+                    pw_route_dy.write(tmp.get(j).getRoomId() + ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")," + i + "\n");
                 }
-                pw_route_dy.write("\n");
+                //pw_route_dy.write("\n");
             }
             pw_route_dy.close();
 

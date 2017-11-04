@@ -1,16 +1,17 @@
 public class Setting {
 
-    final String filename = "rooms1";
+    //final String filename = "rooms1";
     //final String filename = "rooms2";
     //final String filename = "random_room";
+    final String filename = "large_room";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
 
-    final String routeType = "value";
-
     final String routeType_value = "value";
     final String routeType_greedy = "greedy";
+
+    final String routeType = routeType_greedy;
 
     final int day = 100;//日数
     final int room = 100;//部屋の数
@@ -18,12 +19,13 @@ public class Setting {
     final int rooms_area = 20;//エリアあたりの部屋数
     final int limit = 20;//1日に回れる部屋の数
 
-    final int x_map_size = 20;//mapの大きさx
-    final int y_map_size = 20;//mapの大きさy
+    final int x_map_size = 100;//20;//mapの大きさx
+    final int y_map_size = 100;//20;//mapの大きさy
 
     int x_bottom_divider = 10;
-    int[] x_top_divider = {6, 13};
-    int y_divider = 8;
+    //正方形での分割
+    int[] x_top_divider = {Math.round(x_map_size/3)/*6*/, Math.round((x_map_size/3)*2)/*13*/};
+    int y_divider = Math.round((y_map_size/5)*2)/*8*/;
 
     final int[][] area_borders =
             {
@@ -35,7 +37,7 @@ public class Setting {
                     {0, x_top_divider[0], y_divider, y_map_size}
             };
 
-    final int[] hub_point = {10, 10};//営業所の位置
+    final int[] hub_point = {Math.round(x_map_size/2)/*10*/, Math.round(y_map_size/2)/*10*/};//営業所の位置
 
 
     final int[][] goods = {{0, 1, 10}, {1, 1, 10}, {2, 2, 10}};//商品(7:2:1)
