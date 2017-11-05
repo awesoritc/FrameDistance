@@ -1,9 +1,9 @@
 public class Setting {
 
-    //final String filename = "rooms1";
+    final String filename = "rooms1";
     //final String filename = "rooms2";
     //final String filename = "random_room";
-    final String filename = "large_room";
+    //final String filename = "large_room";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -19,8 +19,8 @@ public class Setting {
     final int rooms_area = 20;//エリアあたりの部屋数
     final int limit = 20;//1日に回れる部屋の数
 
-    final int x_map_size = 100;//20;//mapの大きさx
-    final int y_map_size = 100;//20;//mapの大きさy
+    final int x_map_size = 20;//mapの大きさx
+    final int y_map_size = 20;//mapの大きさy
 
     int x_bottom_divider = 10;
     //正方形での分割
@@ -51,4 +51,5 @@ public class Setting {
 
     final int interval_days = 5;
     final int interval_weeks = 5;
+    final int longest_interval = 25;//補充の最大間隔
 }

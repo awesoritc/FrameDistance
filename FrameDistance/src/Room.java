@@ -7,6 +7,7 @@ public class Room {
     private int roomType, roomId, areaNumber, x_pos, y_pos;
     private int roomMax;
     int[] distance_to_gravity;
+    int last_replenishment = 0;//最後に補充された日
 
     ArrayList<Goods> goodsList = new ArrayList<>();
 
@@ -66,11 +67,13 @@ public class Room {
         return new int[]{sales, shortage};
     }
 
-    public void do_replenishment_room(){
+    public void do_replenishment_room(int day){
 
         for(Goods aGoods: goodsList){
             aGoods.do_replenishment_goods();
         }
+
+        last_replenishment = day;
     }
 
 
@@ -105,6 +108,10 @@ public class Room {
         return amount / max;
     }
 
+
+    public boolean isOverLongest(int day){
+        return ((day - last_replenishment) > setting.longest_interval);
+    }
 
 
 

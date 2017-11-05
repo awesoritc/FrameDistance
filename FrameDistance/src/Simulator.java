@@ -57,10 +57,10 @@ public class Simulator {
         shortageHistory.add(shortage);
     }
 
-    public void do_replenishment_simulator(){
+    public void do_replenishment_simulator(int day){
         routeHistory.add(rep_route);
         for(Room aRooms: rep_route){
-            aRooms.do_replenishment_room();
+            aRooms.do_replenishment_room(day);
         }
     }
 

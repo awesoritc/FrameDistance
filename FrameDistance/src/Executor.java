@@ -18,12 +18,14 @@ public class Executor {
         int[][] gravity_points = Util.read_gravity_file(filename + "_gravity.csv", setting);
 
         for (int i = 0; i < setting.room; i++) {
+            //同じ部屋群をそれぞれに割り当て
             rooms_static[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
                     gravity_points, setting, setting.simulatorType_static);
             rooms_dynamic[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
                     gravity_points, setting, setting.simulatorType_dynamic);
 
 
+            //それぞれの部屋にランダムで商品を登録
             for (int j = 0; j < 10; j++) {
                 Random rand = new Random();
                 int random = rand.nextInt(10);
@@ -46,13 +48,15 @@ public class Executor {
 
         for (int i = 0; i < setting.day; i++) {
 
-            simulator_static.create_route(i);
-            simulator_static.do_consume_simulator();
-            simulator_static.do_replenishment_simulator();
+            int day = i;
 
-            simulator_dynamic.create_route(i);
+            simulator_static.create_route(day);
+            simulator_static.do_consume_simulator();
+            simulator_static.do_replenishment_simulator(day);
+
+            simulator_dynamic.create_route(day);
             simulator_dynamic.do_consume_simulator();
-            simulator_dynamic.do_replenishment_simulator();
+            simulator_dynamic.do_replenishment_simulator(day);
 
         }
 

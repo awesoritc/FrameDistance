@@ -21,18 +21,19 @@ public class Goods {
 
         this.average = setting.goods[goodsType][0];
         this.variance = setting.goods[goodsType][1];
-        this.max = setting.goods[goodsType][2];
-
-        this.stock = max;
+        //this.max = setting.goods[goodsType][2];
+        //this.stock = max;
 
         this.ratio = setting.demand_mul[roomType];
+        this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
+        this.stock = max;
     }
 
 
-    ArrayList<Integer> sales_history = new ArrayList<>();
-    ArrayList<Integer> shortage_history = new ArrayList<>();
-    ArrayList<Integer> demand_history = new ArrayList<>();
-    ArrayList<Integer> stock_before_history = new ArrayList<>();
+    ArrayList<Integer> sales_history = new ArrayList<>();//売り上げ個数の履歴
+    ArrayList<Integer> shortage_history = new ArrayList<>();//不足個数の履歴
+    ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
+    ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
 
 
     public int[] do_consume_goods(){
@@ -76,6 +77,7 @@ public class Goods {
 
 
     //ルート作成用のメソッド
+    //商品の欠品予想数を計算
     public int expect_shortage_goods(int interval){
 
         double tmp = 0;

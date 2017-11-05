@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 public class RouteHandler {
+
+    //ルートを作成する時に毎回呼ばれる
+
     private Setting setting;
     private String simulatorType;
 
@@ -122,7 +125,17 @@ public class RouteHandler {
             }
         }
 
-        ArrayList<Room> route = new ArrayList<>();
+        ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
+
+        //最大日数を超えて補充に回っていない部屋を追加
+        for (Room aRooms: r){
+            if(aRooms.isOverLongest(day)){
+                route.add(aRooms);
+            }
+        }
+
+
+        //ルートに優先度の高い部屋を追加
         for (int i = 0; i < setting.limit; i++) {
             if(r[i].rep_value(current_area) > 0){
                 route.add(r[i]);
