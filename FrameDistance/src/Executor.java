@@ -4,6 +4,7 @@ import java.util.Random;
 
 public class Executor {
 
+    //TODO:2本以上のシミュレーターを同時に走らせれるようにする？
 
     public static void main(String[] args){
 
@@ -87,24 +88,19 @@ public class Executor {
         ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
 
         try{
-            new FileWriter(new File("Time_static.csv")).write("");
-            PrintWriter pw_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("Time_static.csv"), true)));
+            new FileWriter(new File("time.csv")).write("");
+            PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("time.csv"), true)));
+            pw_time.write("day,time_static,time_dynamic\n");
             for (int i = 0; i < time_st.size(); i++) {
                 //System.out.println(time_st.get(i));
-                pw_st.write(time_st.get(i) + "\n");
+                pw_time.write(i + "," +  time_st.get(i) + "," + time_dy.get(i) + "\n");
             }
-            pw_st.close();
+            pw_time.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try{
-            new FileWriter(new File("Time_dynamic.csv")).write("");
-            PrintWriter pw_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("Time_dynamic.csv"), true)));
-            for (int i = 0; i < time_st.size(); i++) {
-                pw_dy.write(time_dy.get(i) + "\n");
-            }
-            pw_dy.close();
 
             new FileWriter(new File("Route_dynamic.csv")).write("");
             PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_dynamic.csv"), true)));
@@ -119,18 +115,6 @@ public class Executor {
             }
             pw_route_dy.close();
 
-            ArrayList<Integer> a = simulator_dynamic.getSalesHistory();
-            ArrayList<Integer> b = simulator_dynamic.getShortageHistory();
-
-            new PrintWriter(new BufferedWriter(new FileWriter(new File("ss_dynamic.csv")))).write("");
-            PrintWriter pw_history_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss_dynamic.csv"), true)));
-            pw_history_dy.write("sales,shortage" + "\n");
-            for (int i = 0; i < a.size(); i++) {
-                pw_history_dy.write(a.get(i) + "," + b.get(i) + "\n");
-            }
-            pw_history_dy.write("\n");
-            pw_history_dy.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,16 +123,97 @@ public class Executor {
         try{
             ArrayList<Integer> sales_st = simulator_static.getSalesHistory();
             ArrayList<Integer> shortage_st = simulator_static.getShortageHistory();
-            new FileWriter(new File("ss_static.csv")).write("");
-            PrintWriter pw_history_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss_static.csv"), true)));
-            pw_history_st.write("sales,shortage" + "\n");
+            ArrayList<Integer> sales_dy = simulator_dynamic.getSalesHistory();
+            ArrayList<Integer> shortage_dy = simulator_dynamic.getShortageHistory();
+            new FileWriter(new File("ss.csv")).write("");
+            PrintWriter pw_history_ss = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss.csv"), true)));
+            pw_history_ss.write("sales_static,shortage_static,sales_dynamic,shortage_dynamic" + "\n");
             for (int i = 0; i < sales_st.size(); i++) {
-                pw_history_st.write(sales_st.get(i) + "," + shortage_st.get(i) + "\n");
+                pw_history_ss.write(sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "\n");
             }
-            pw_history_st.write("\n");
-            pw_history_st.close();
+            pw_history_ss.write("\n");
+            pw_history_ss.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        //部屋ごとの売上と不足個数を書き出し
+        try{
+            new FileWriter(new File("/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "static.csv")).write("");
+            PrintWriter pw_room_st = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "static.csv"), true)));
+
+            pw_room_st.write("roomId,sales,shortage\n");
+
+            for (int i = 0; i < rooms_static.length; i++) {
+                ArrayList<Goods> gList = rooms_static[i].getGoodsList();
+                int sales = 0;
+                int shortage = 0;
+                for (int j = 0; j < gList.size(); j++) {
+                    for (int k = 0; k < gList.get(j).getSales_history().size(); k++) {
+                        sales += gList.get(j).getSales_history().get(k);
+                        shortage += gList.get(j).getShortage_history().get(k);
+                    }
+                }
+                pw_room_st.write(rooms_dynamic[i].getRoomId() + "," + sales + "," + shortage + "\n");
+            }
+            pw_room_st.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //部屋ごとの売上と不足個数を書き出し
+        try{
+            new FileWriter(new File("/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "dynamic.csv")).write("");
+            PrintWriter pw_room_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "dynamic.csv"), true)));
+
+            pw_room_dy.write("roomId,sales,shortage\n");
+
+            for (int i = 0; i < rooms_dynamic.length; i++) {
+                ArrayList<Goods> gList = rooms_dynamic[i].getGoodsList();
+                int sales = 0;
+                int shortage = 0;
+                for (int j = 0; j < gList.size(); j++) {
+                    for (int k = 0; k < gList.get(j).getSales_history().size(); k++) {
+                        sales += gList.get(j).getSales_history().get(k);
+                        shortage += gList.get(j).getShortage_history().get(k);
+                    }
+                }
+                pw_room_dy.write(rooms_dynamic[i].getRoomId() + "," + sales + "," + shortage + "\n");
+            }
+            pw_room_dy.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+        //それぞれの需要の総数を確認
+        int tmp = 0;
+        for (int i = 0; i < rooms_dynamic.length; i++) {
+            ArrayList<Goods> gList = rooms_dynamic[i].getGoodsList();
+            for (Goods aGoods: gList) {
+                ArrayList<Integer> demand = aGoods.demand_history;
+                for (int dem: demand){
+                    tmp += dem;
+                }
+            }
+        }
+        System.out.println("dynamic:" + tmp);
+
+        tmp = 0;
+        for (int i = 0; i < rooms_static.length; i++) {
+            ArrayList<Goods> gList = rooms_static[i].getGoodsList();
+            for (Goods aGoods: gList) {
+                ArrayList<Integer> demand = aGoods.demand_history;
+                for (int dem: demand){
+                    tmp += dem;
+                }
+            }
+        }
+        System.out.println("static:" + tmp);
     }
 }

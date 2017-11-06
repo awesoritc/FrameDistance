@@ -144,4 +144,12 @@ public class Room {
     public int getY_pos() {
         return y_pos;
     }
+
+    public ArrayList<Goods> getGoodsList() {
+        return goodsList;
+    }
+
+    public int getRoomType() {
+        return roomType;
+    }
 }

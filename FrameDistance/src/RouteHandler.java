@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class RouteHandler {
 
@@ -112,33 +113,40 @@ public class RouteHandler {
     //補充優先度
     private ArrayList<Room> basedOnValue(Room[] r, int current_area){
 
+        ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
+
+
+        ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
+
+        //最大日数を超えて補充に回っていない部屋を追加
+        for (int i = 0; i < room.size(); i++){
+            if(room.get(i).isOverLongest(day)){
+                route.add(room.get(i));
+                room.remove(i);
+            }
+        }
+
         //value大きい順に並べる
-        for (int i = 0; i < r.length; i++) {
-            for (int j = 0; j < r.length; j++) {
+        for (int i = 0; i < room.size(); i++) {
+            for (int j = 0; j < room.size(); j++) {
                 if(i < j){
-                    if(r[i].rep_value(current_area) < r[j].rep_value(current_area)){
-                        Room tmp = r[i];
-                        r[i] = r[j];
-                        r[j] = tmp;
+                    if(room.get(i).rep_value(current_area) < room.get(j).rep_value(current_area)){
+                        Room tmp = room.get(i);
+                        room.set(i, room.get(j));
+                        room.set(j, tmp);
                     }
                 }
             }
         }
 
-        ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
-
-        //最大日数を超えて補充に回っていない部屋を追加
-        for (Room aRooms: r){
-            if(aRooms.isOverLongest(day)){
-                route.add(aRooms);
-            }
-        }
-
-
         //ルートに優先度の高い部屋を追加
         for (int i = 0; i < setting.limit; i++) {
-            if(r[i].rep_value(current_area) > 0){
-                route.add(r[i]);
+            if(room.get(i).rep_value(current_area) > 0){
+                route.add(room.get(i));
+            }
+
+            if(route.size() >= setting.limit){
+                break;
             }
         }
 

@@ -1,9 +1,9 @@
 public class Setting {
 
-    final String filename = "rooms1";
+    //final String filename = "rooms1";
     //final String filename = "rooms2";
     //final String filename = "random_room";
-    //final String filename = "large_room";
+    final String filename = "large_room";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -11,7 +11,7 @@ public class Setting {
     final String routeType_value = "value";
     final String routeType_greedy = "greedy";
 
-    final String routeType = routeType_greedy;
+    final String routeType = routeType_value;
 
     final int day = 100;//日数
     final int room = 100;//部屋の数
@@ -44,6 +44,8 @@ public class Setting {
     final int[] goods_distribution = {7, 2, 1};
     final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
+    //TODO:倍率ではなく、需要の発生確率の平均に、売れやすい部屋では数字を足す
+    final int[] c_value = {-1, 0, 2};
     final int[] rooms_distribution = {5, 3, 2};
 
 

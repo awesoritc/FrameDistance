@@ -6,12 +6,13 @@ public class Goods {
 
     //商品の設定
     private int average, variance, max;
+    private int c_value;//部屋ごとの補正値
     private double ratio;
 
     //動かすもの
     private int stock;
 
-    private int goodsType;
+    private int goodsType, roomType;
 
     Goods(int roomType, int goodsType, Setting setting, String simulatorType){
 
@@ -24,8 +25,13 @@ public class Goods {
         //this.max = setting.goods[goodsType][2];
         //this.stock = max;
 
+        this.roomType = roomType;
         this.ratio = setting.demand_mul[roomType];
-        this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
+        /*//補正値による調整
+        this.c_value = setting.c_value[roomType];
+        this.average = this.average + this.c_value;*/
+        //this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
+        this.max = setting.goods[goodsType][2];
         this.stock = max;
     }
 
@@ -42,6 +48,8 @@ public class Goods {
 
         NormalDistribution nd = new NormalDistribution(average, variance);
         int demand = (int) (Math.round(nd.random()) * ratio);
+        //int demand = (int) Math.round(nd.random());
+
         if(demand < 0){
             demand = 0;
         }
@@ -140,5 +148,13 @@ public class Goods {
 
     public int getMax() {
         return max;
+    }
+
+    public ArrayList<Integer> getSales_history() {
+        return sales_history;
+    }
+
+    public ArrayList<Integer> getShortage_history() {
+        return shortage_history;
     }
 }
