@@ -12,6 +12,9 @@ public class Simulator {
     ArrayList<Integer> salesHistory = new ArrayList<>();
     ArrayList<Integer> shortageHistory = new ArrayList<>();
 
+    //部屋ごとの売上・不足を保持
+    private int[] sales_rooms = new int[100];
+    private int[] shortage_rooms = new int [100];
 
     Simulator(Room[] rooms, Setting setting, String simulatiorType){
 
@@ -19,6 +22,10 @@ public class Simulator {
         this.setting = setting;
         this.simulatiorType = simulatiorType;
 
+        for(int i = 0; i < 100; i++){
+            sales_rooms[i] = 0;
+            shortage_rooms[i] = 0;
+        }
     }
 
 
@@ -39,6 +46,7 @@ public class Simulator {
         rep_route = route;
     }
 
+
     public void do_consume_simulator(){
 
         int sales = 0;
@@ -48,6 +56,9 @@ public class Simulator {
             int[] tmp = rooms[i].do_consume_room();
             sales += tmp[0];
             shortage += tmp[1];
+            //部屋ごとの値を保持
+            sales_rooms[i] += tmp[0];
+            shortage_rooms[i] += tmp[1];
         }
 
         total_sales += sales;
@@ -101,5 +112,13 @@ public class Simulator {
 
     public ArrayList<Integer> getShortageHistory() {
         return shortageHistory;
+    }
+
+    public int[] getSales_rooms() {
+        return sales_rooms;
+    }
+
+    public int[] getShortage_rooms() {
+        return shortage_rooms;
     }
 }

@@ -140,80 +140,23 @@ public class Executor {
 
         //部屋ごとの売上と不足個数を書き出し
         try{
-            new FileWriter(new File("/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "static.csv")).write("");
-            PrintWriter pw_room_st = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "static.csv"), true)));
+            new FileWriter(new File("ss_rooms.csv")).write("");
+            PrintWriter pw_room = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "ss_rooms.csv"), true)));
 
-            pw_room_st.write("roomId,sales,shortage\n");
+            pw_room.write("roomId,sales_st,shortage_st,sales_dy,shortage_dy\n");
 
-            for (int i = 0; i < rooms_static.length; i++) {
-                ArrayList<Goods> gList = rooms_static[i].getGoodsList();
-                int sales = 0;
-                int shortage = 0;
-                for (int j = 0; j < gList.size(); j++) {
-                    for (int k = 0; k < gList.get(j).getSales_history().size(); k++) {
-                        sales += gList.get(j).getSales_history().get(k);
-                        shortage += gList.get(j).getShortage_history().get(k);
-                    }
-                }
-                pw_room_st.write(rooms_dynamic[i].getRoomId() + "," + sales + "," + shortage + "\n");
+            int[] sales_st = simulator_static.getSales_rooms();
+            int[] shortage_st = simulator_static.getShortage_rooms();
+            int[] sales_dy = simulator_dynamic.getSales_rooms();
+            int[] shortage_dy = simulator_dynamic.getShortage_rooms();
+            for (int i = 0; i < sales_st.length; i++) {
+                pw_room.write(i + "," +  + sales_st[i] + "," + shortage_st[i] + "," + sales_dy[i] + "," + shortage_dy[i] + "\n");
             }
-            pw_room_st.close();
+            pw_room.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //部屋ごとの売上と不足個数を書き出し
-        try{
-            new FileWriter(new File("/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "dynamic.csv")).write("");
-            PrintWriter pw_room_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "/Users/morimatsutakuya/Documents/GitHub/FrameDistance/FrameDistance/roomData/" + "dynamic.csv"), true)));
-
-            pw_room_dy.write("roomId,sales,shortage\n");
-
-            for (int i = 0; i < rooms_dynamic.length; i++) {
-                ArrayList<Goods> gList = rooms_dynamic[i].getGoodsList();
-                int sales = 0;
-                int shortage = 0;
-                for (int j = 0; j < gList.size(); j++) {
-                    for (int k = 0; k < gList.get(j).getSales_history().size(); k++) {
-                        sales += gList.get(j).getSales_history().get(k);
-                        shortage += gList.get(j).getShortage_history().get(k);
-                    }
-                }
-                pw_room_dy.write(rooms_dynamic[i].getRoomId() + "," + sales + "," + shortage + "\n");
-            }
-            pw_room_dy.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-        //それぞれの需要の総数を確認
-        int tmp = 0;
-        for (int i = 0; i < rooms_dynamic.length; i++) {
-            ArrayList<Goods> gList = rooms_dynamic[i].getGoodsList();
-            for (Goods aGoods: gList) {
-                ArrayList<Integer> demand = aGoods.demand_history;
-                for (int dem: demand){
-                    tmp += dem;
-                }
-            }
-        }
-        System.out.println("dynamic:" + tmp);
-
-        tmp = 0;
-        for (int i = 0; i < rooms_static.length; i++) {
-            ArrayList<Goods> gList = rooms_static[i].getGoodsList();
-            for (Goods aGoods: gList) {
-                ArrayList<Integer> demand = aGoods.demand_history;
-                for (int dem: demand){
-                    tmp += dem;
-                }
-            }
-        }
-        System.out.println("static:" + tmp);
     }
 }
