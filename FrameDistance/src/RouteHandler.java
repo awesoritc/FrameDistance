@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class RouteHandler {
 
@@ -118,6 +119,7 @@ public class RouteHandler {
 
         ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
 
+
         //最大日数を超えて補充に回っていない部屋を追加
         for (int i = 0; i < room.size(); i++){
             if(room.get(i).isOverLongest(day)){
@@ -217,6 +219,12 @@ public class RouteHandler {
     }
 
 
+
+
+
+
+
+
     //TPSをとく
     private ArrayList<Room> routeOptimizer(ArrayList<Room> rawRoot){
 
@@ -231,33 +239,78 @@ public class RouteHandler {
         //1000世代でストップ
 
 
+        //rawRoot:id順のルート
+
         ArrayList<ArrayList<Room>> applicants = new ArrayList<>();
-
-        //1-20のセットを作成
-        int[] numset = new int[20];
-        for (int i = 1; i < 21; i++) {
-            numset[i] = i;
-        }
-
 
         //30個ルートを作成
         int applicants_num = 30;
         for (int i = 0; i < applicants_num; i++) {
 
+            //1-20のセットを作成
+            int[] numset = new int[20];
+            for (int j = 1; j < 21; j++) {
+                numset[j] = j;
+            }
+
+            //1-20の順番ランダムな配列
+            for (int j = 0; j < 100; j++) {
+                Random rand = new Random();
+                int num1 = rand.nextInt(20);
+                int num2 = rand.nextInt(20);
+                int tmp = numset[num1];
+                numset[num1] = numset[num2];
+                numset[num2] = tmp;
+            }
+
             ArrayList<Room> routes = new ArrayList<>();
             for (int j = 0; j < numset.length; j++) {
-                
+                routes.add(rawRoot.get(numset[j]));
             }
 
             applicants.add(routes);
         }
 
-        //ルートの距離順に並び替えて、短い順に3ルート抜き出す
-        for (int i = 0; i < applicants_num; i++) {
 
-            calculate_route_time(applicants.get(i));
+
+        //ルートの距離順に並び替えて、短い順に3ルート抜き出す
+        //ルートの距離を保持
+        int[] route_time = new int[applicants_num];
+        for (int i = 0; i < applicants_num; i++) {
+            route_time[i] = calculate_route_time(applicants.get(i));
         }
 
+        //ルートの距離短い順に並べる
+        for (int i = 0; i < applicants_num; i++) {
+            for (int j = 0; j < applicants_num; j++) {
+
+                if(route_time[i] > route_time[j]){
+                    int tmp_route_time = route_time[i];
+                    route_time[i] = route_time[j];
+                    route_time[j] = tmp_route_time;
+
+                    ArrayList tmp_applicants = applicants.get(i);
+                    applicants.set(i,applicants.get(j));
+                    applicants.set(j,tmp_applicants);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ArrayList<Room> answer_route = new ArrayList<>();
+
+        return answer_route;
     }
 
 }

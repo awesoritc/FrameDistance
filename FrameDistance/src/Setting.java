@@ -1,9 +1,9 @@
 public class Setting {
 
-    //final String filename = "rooms1";
+    final String filename = "rooms1";
     //final String filename = "rooms2";
     //final String filename = "random_room";
-    final String filename = "large_room";
+    //final String filename = "large_room";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -19,8 +19,8 @@ public class Setting {
     final int rooms_area = Math.round(room/area);//エリアあたりの部屋数
     final int limit = 20;//1日に回れる部屋の数
 
-    final int x_map_size = 100;//20;//mapの大きさx
-    final int y_map_size = 100;//20;//mapの大きさy
+    final int x_map_size = 20;//mapの大きさx
+    final int y_map_size = 20;//mapの大きさy
 
 
     //正方形での分割
@@ -45,6 +45,8 @@ public class Setting {
     final int[] goods_distribution = {7, 2, 1};
     final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
+    final boolean ad_average = true;//averageに調整値を入れるかどうか
+    final boolean ad_max = true;
     //TODO:倍率ではなく、需要の発生確率の平均に、売れやすい部屋では数字を足す
     final int[] c_value = {-1, 0, 2};
     final int[] rooms_distribution = {5, 3, 2};

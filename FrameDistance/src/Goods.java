@@ -22,16 +22,23 @@ public class Goods {
 
         this.average = setting.goods[goodsType][0];
         this.variance = setting.goods[goodsType][1];
-        //this.max = setting.goods[goodsType][2];
-        //this.stock = max;
+        this.max = setting.goods[goodsType][2];
 
         this.roomType = roomType;
         this.ratio = setting.demand_mul[roomType];
         /*//補正値による調整
         this.c_value = setting.c_value[roomType];
         this.average = this.average + this.c_value;*/
-        //this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
-        this.max = setting.goods[goodsType][2];
+
+
+        if(setting.ad_average){
+            this.average = (int)Math.round(setting.goods[goodsType][0]*ratio);
+        }
+
+        if(setting.ad_max){
+            this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
+        }
+
         this.stock = max;
     }
 
@@ -47,8 +54,12 @@ public class Goods {
         stock_before_history.add(stock);
 
         NormalDistribution nd = new NormalDistribution(average, variance);
-        int demand = (int) (Math.round(nd.random()) * ratio);
-        //int demand = (int) Math.round(nd.random());
+        int demand;
+        if(setting.ad_average){
+            demand = (int) Math.round(nd.random());
+        }else{
+            demand = (int) (Math.round(nd.random()) * ratio);
+        }
 
         if(demand < 0){
             demand = 0;
