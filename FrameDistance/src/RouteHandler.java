@@ -223,25 +223,40 @@ public class RouteHandler {
         //1. 30個ルートを作製
         //2. ルートの距離を計算
         //3. 30個から距離が短いルート3つを選択
-        //4. その3つのを1組ランダムで入れ替えたものを10個ずつ計30個作製
-        //5. 2,3,4を繰り返す
+        //TODO: 交叉をどの様に行なうか考えなければいけない
+        //4. その3つと自分を除いた29個を確立的に交叉を行いルートを30個作成する
+        //5. 突然変異確率に応じて、突然変異を行う(何処か1箇所スワップさせる)
+        //6. ランダム作成したルート10個追加
+        //7. 2,3,4を繰り返す
         //1000世代でストップ
 
 
         ArrayList<ArrayList<Room>> applicants = new ArrayList<>();
 
+        //1-20のセットを作成
+        int[] numset = new int[20];
+        for (int i = 1; i < 21; i++) {
+            numset[i] = i;
+        }
+
 
         //30個ルートを作成
-        for (int i = 0; i < 30; i++) {
+        int applicants_num = 30;
+        for (int i = 0; i < applicants_num; i++) {
 
             ArrayList<Room> routes = new ArrayList<>();
-            for (int j = 0; j < rawRoot.size(); j++) {
-
+            for (int j = 0; j < numset.length; j++) {
+                
             }
 
             applicants.add(routes);
         }
 
+        //ルートの距離順に並び替えて、短い順に3ルート抜き出す
+        for (int i = 0; i < applicants_num; i++) {
+
+            calculate_route_time(applicants.get(i));
+        }
 
     }
 
