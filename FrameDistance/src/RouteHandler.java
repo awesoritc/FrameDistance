@@ -215,4 +215,34 @@ public class RouteHandler {
         }
         return route;
     }
+
+
+    //TPSをとく
+    private ArrayList<Room> routeOptimizer(ArrayList<Room> rawRoot){
+
+        //1. 30個ルートを作製
+        //2. ルートの距離を計算
+        //3. 30個から距離が短いルート3つを選択
+        //4. その3つのを1組ランダムで入れ替えたものを10個ずつ計30個作製
+        //5. 2,3,4を繰り返す
+        //1000世代でストップ
+
+
+        ArrayList<ArrayList<Room>> applicants = new ArrayList<>();
+
+
+        //30個ルートを作成
+        for (int i = 0; i < 30; i++) {
+
+            ArrayList<Room> routes = new ArrayList<>();
+            for (int j = 0; j < rawRoot.size(); j++) {
+
+            }
+
+            applicants.add(routes);
+        }
+
+
+    }
+
 }
