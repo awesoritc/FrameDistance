@@ -2,7 +2,6 @@ public class Setting {
 
     //final String filename = "rooms1";
     //final String filename = "rooms2";
-    //final String filename = "random_room";
     //final String filename = "large_room";
     final String filename = "suburb_room_75_75";
 
@@ -46,7 +45,7 @@ public class Setting {
     final int[] goods_distribution = {7, 2, 1};
     final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
-    final boolean ad_average = true;//averageに調整値を入れるかどうか
+    final boolean ad_average = true;//averageに調整値を入れるかどうか((sμ, σ) にするかどうか)
     final boolean ad_max = true;
     //TODO:倍率ではなく、需要の発生確率の平均に、売れやすい部屋では数字を足す
     final int[] c_value = {-1, 0, 2};

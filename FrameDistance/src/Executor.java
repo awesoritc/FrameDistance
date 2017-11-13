@@ -86,6 +86,7 @@ public class Executor {
         ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
 
         ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
+        ArrayList<ArrayList<Room>> time_route_st = simulator_static.getRouteHistory();
 
         try{
             new FileWriter(new File("time.csv")).write("");
@@ -114,6 +115,25 @@ public class Executor {
                 //pw_route_dy.write("\n");
             }
             pw_route_dy.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try{
+
+            new FileWriter(new File("Route_static.csv")).write("");
+            PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_static.csv"), true)));
+            pw_route_st.write("roomId,pos,day\n");
+            for (int i = 0; i < time_route_st.size(); i++) {
+                ArrayList<Room> tmp = time_route_st.get(i);
+                //pw_route_st.write("Day:" + i + "\n");
+                for (int j = 0; j < tmp.size(); j++) {
+                    pw_route_st.write(tmp.get(j).getRoomId() + ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")," + i + "\n");
+                }
+                //pw_route_st.write("\n");
+            }
+            pw_route_st.close();
 
         } catch (IOException e) {
             e.printStackTrace();

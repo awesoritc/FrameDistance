@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Goods {
@@ -64,6 +67,20 @@ public class Goods {
         if(demand < 0){
             demand = 0;
         }
+
+
+        /*
+        //需要数の確認の為の書き出し
+        try{
+            FileWriter writer = new FileWriter(new File("nd_test.csv"), true);
+            writer.write(String.valueOf(demand) + "\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+
+
 
         int sales;
         int shortage;
