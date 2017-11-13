@@ -1,9 +1,10 @@
 public class Setting {
 
-    final String filename = "rooms1";
+    //final String filename = "rooms1";
     //final String filename = "rooms2";
     //final String filename = "random_room";
     //final String filename = "large_room";
+    final String filename = "suburb_room_75_75";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -19,8 +20,8 @@ public class Setting {
     final int rooms_area = Math.round(room/area);//エリアあたりの部屋数
     final int limit = 20;//1日に回れる部屋の数
 
-    final int x_map_size = 20;//mapの大きさx
-    final int y_map_size = 20;//mapの大きさy
+    final int x_map_size = 75;//20;//mapの大きさx
+    final int y_map_size = 75;//20;//mapの大きさy
 
 
     //正方形での分割
