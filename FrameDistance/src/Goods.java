@@ -1,6 +1,3 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Goods {
@@ -50,6 +47,8 @@ public class Goods {
     ArrayList<Integer> shortage_history = new ArrayList<>();//不足個数の履歴
     ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
     ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
+
+
 
 
     public int[] do_consume_goods(){
@@ -104,10 +103,13 @@ public class Goods {
         return new int[]{sales, shortage};
     }
 
+
+
+
+
     public void do_replenishment_goods(){
         stock = max;
     }
-
 
 
 
