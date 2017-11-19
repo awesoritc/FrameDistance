@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Simulator {
 
@@ -11,14 +12,15 @@ public class Simulator {
     ArrayList<ArrayList<Room>> routeHistory = new ArrayList<>();
     ArrayList<Integer> salesHistory = new ArrayList<>();
     ArrayList<Integer> shortageHistory = new ArrayList<>();
+    ArrayList<Integer> expire_countHistory = new ArrayList<>();//賞味期限切れの個数
 
     //部屋ごとの売上・不足を保持
     private int[] sales_rooms = new int[100];
     private int[] shortage_rooms = new int [100];
 
-    Simulator(Room[] rooms, Setting setting, String simulatiorType){
+    Simulator(/*Room[] rooms, */Setting setting, String simulatiorType){
 
-        this.rooms = rooms;
+        //this.rooms = rooms;
         this.setting = setting;
         this.simulatiorType = simulatiorType;
 
@@ -26,6 +28,36 @@ public class Simulator {
             sales_rooms[i] = 0;
             shortage_rooms[i] = 0;
         }
+
+
+        String filename = setting.filename;
+        Room[] rooms =  new Room[setting.room];
+        int[][] room_element = Util.read_room_file(filename + ".csv", setting);
+        int[][] gravity_points = Util.read_gravity_file(filename + "_gravity.csv", setting);
+
+        for (int i = 0; i < setting.room; i++) {
+            //同じ部屋群をそれぞれに割り当て
+            rooms[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
+                    gravity_points, setting, simulatiorType);
+
+
+            //それぞれの部屋にランダムで商品を登録
+            for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                Random rand = new Random();
+                int random = rand.nextInt(setting.goodsNum_per_room);
+                int version;
+                if(random < setting.goods_distribution[0]){
+                    version = 0;
+                }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
+                    version = 1;
+                }else{
+                    version = 2;
+                }
+                rooms[i].register_goods(version);
+            }
+        }
+
+        this.rooms = rooms;
     }
 
 
@@ -70,8 +102,21 @@ public class Simulator {
 
     public void do_replenishment_simulator(int day){
         routeHistory.add(rep_route);
+
+        int expire_count = 0;
         for(Room aRooms: rep_route){
-            aRooms.do_replenishment_room(day);
+            expire_count += aRooms.do_replenishment_room(day);
+        }
+
+        expire_countHistory.add(expire_count);
+    }
+
+
+
+    //1日の終わりに行う
+    public void finish_day(){
+        for (int i = 0; i < rooms.length; i++) {
+            rooms[i].finish_day_room();
         }
     }
 
@@ -112,6 +157,10 @@ public class Simulator {
 
     public ArrayList<Integer> getShortageHistory() {
         return shortageHistory;
+    }
+
+    public ArrayList<Integer> getExpire_countHistory() {
+        return expire_countHistory;
     }
 
     public int[] getSales_rooms() {

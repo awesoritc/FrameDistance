@@ -6,10 +6,11 @@ public class Room {
 
     private int roomType, roomId, areaNumber, x_pos, y_pos;
     private int roomMax;
-    int[] distance_to_gravity;
-    int last_replenishment = 0;//最後に補充された日
+    private int[] distance_to_gravity;
+    private int last_replenishment = 0;//最後に補充された日
+    private boolean expire_flag = false;
 
-    ArrayList<Goods> goodsList = new ArrayList<>();
+    private final ArrayList<Goods> goodsList = new ArrayList<>();
 
 
 
@@ -67,13 +68,30 @@ public class Room {
         return new int[]{sales, shortage};
     }
 
-    public void do_replenishment_room(int day){
 
+    //部屋での賞味期限切れになった個数を返す
+    public int do_replenishment_room(int day){
+
+        int expire_count = 0;
         for(Goods aGoods: goodsList){
-            aGoods.do_replenishment_goods();
+            expire_count += aGoods.do_replenishment_goods();
         }
 
         last_replenishment = day;
+        expire_flag = false;
+
+        return expire_count;
+    }
+
+
+    //1日の終わりに行う
+    public void finish_day_room(){
+        for (int i = 0; i < goodsList.size(); i++) {
+            boolean tmp = goodsList.get(i).finish_day_goods();
+            if(tmp){
+                expire_flag = true;
+            }
+        }
     }
 
 
@@ -109,9 +127,9 @@ public class Room {
     }
 
 
-    public boolean isOverLongest(int day){
+    /*public boolean isOverLongest(int day){
         return ((day - last_replenishment) > setting.longest_interval);
-    }
+    }*/
 
 
 
@@ -151,5 +169,9 @@ public class Room {
 
     public int getRoomType() {
         return roomType;
+    }
+
+    public boolean isExpire_flag() {
+        return expire_flag;
     }
 }

@@ -121,12 +121,19 @@ public class RouteHandler {
 
 
         //最大日数を超えて補充に回っていない部屋を追加
-        for (int i = 0; i < room.size(); i++){
-            if(room.get(i).isOverLongest(day)){
+        //TODO:expire_flagがtrueの部屋を必ず回る(最大日数は削除)
+        for (int i = 0; i < room.size(); i++) {
+            if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
                 route.add(room.get(i));
                 room.remove(i);
             }
         }
+        /*for (int i = 0; i < room.size(); i++){
+            if(room.get(i).isOverLongest(day)){
+                route.add(room.get(i));
+                room.remove(i);
+            }
+        }*/
 
         //value大きい順に並べる
         for (int i = 0; i < room.size(); i++) {

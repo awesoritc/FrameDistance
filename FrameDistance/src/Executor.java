@@ -12,7 +12,7 @@ public class Executor {
 
 
         //ファイルから読み込んで、部屋を作成
-        String filename = setting.filename;
+        /*String filename = setting.filename;
         Room[] rooms_static =  new Room[setting.room];
         Room[] rooms_dynamic =  new Room[setting.room];
         int[][] room_element = Util.read_room_file(filename + ".csv", setting);
@@ -41,10 +41,10 @@ public class Executor {
                 rooms_static[i].register_goods(version);
                 rooms_dynamic[i].register_goods(version);
             }
-        }
+        }*/
 
-        Simulator simulator_static = new Simulator(rooms_static, setting, setting.simulatorType_static);
-        Simulator simulator_dynamic = new Simulator(rooms_dynamic, setting, setting.simulatorType_dynamic);
+        Simulator simulator_static = new Simulator(/*rooms_static, */setting, setting.simulatorType_static);
+        Simulator simulator_dynamic = new Simulator(/*rooms_dynamic, */setting, setting.simulatorType_dynamic);
 
 
         for (int i = 0; i < setting.day; i++) {
@@ -54,11 +54,12 @@ public class Executor {
             simulator_static.create_route(day);
             simulator_static.do_consume_simulator();
             simulator_static.do_replenishment_simulator(day);
+            simulator_static.finish_day();
 
             simulator_dynamic.create_route(day);
             simulator_dynamic.do_consume_simulator();
             simulator_dynamic.do_replenishment_simulator(day);
-
+            simulator_dynamic.finish_day();
         }
 
 
@@ -174,6 +175,27 @@ public class Executor {
                 pw_room.write(i + "," +  + sales_st[i] + "," + shortage_st[i] + "," + sales_dy[i] + "," + shortage_dy[i] + "\n");
             }
             pw_room.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //廃棄ロスを書き出し
+        try{
+            new FileWriter(new File("loss.csv")).write("");
+
+            ArrayList<Integer> loss_st = simulator_static.getExpire_countHistory();
+            ArrayList<Integer> loss_dy = simulator_dynamic.getExpire_countHistory();
+            PrintWriter pw_loss = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "loss.csv"), true)));
+
+            pw_loss.write("day,loss_static,loss_dynamic\n");
+
+            for (int i = 0; i < loss_st.size(); i++) {
+                pw_loss.write(i + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
+            }
+            pw_loss.close();
 
         } catch (IOException e) {
             e.printStackTrace();

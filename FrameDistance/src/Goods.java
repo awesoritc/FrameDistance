@@ -14,6 +14,8 @@ public class Goods {
 
     private int goodsType, roomType;
 
+    private ArrayList<Item> itemBox;
+
     Goods(int roomType, int goodsType, Setting setting, String simulatorType){
 
         this.goodsType = goodsType;
@@ -40,6 +42,12 @@ public class Goods {
         }
 
         this.stock = max;
+
+        itemBox = new ArrayList<>();
+        for (int i = 0; i < max; i++) {
+            Item item = new Item(setting.goods[goodsType][3]);
+            itemBox.add(item);
+        }
     }
 
 
@@ -88,10 +96,24 @@ public class Goods {
             shortage = 0;
             sales = demand;
             stock -= demand;
+
+            if(itemBox.get(0).getExpire() < 0){
+                throw new RuntimeException("賞味期限切れの商品を消費しました");
+            }
+            for (int i = 0; i < demand; i++) {
+                itemBox.remove(0);
+            }
         }else if(stock > 0){
             shortage = demand - stock;
             sales = stock;
             stock = 0;
+
+            if(itemBox.get(0).getExpire() < 0){
+                throw new RuntimeException("賞味期限切れの商品を消費しました");
+            }
+            for (int i = 0; i < itemBox.size()-1; i++) {
+                itemBox.remove(0);
+            }
         }else{
             shortage = demand;
             sales = 0;
@@ -106,9 +128,43 @@ public class Goods {
 
 
 
-
-    public void do_replenishment_goods(){
+    //賞味期限切れになった個数を返す
+    public int do_replenishment_goods(){
         stock = max;
+
+        while(itemBox.size() < max){
+            itemBox.add(new Item(setting.goods[goodsType][3]));
+        }
+
+        //賞味期限チェックに引っかかるものを破棄
+        int expire_count = 0;
+        for (int i = itemBox.size()-1; i > -1; i--) {
+            if(itemBox.get(i).getExpire() < setting.expire_flag_day){
+                itemBox.remove(i);
+                itemBox.add(new Item(setting.goods[goodsType][3]));
+                expire_count++;
+            }
+        }
+
+        return expire_count;
+    }
+
+
+    //1日の終わりに行う
+    public boolean finish_day_goods(){
+        //1日進める
+        for (int i = 0; i < itemBox.size(); i++) {
+            itemBox.get(i).proceed_day();
+            //System.out.println("test:" + itemBox.get(i).getExpire());
+        }
+
+        //期限が迫っていればflagを立てる
+        for (int i = 0; i < itemBox.size(); i++) {
+            if(itemBox.get(i).getExpire() < setting.expire_flag_day){
+                return true;
+            }
+        }
+        return false;
     }
 
 

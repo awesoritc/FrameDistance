@@ -1,12 +1,17 @@
 public class Item {
 
-    String id;
-    int expire;
-    int belongRoomId;
+    private int expire;
 
-    public Item(String id, int expire, int belongRoomId) {
-        this.id = id;
+    public Item(int expire) {
         this.expire = expire;
-        this.belongRoomId = belongRoomId;
+    }
+
+    public void proceed_day(){
+        expire--;
+    }
+
+
+    public int getExpire() {
+        return expire;
     }
 }
