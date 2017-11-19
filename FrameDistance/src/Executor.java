@@ -4,15 +4,13 @@ import java.util.Random;
 
 public class Executor {
 
-    //TODO:2本以上のシミュレーターを同時に走らせれるようにする？
-
     public static void main(String[] args){
 
         Setting setting = new Setting();
 
 
         //ファイルから読み込んで、部屋を作成
-        String filename = setting.filename;
+        /*String filename = setting.filename;
         Room[] rooms_static =  new Room[setting.room];
         Room[] rooms_dynamic =  new Room[setting.room];
         int[][] room_element = Util.read_room_file(filename + ".csv", setting);
@@ -27,9 +25,9 @@ public class Executor {
 
 
             //それぞれの部屋にランダムで商品を登録
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < setting.goods_num; j++) {
                 Random rand = new Random();
-                int random = rand.nextInt(10);
+                int random = rand.nextInt(setting.goods_num);
                 int version;
                 if(random < setting.goods_distribution[0]){
                     version = 0;
@@ -41,10 +39,10 @@ public class Executor {
                 rooms_static[i].register_goods(version);
                 rooms_dynamic[i].register_goods(version);
             }
-        }
+        }*/
 
-        Simulator simulator_static = new Simulator(rooms_static, setting, setting.simulatorType_static);
-        Simulator simulator_dynamic = new Simulator(rooms_dynamic, setting, setting.simulatorType_dynamic);
+        Simulator simulator_static = new Simulator(/*rooms_static, */setting, setting.simulatorType_static);
+        Simulator simulator_dynamic = new Simulator(/*rooms_dynamic, */setting, setting.simulatorType_dynamic);
 
 
         for (int i = 0; i < setting.day; i++) {

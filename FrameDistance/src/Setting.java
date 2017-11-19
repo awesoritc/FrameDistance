@@ -13,7 +13,7 @@ public class Setting {
 
     final String routeType = routeType_value;
 
-    final int day = 100;//日数
+    final int day = 365;//日数
     final int room = 100;//部屋の数
     final int area = 5;//エリア数
     final int rooms_area = Math.round(room/area);//エリアあたりの部屋数
@@ -41,8 +41,10 @@ public class Setting {
     final int[] hub_point = {Math.round(x_map_size/2)/*10*/, Math.round(y_map_size/2)/*10*/};//営業所の位置
 
 
-    final int[][] goods = {{0, 1, 10}, {1, 1, 10}, {2, 2, 10}};//商品(7:2:1)
-    final int[] goods_distribution = {7, 2, 1};
+    final int goods_num = 10;
+
+    final int[][] goods = {{0, 1, 10, 90}, {1, 1, 10, 90}, {2, 2, 10, 90}};//商品の設定値(平均, 標準偏差, 最大個数, 賞味期限までの日数 )
+    final int[] goods_distribution = {7, 2, 1};//商品の設置割合(7:2:1)
     final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
     final boolean ad_average = true;//averageに調整値を入れるかどうか((sμ, σ) にするかどうか)
@@ -57,4 +59,5 @@ public class Setting {
     final int interval_days = 5;
     final int interval_weeks = 5;
     final int longest_interval = 25;//補充の最大間隔
+    final int change_day = 25;//賞味期限がこれ以上短くなった時に取り替える
 }

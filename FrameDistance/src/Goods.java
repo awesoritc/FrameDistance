@@ -12,9 +12,9 @@ public class Goods {
     //動かすもの
     private int stock;
 
-    private int goodsType, roomType;
+    private int goodsType, roomType, goodsNum;
 
-    Goods(int roomType, int goodsType, Setting setting, String simulatorType){
+    Goods(int roomType, int goodsType, int goodsNum, Setting setting, String simulatorType){
 
         this.goodsType = goodsType;
         this.setting = setting;
@@ -25,6 +25,7 @@ public class Goods {
         this.max = setting.goods[goodsType][2];
 
         this.roomType = roomType;
+        this.goodsNum = goodsNum;
         this.ratio = setting.demand_mul[roomType];
         /*//補正値による調整
         this.c_value = setting.c_value[roomType];
@@ -47,8 +48,6 @@ public class Goods {
     ArrayList<Integer> shortage_history = new ArrayList<>();//不足個数の履歴
     ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
     ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
-
-
 
 
     public int[] do_consume_goods(){
@@ -103,13 +102,12 @@ public class Goods {
         return new int[]{sales, shortage};
     }
 
-
-
-
-
-    public void do_replenishment_goods(){
+    public int do_replenishment_goods(){
+        int tmp = max - stock;
         stock = max;
+        return tmp;
     }
+
 
 
 
@@ -186,5 +184,9 @@ public class Goods {
 
     public ArrayList<Integer> getShortage_history() {
         return shortage_history;
+    }
+
+    public int getGoodsType() {
+        return goodsType;
     }
 }

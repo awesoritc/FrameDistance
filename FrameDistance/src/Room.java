@@ -6,8 +6,10 @@ public class Room {
 
     private int roomType, roomId, areaNumber, x_pos, y_pos;
     private int roomMax;
-    int[] distance_to_gravity;
-    int last_replenishment = 0;//最後に補充された日
+    private int[] distance_to_gravity;
+    private int last_replenishment = 0;//最後に補充された日
+
+    private int current_goodsNum = 0;
 
     ArrayList<Goods> goodsList = new ArrayList<>();
 
@@ -54,26 +56,42 @@ public class Room {
 
     //メインで使うもの
 
-    public int[] do_consume_room(){
+    public int[][] do_consume_room(){
 
         int sales = 0;
         int shortage = 0;
-        for(Goods aGoods: goodsList){
+        /*for(Goods aGoods: goodsList){
             int tmp[] = aGoods.do_consume_goods();
+            sales += tmp[0];
+            shortage += tmp[1];
+        }*/
+        int[][] ret_goodsNum_ss = new int[setting.goods_num][2];
+        for (int i = 0; i < goodsList.size(); i++) {
+            int tmp[] = goodsList.get(i).do_consume_goods();
+            ret_goodsNum_ss[i] = tmp;
             sales += tmp[0];
             shortage += tmp[1];
         }
 
-        return new int[]{sales, shortage};
+        //return new int[]{sales, shortage};
+        return ret_goodsNum_ss;
     }
 
-    public void do_replenishment_room(int day){
 
-        for(Goods aGoods: goodsList){
+
+    public int[] do_replenishment_room(int day){
+
+        /*for(Goods aGoods: goodsList){
             aGoods.do_replenishment_goods();
+        }*/
+        int[] ret_goodsNum = new int[goodsList.size()];
+        for (int i = 0; i < goodsList.size(); i++) {
+            ret_goodsNum[i] = goodsList.get(i).do_replenishment_goods();
         }
 
         last_replenishment = day;
+
+        return ret_goodsNum;
     }
 
 
@@ -119,7 +137,8 @@ public class Room {
 
     //商品の登録
     public void register_goods(int goodsType){
-        goodsList.add(new Goods(roomType, goodsType, setting, simulatiorType));
+        goodsList.add(new Goods(roomType, goodsType, current_goodsNum, setting, simulatiorType));
+        current_goodsNum++;
     }
 
 
