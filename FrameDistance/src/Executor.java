@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Executor {
@@ -27,7 +28,7 @@ public class Executor {
 
 
             //それぞれの部屋にランダムで商品を登録
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < setting.goodsNum_per_room; j++) {
                 Random rand = new Random();
                 int random = rand.nextInt(10);
                 int version;
@@ -43,8 +44,26 @@ public class Executor {
             }
         }*/
 
-        Simulator simulator_static = new Simulator(/*rooms_static, */setting, setting.simulatorType_static);
-        Simulator simulator_dynamic = new Simulator(/*rooms_dynamic, */setting, setting.simulatorType_dynamic);
+        //それぞれの部屋にランダムで商品を登録
+        ArrayList<Integer> goods_alloc = new ArrayList<>();
+        for (int i = 0; i < setting.room; i++) {
+            for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                Random rand = new Random();
+                int random = rand.nextInt(10);
+                int version;
+                if(random < setting.goods_distribution[0]){
+                    version = 0;
+                }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
+                    version = 1;
+                }else{
+                    version = 2;
+                }
+                goods_alloc.add(version);
+            }
+        }
+
+        Simulator simulator_static = new Simulator(/*rooms_static, */goods_alloc, setting, setting.simulatorType_static);
+        Simulator simulator_dynamic = new Simulator(/*rooms_dynamic, */goods_alloc, setting, setting.simulatorType_dynamic);
 
 
         for (int i = 0; i < setting.day; i++) {
@@ -52,12 +71,12 @@ public class Executor {
             int day = i;
 
             simulator_static.create_route(day);
-            simulator_static.do_consume_simulator();
+            simulator_static.do_consume_simulator(day);
             simulator_static.do_replenishment_simulator(day);
             simulator_static.finish_day();
 
             simulator_dynamic.create_route(day);
-            simulator_dynamic.do_consume_simulator();
+            simulator_dynamic.do_consume_simulator(day);
             simulator_dynamic.do_replenishment_simulator(day);
             simulator_dynamic.finish_day();
         }
@@ -183,12 +202,12 @@ public class Executor {
 
         //廃棄ロスを書き出し
         try{
-            new FileWriter(new File("loss.csv")).write("");
+            new FileWriter(new File("expire_loss.csv")).write("");
 
             ArrayList<Integer> loss_st = simulator_static.getExpire_countHistory();
             ArrayList<Integer> loss_dy = simulator_dynamic.getExpire_countHistory();
             PrintWriter pw_loss = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "loss.csv"), true)));
+                    "expire_loss.csv"), true)));
 
             pw_loss.write("day,loss_static,loss_dynamic\n");
 
@@ -196,6 +215,44 @@ public class Executor {
                 pw_loss.write(i + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
             }
             pw_loss.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //部屋ごとの廃棄ロスを書き出し
+        try{
+            new FileWriter(new File("expire_loss_room.csv")).write("");
+            ArrayList<Integer> loss_st = new ArrayList<>(Arrays.asList(simulator_static.getRoom_expire()));
+            ArrayList<Integer> loss_dy = new ArrayList<>(Arrays.asList(simulator_dynamic.getRoom_expire()));
+            PrintWriter pw_loss = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "expire_loss_room.csv"), true)));
+
+            pw_loss.write("roomId,loss_static,loss_dynamic\n");
+
+            for (int i = 0; i < loss_st.size(); i++) {
+                pw_loss.write(i + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
+            }
+            pw_loss.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //稼働率書き出し
+        try{
+            new FileWriter(new File("availability.csv")).write("");
+            ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
+            ArrayList<Double> availability_dy = simulator_dynamic.getAvailabilityHistory();
+            PrintWriter pw_availability = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "availability.csv"), true)));
+
+            pw_availability.write("day,availability_static,availability_dynamic\n");
+
+            for (int i = 0; i < availability_st.size(); i++) {
+                pw_availability.write(i + "," +  availability_st.get(i) + "," + availability_dy.get(i) + "\n");
+            }
+            pw_availability.close();
 
         } catch (IOException e) {
             e.printStackTrace();

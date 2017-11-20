@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Room {
@@ -50,12 +53,14 @@ public class Room {
             this.distance_to_gravity[i] = distance;
         }
 
+        //if(simulatorType.equals(setting.simulatorType_dynamic)) Util.write_gravity(roomId, areaNumber, distance_to_gravity);
+
     }
 
 
     //メインで使うもの
 
-    public int[] do_consume_room(){
+    public int[] do_consume_room(int day){
 
         int sales = 0;
         int shortage = 0;
@@ -64,6 +69,16 @@ public class Room {
             sales += tmp[0];
             shortage += tmp[1];
         }
+
+        //TODO:日にちごとに不足個数を書き出し
+        try{
+            FileWriter w = new FileWriter(new File("shortage_day_room.csv"), true);
+            w.write( simulatiorType + "," + day + "," + roomId + "," + shortage + "\n");
+            w.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         return new int[]{sales, shortage};
     }
@@ -127,9 +142,9 @@ public class Room {
     }
 
 
-    /*public boolean isOverLongest(int day){
+    public boolean isOverLongest(int day){
         return ((day - last_replenishment) > setting.longest_interval);
-    }*/
+    }
 
 
 

@@ -30,12 +30,14 @@ public class RouteHandler {
                     route.add(rooms[i]);
                 }
             }
+            route = setBetterOrder(route);
+
         }else if(simulatorType.equals(setting.simulatorType_dynamic)){
             //変動のルート
             if(setting.routeType.equals(setting.routeType_value)){
-                route = setIdOrder(basedOnValue(rooms, current_area));
+                route = setBetterOrder(setIdOrder(basedOnValue(rooms, current_area)));
             }else if(setting.routeType.equals(setting.routeType_greedy)){
-                route = setIdOrder(basedOnSuf_rate(rooms, current_area));
+                route = setBetterOrder(setIdOrder(basedOnSuf_rate(rooms, current_area)));
             }
 
         }
@@ -44,7 +46,7 @@ public class RouteHandler {
     }
 
 
-
+    //ルートの距離を返却
     public int calculate_route_time(ArrayList<Room> route){
 
         if(route.size() != 0){
@@ -96,6 +98,13 @@ public class RouteHandler {
 
             routetime += next_time;
 
+
+            //ルートを回ることによってかかる時間を計算
+            double time = 0;
+            time += route.size()*setting.service_time_per_room;
+            time += routetime*setting.move_time_per_1;
+            //System.out.println(time/setting.work_time);
+
             return routetime;
         }
 
@@ -122,17 +131,30 @@ public class RouteHandler {
 
         //最大日数を超えて補充に回っていない部屋を追加
         //TODO:expire_flagがtrueの部屋を必ず回る(最大日数は削除)
+        ArrayList<Integer> array = new ArrayList<>();
         for (int i = 0; i < room.size(); i++) {
             if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
+                if(route.size() >= setting.limit){
+                    return route;
+                }
                 route.add(room.get(i));
-                room.remove(i);
+                array.add(i);
             }
         }
-        /*for (int i = 0; i < room.size(); i++){
-            if(room.get(i).isOverLongest(day)){
+        for (int i = 0; i < array.size(); i++) {
+            room.remove(array.get(i));
+        }
+
+        /*//最大日数を超えたもの補充
+        array = new ArrayList<>();
+        for (int i = 0; i < room.size(); i++){
+            if(room.get(i).getAreaNumber() == current_area && room.get(i).isOverLongest(day)){
                 route.add(room.get(i));
-                room.remove(i);
+                array.add(i);
             }
+        }
+        for (int i = 0; i < array.size(); i++) {
+            room.remove(array.get(i));
         }*/
 
         //value大きい順に並べる
@@ -175,23 +197,51 @@ public class RouteHandler {
     //商品が少なくなったところを回る
     public ArrayList<Room> basedOnSuf_rate(Room[] r, int current_area){
 
+        ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
+        ArrayList<Room> route = new ArrayList<>();
+
+        ArrayList<Integer> array = new ArrayList<>();
+        for (int i = 0; i < room.size(); i++) {
+            if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
+                route.add(room.get(i));
+                array.add(i);
+            }
+        }
+        for (int i = 0; i < array.size(); i++) {
+            room.remove(array.get(i));
+        }
+
+        //最大日数を超えたもの補充
+        /*array = new ArrayList<>();
+        for (int i = 0; i < room.size(); i++){
+            if(room.get(i).isOverLongest(day)){
+                route.add(room.get(i));
+                array.add(i);
+            }
+        }
+        for (int i = 0; i < array.size(); i++) {
+            room.remove(array.get(i));
+        }*/
+
         //suf_rate小さい順に並べる
-        for (int i = 0; i < r.length; i++) {
-            for (int j = 0; j < r.length; j++) {
+        for (int i = 0; i < room.size(); i++) {
+            for (int j = 0; j < room.size(); j++) {
                 if(i < j){
-                    if(r[i].suf_rate() > r[j].suf_rate()){
-                        Room tmp = r[i];
-                        r[i] = r[j];
-                        r[j] = tmp;
+                    if(room.get(i).suf_rate() > r[j].suf_rate()){
+                        Room tmp = room.get(i);
+                        room.set(i, room.get(j));
+                        room.set(j, tmp);
                     }
                 }
             }
         }
 
-        ArrayList<Room> route = new ArrayList<>();
-        for (int i = 0; i < setting.limit; i++) {
-            if(r[i].suf_rate() < 1){
-                route.add(r[i]);
+        for (int i = 0; i < route.size(); i++) {
+            if(room.get(i).suf_rate() < 1){
+                route.add(room.get(i));
+                if(route.size() >= setting.limit){
+                    break;
+                }
             }
         }
 
@@ -207,6 +257,13 @@ public class RouteHandler {
 
 
 
+    public ArrayList<Room> staticBase(Room[] rooms, int current_area){
+
+        //TODO:ルート固定をベースに行かないところ、追加するところをいれ、修正程度のルートを作成
+        return null;
+    }
+
+
 
     //id順に並べ直す
     private ArrayList<Room> setIdOrder(ArrayList<Room> route){
@@ -220,6 +277,34 @@ public class RouteHandler {
                         route.set(j, tmp);
                     }
                 }
+            }
+        }
+        return route;
+    }
+
+
+    //何かしら経路が短くなる順に並べなおす
+    private ArrayList<Room> setBetterOrder(ArrayList<Room> route){
+
+        //100000回適当に入れ替えてみて一番いいやつを採用
+        ArrayList<Room> route_tmp = new ArrayList<>(route);
+        Random rand = new Random();
+
+        int best = calculate_route_time(route);
+
+        for (int i = 0; i < 100000; i++) {
+            int ran1 = rand.nextInt(route_tmp.size());
+            int ran2 = rand.nextInt(route_tmp.size());
+            Room tmp = route_tmp.get(ran1);
+            route_tmp.set(ran1, route_tmp.get(ran2));
+            route_tmp.set(ran2, tmp);
+            if(calculate_route_time(route_tmp) < best){
+                best = calculate_route_time(route_tmp);
+                route = new ArrayList<>(route_tmp);
+                route_tmp = new ArrayList<>(route);
+            }
+            if(rand.nextInt(100) < 50){
+                route_tmp = new ArrayList<>(route);
             }
         }
         return route;

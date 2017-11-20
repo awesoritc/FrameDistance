@@ -79,4 +79,18 @@ public class Util {
 
         return ret;
     }
+
+    public static void write_gravity(int roomId, int areaNum, int[] distances){
+
+        try{
+            //new FileWriter(new File("distances_to_gravity.csv")).write("roomId,areaNum,toArea,distance");
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("distances_to_gravity.csv"), true)));
+            for (int i = 0; i < distances.length; i++) {
+                pw.write(roomId + "," + areaNum + "," + i + "," + distances[i] + "\n");
+            }
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

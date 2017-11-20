@@ -11,7 +11,7 @@ public class Setting {
     final String routeType_value = "value";
     final String routeType_greedy = "greedy";
 
-    final String routeType = routeType_value;
+    final String routeType = routeType_greedy;
 
     final int day = 100;//日数
     final int room = 100;//部屋の数
@@ -57,7 +57,12 @@ public class Setting {
 
     final int interval_days = 5;
     final int interval_weeks = 5;
-    //final int longest_interval = 25;//補充の最大間隔
+    final int longest_interval = 25;//補充の最大間隔
     //final int limit_expire = 40;//取り替え日数(25日を切ったら廃棄処分)
-    final int expire_flag_day = 15;//賞味期限ピンチのフラグを立てる日数
+    final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
+
+    //作業時間要素を追加
+    final int work_time = 390;//1日の労働時間
+    final double service_time_per_room = 10;//1部屋あたりの細かい移動・補充の時間
+    final double move_time_per_1 = 0.5;
 }

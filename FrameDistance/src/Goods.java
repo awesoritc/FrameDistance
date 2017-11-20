@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Goods {
@@ -51,10 +54,10 @@ public class Goods {
     }
 
 
-    ArrayList<Integer> sales_history = new ArrayList<>();//売り上げ個数の履歴
-    ArrayList<Integer> shortage_history = new ArrayList<>();//不足個数の履歴
-    ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
-    ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
+    private ArrayList<Integer> sales_history = new ArrayList<>();//売り上げ個数の履歴
+    private ArrayList<Integer> shortage_history = new ArrayList<>();//不足個数の履歴
+    private ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
+    private ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
 
 
 
@@ -76,16 +79,16 @@ public class Goods {
         }
 
 
-        /*
-        //需要数の確認の為の書き出し
+
+        /*//需要数の確認の為の書き出し
         try{
             FileWriter writer = new FileWriter(new File("nd_test.csv"), true);
             writer.write(String.valueOf(demand) + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        */
+        }*/
+
 
 
 

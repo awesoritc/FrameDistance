@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,12 +16,14 @@ public class Simulator {
     ArrayList<Integer> salesHistory = new ArrayList<>();
     ArrayList<Integer> shortageHistory = new ArrayList<>();
     ArrayList<Integer> expire_countHistory = new ArrayList<>();//賞味期限切れの個数
+    Integer[] room_expire;//部屋ごとの賞味期限切れの個数
+    ArrayList<Double> availabilityHistory = new ArrayList<>();//稼働率の推移
 
     //部屋ごとの売上・不足を保持
     private int[] sales_rooms = new int[100];
     private int[] shortage_rooms = new int [100];
 
-    Simulator(/*Room[] rooms, */Setting setting, String simulatiorType){
+    Simulator(/*Room[] rooms, */ArrayList<Integer> goods_alloc, Setting setting, String simulatiorType){
 
         //this.rooms = rooms;
         this.setting = setting;
@@ -41,7 +46,7 @@ public class Simulator {
                     gravity_points, setting, simulatiorType);
 
 
-            //それぞれの部屋にランダムで商品を登録
+            /*//それぞれの部屋にランダムで商品を登録->上の階層で行って統一させる
             for (int j = 0; j < setting.goodsNum_per_room; j++) {
                 Random rand = new Random();
                 int random = rand.nextInt(setting.goodsNum_per_room);
@@ -54,10 +59,29 @@ public class Simulator {
                     version = 2;
                 }
                 rooms[i].register_goods(version);
+            }*/
+
+            for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                rooms[i].register_goods(goods_alloc.get((i*10)+j));
             }
         }
 
         this.rooms = rooms;
+
+
+        //初期化
+        room_expire = new Integer[setting.room];
+        for (int i = 0; i < room_expire.length; i++) {
+            room_expire[i] = 0;
+        }
+
+        try{
+            FileWriter w = new FileWriter(new File("shortage_day_room.csv"));
+            w.write("simulatorType,day,roomId,shortage\n");
+            w.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -73,19 +97,28 @@ public class Simulator {
         //巡回した時の距離を計算
         RouteHandler handle = new RouteHandler(day, setting, simulatiorType);
         ArrayList<Room> route = handle.route_creator(rooms);
+        //if(simulatiorType.equals(setting.simulatorType_static)) System.out.println(handle.calculate_route_time(route));//1日のルート距離を出力
         routeTime.add(handle.calculate_route_time(route));
+
+        //稼働率を計算
+        double availability = ((handle.calculate_route_time(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room)) / setting.work_time;
+        //if(simulatiorType.equals(setting.simulatorType_static))System.out.println(availability);//stの稼働率を出力
+        availabilityHistory.add(availability);
+
+        //TODO:稼働率を書き出し・廃棄ロスと合わせて損失を計算・dyがよくなるような方法を考える
+        //そもそも、エリアを優先にしてその周りを回れたら回る方式に変更する？
 
         rep_route = route;
     }
 
 
-    public void do_consume_simulator(){
+    public void do_consume_simulator(int day){
 
         int sales = 0;
         int shortage = 0;
 
         for (int i = 0; i < rooms.length; i++) {
-            int[] tmp = rooms[i].do_consume_room();
+            int[] tmp = rooms[i].do_consume_room(day);
             sales += tmp[0];
             shortage += tmp[1];
             //部屋ごとの値を保持
@@ -100,12 +133,15 @@ public class Simulator {
         shortageHistory.add(shortage);
     }
 
+
     public void do_replenishment_simulator(int day){
         routeHistory.add(rep_route);
 
         int expire_count = 0;
-        for(Room aRooms: rep_route){
-            expire_count += aRooms.do_replenishment_room(day);
+        for (int i = 0; i < rep_route.size(); i++) {
+            int room_exp = rep_route.get(i).do_replenishment_room(day);
+            expire_count += room_exp;
+            room_expire[rep_route.get(i).getRoomId()] += room_exp;
         }
 
         expire_countHistory.add(expire_count);
@@ -161,6 +197,14 @@ public class Simulator {
 
     public ArrayList<Integer> getExpire_countHistory() {
         return expire_countHistory;
+    }
+
+    public Integer[] getRoom_expire() {
+        return room_expire;
+    }
+
+    public ArrayList<Double> getAvailabilityHistory() {
+        return availabilityHistory;
     }
 
     public int[] getSales_rooms() {
