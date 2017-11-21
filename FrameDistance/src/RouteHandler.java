@@ -36,6 +36,7 @@ public class RouteHandler {
             //変動のルート
             if(setting.routeType.equals(setting.routeType_value)){
                 route = setBetterOrder(setIdOrder(basedOnValue(rooms, current_area)));
+                //route = setBetterOrder(setIdOrder(staticBase(rooms, current_area)));
             }else if(setting.routeType.equals(setting.routeType_greedy)){
                 route = setBetterOrder(setIdOrder(basedOnSuf_rate(rooms, current_area)));
             }
@@ -260,7 +261,67 @@ public class RouteHandler {
     public ArrayList<Room> staticBase(Room[] rooms, int current_area){
 
         //TODO:ルート固定をベースに行かないところ、追加するところをいれ、修正程度のルートを作成
-        return null;
+
+        ArrayList<Room> rooms_array = new ArrayList<Room>(Arrays.asList(rooms));
+        ArrayList<Room> route = new ArrayList<>();
+
+        ArrayList<Integer> trash = new ArrayList<>();
+
+        for (int i = 0; i < rooms.length ; i++) {
+            //補充エリアでかつ補充価値が0でないところをルートに追加
+            if(rooms_array.get(i).getAreaNumber() == current_area && rooms_array.get(i).rep_value(current_area) > 0){
+                route.add(rooms_array.get(i));
+                trash.add(i);
+            }
+        }
+
+        //全体の部屋セットからルートに追加した部屋セットを削除
+        for (int i = 0; i < trash.size(); i++) {
+            rooms_array.remove(trash.get(i));
+        }
+
+
+
+        if(route.size() != 0){
+
+            //一旦時間計算
+            double time = 0;
+            int roomNum = route.size();
+            //時間を測っても、ルート最適化出来ていないので意味がない
+            int distance = calculate_route_time(setBetterOrder(route));
+            time += roomNum*setting.service_time_per_room;
+            time += distance*setting.move_time_per_1;
+            double availability = time / setting.work_time;
+            System.out.println(availability);
+
+            //距離計算とルートへの追加を時間が許容される範囲内で追加する
+            //一旦優先度が高いものを追加していってみる
+            for (int i = 0; i < rooms_array.size(); i++) {
+                for (int j = 0; j < rooms_array.size(); j++) {
+                    if(i < j){
+                        if(rooms_array.get(i).rep_value(current_area) < rooms_array.get(j).rep_value(current_area)){
+                            Room tmp = rooms_array.get(i);
+                            rooms_array.set(i, rooms_array.get(j));
+                            rooms_array.set(j, tmp);
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        //補充しなければいけない場所がなければ、エリア補充をする
+        if(route.size() == 0){
+            for (int i = 0; i < setting.room; i++) {
+                if(rooms_array.get(i).getAreaNumber() == current_area){
+                    route.add(rooms_array.get(i));
+                }
+            }
+        }
+
+
+        return route;
     }
 
 

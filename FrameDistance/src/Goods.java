@@ -175,7 +175,14 @@ public class Goods {
 
     //ルート作成用のメソッド
     //商品の欠品予想数を計算
+    //TODO:在庫が0の場合には以前の予測数を使う
+    private int prev_expect_shortage = 0;
     public int expect_shortage_goods(int interval){
+
+
+        if(stock == 0){
+            return prev_expect_shortage;
+        }
 
         double tmp = 0;
         int days = setting.interval_days;
@@ -189,7 +196,9 @@ public class Goods {
             int cons = Math.round((int)((double)Math.round(tmp / weeks) * interval));
 
             if(cons > stock){
-                return cons - stock;
+                int expect = cons - stock;
+                prev_expect_shortage = expect;
+                return expect;
             }else{
                 return 0;
             }
@@ -208,7 +217,9 @@ public class Goods {
             int consume_til_next = (int)Math.round((tmp / days) * interval);
 
             if(consume_til_next > stock){
-                return consume_til_next - stock;
+                int expect = consume_til_next - stock;
+                prev_expect_shortage = expect;
+                return expect;
             }
 
             return 0;

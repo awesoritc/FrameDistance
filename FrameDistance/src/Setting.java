@@ -11,7 +11,7 @@ public class Setting {
     final String routeType_value = "value";
     final String routeType_greedy = "greedy";
 
-    final String routeType = routeType_greedy;
+    final String routeType = routeType_value;
 
     final int day = 100;//日数
     final int room = 100;//部屋の数
