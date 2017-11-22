@@ -126,6 +126,8 @@ public class RouteHandler {
 
         ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
 
+        ArrayList<Room> tmp_room = new ArrayList<>(Arrays.asList(r));
+
 
         ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
 
@@ -139,11 +141,8 @@ public class RouteHandler {
                     return route;
                 }
                 route.add(room.get(i));
-                array.add(i);
+                array.add(room.get(i).getRoomId());
             }
-        }
-        for (int i = 0; i < array.size(); i++) {
-            room.remove(array.get(i));
         }
 
         /*//最大日数を超えたもの補充
@@ -153,10 +152,8 @@ public class RouteHandler {
                 route.add(room.get(i));
                 array.add(i);
             }
-        }
-        for (int i = 0; i < array.size(); i++) {
-            room.remove(array.get(i));
         }*/
+
 
         //value大きい順に並べる
         for (int i = 0; i < room.size(); i++) {
@@ -172,7 +169,14 @@ public class RouteHandler {
         }
 
         //ルートに優先度の高い部屋を追加
-        for (int i = 0; i < setting.limit; i++) {
+        outside: for (int i = 0; i < setting.room; i++) {
+
+            for (int j = 0; j < array.size(); j++) {
+                if(room.get(i).getRoomId() == array.get(j)){
+                    continue outside;
+                }
+            }
+
             if(room.get(i).rep_value(current_area) > 0){
                 route.add(room.get(i));
             }
@@ -205,24 +209,9 @@ public class RouteHandler {
         for (int i = 0; i < room.size(); i++) {
             if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
                 route.add(room.get(i));
-                array.add(i);
+                array.add(room.get(i).getRoomId());
             }
         }
-        for (int i = 0; i < array.size(); i++) {
-            room.remove(array.get(i));
-        }
-
-        //最大日数を超えたもの補充
-        /*array = new ArrayList<>();
-        for (int i = 0; i < room.size(); i++){
-            if(room.get(i).isOverLongest(day)){
-                route.add(room.get(i));
-                array.add(i);
-            }
-        }
-        for (int i = 0; i < array.size(); i++) {
-            room.remove(array.get(i));
-        }*/
 
         //suf_rate小さい順に並べる
         for (int i = 0; i < room.size(); i++) {
@@ -237,7 +226,15 @@ public class RouteHandler {
             }
         }
 
-        for (int i = 0; i < route.size(); i++) {
+        //ルート追加
+        outside: for (int i = 0; i < room.size(); i++) {
+
+            for (int j = 0; j < array.size(); j++) {
+                if(room.get(i).getRoomId() == array.get(j)){
+                    continue outside;
+                }
+            }
+
             if(room.get(i).suf_rate() < 1){
                 route.add(room.get(i));
                 if(route.size() >= setting.limit){
@@ -252,74 +249,6 @@ public class RouteHandler {
                 route.add(r[i+(current_area*setting.rooms_area)]);
             }
         }
-
-        return route;
-    }
-
-
-
-    public ArrayList<Room> staticBase(Room[] rooms, int current_area){
-
-        //TODO:ルート固定をベースに行かないところ、追加するところをいれ、修正程度のルートを作成
-
-        ArrayList<Room> rooms_array = new ArrayList<Room>(Arrays.asList(rooms));
-        ArrayList<Room> route = new ArrayList<>();
-
-        ArrayList<Integer> trash = new ArrayList<>();
-
-        for (int i = 0; i < rooms.length ; i++) {
-            //補充エリアでかつ補充価値が0でないところをルートに追加
-            if(rooms_array.get(i).getAreaNumber() == current_area && rooms_array.get(i).rep_value(current_area) > 0){
-                route.add(rooms_array.get(i));
-                trash.add(i);
-            }
-        }
-
-        //全体の部屋セットからルートに追加した部屋セットを削除
-        for (int i = 0; i < trash.size(); i++) {
-            rooms_array.remove(trash.get(i));
-        }
-
-
-
-        if(route.size() != 0){
-
-            //一旦時間計算
-            double time = 0;
-            int roomNum = route.size();
-            //時間を測っても、ルート最適化出来ていないので意味がない
-            int distance = calculate_route_time(setBetterOrder(route));
-            time += roomNum*setting.service_time_per_room;
-            time += distance*setting.move_time_per_1;
-            double availability = time / setting.work_time;
-            System.out.println(availability);
-
-            //距離計算とルートへの追加を時間が許容される範囲内で追加する
-            //一旦優先度が高いものを追加していってみる
-            for (int i = 0; i < rooms_array.size(); i++) {
-                for (int j = 0; j < rooms_array.size(); j++) {
-                    if(i < j){
-                        if(rooms_array.get(i).rep_value(current_area) < rooms_array.get(j).rep_value(current_area)){
-                            Room tmp = rooms_array.get(i);
-                            rooms_array.set(i, rooms_array.get(j));
-                            rooms_array.set(j, tmp);
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        //補充しなければいけない場所がなければ、エリア補充をする
-        if(route.size() == 0){
-            for (int i = 0; i < setting.room; i++) {
-                if(rooms_array.get(i).getAreaNumber() == current_area){
-                    route.add(rooms_array.get(i));
-                }
-            }
-        }
-
 
         return route;
     }
@@ -347,6 +276,109 @@ public class RouteHandler {
     //何かしら経路が短くなる順に並べなおす
     private ArrayList<Room> setBetterOrder(ArrayList<Room> route){
 
+
+        /*if(simulatorType.equals(setting.simulatorType_dynamic)){
+            System.out.println("");
+            for (int i = 0; i < route.size(); i++) {
+                System.out.println(route.get(i).getRoomId());
+            }
+        }*/
+
+
+
+        //TODO:局所探索法に変更(要修正)
+
+        //局所探索法
+        //1. ランダムルートを作成
+        //2. 2つの地点の組み合わせを取得しスワップ
+        //3. 距離を計算し、短縮されていればルート更新
+        //4. 2,3を繰り返し
+
+        //最良ルート
+        ArrayList<Room> best_route = new ArrayList<>(route);
+        int best_distance = calculate_route_time(route);
+
+
+        for (int a = 0; a < 100; a++) {
+
+            ArrayList<Room> random_route = new ArrayList<>(route);
+
+            //1. ランダムルートの作成
+            //地点の数乱数を発生させる
+            double[] d = new double[route.size()];
+            for (int i = 0; i < route.size(); i++) {
+                d[i] = Math.random();
+            }
+
+            //乱数の数値順に並び替える
+            for (int i = 0; i < random_route.size(); i++) {
+                for (int j = 0; j < random_route.size(); j++) {
+                    if(i < j){
+                        if(d[i] > d[j]){
+                            //数値小さい順に並べる
+                            double tmp = d[i];
+                            d[i] = d[j];
+                            d[j] = tmp;
+
+                            Room tmp_room = random_route.get(i);
+                            random_route.set(i, random_route.get(j));
+                            random_route.set(j, tmp_room);
+                        }
+                    }
+                }
+            }
+
+            //ランダムルートの距離を測定
+            int random_distance = calculate_route_time(random_route);
+            if(random_distance < best_distance){
+                best_distance = random_distance;
+                best_route = random_route;
+            }
+
+
+            //2. 2つの地点の組み合わせ全てを取得してスワップ
+            int chk_distance;
+            do{
+
+                chk_distance = best_distance;
+
+                for (int i = 0; i < route.size(); i++) {
+                    for (int j = 0; j < route.size(); j++) {
+
+                        ArrayList<Room> tmp_route = new ArrayList<>(random_route);
+
+                        if(i >= j){
+                            continue;
+                        }
+
+                        Room tmp = tmp_route.get(i);
+                        tmp_route.set(i, tmp_route.get(j));
+                        tmp_route.set(j, tmp);
+
+                        int tmp_distance = calculate_route_time(tmp_route);
+                        if(tmp_distance < best_distance){
+                            best_distance = tmp_distance;
+                            best_route = tmp_route;
+                        }
+                    }
+                }
+
+            }while(best_distance < chk_distance);
+        }
+
+
+        return best_route;
+        //局所探索法ここまで
+
+
+
+
+
+
+
+        //独自アルゴリズム
+/*
+
         //100000回適当に入れ替えてみて一番いいやつを採用
         ArrayList<Room> route_tmp = new ArrayList<>(route);
         Random rand = new Random();
@@ -369,101 +401,8 @@ public class RouteHandler {
             }
         }
         return route;
-    }
 
-
-
-
-
-
-
-
-    //TPSをとく
-    private ArrayList<Room> routeOptimizer(ArrayList<Room> rawRoot){
-
-        //1. 30個ルートを作製
-        //2. ルートの距離を計算
-        //3. 30個から距離が短いルート3つを選択
-        //TODO: 交叉をどの様に行なうか考えなければいけない
-        //4. その3つと自分を除いた29個を確立的に交叉を行いルートを30個作成する
-        //5. 突然変異確率に応じて、突然変異を行う(何処か1箇所スワップさせる)
-        //6. ランダム作成したルート10個追加
-        //7. 2,3,4を繰り返す
-        //1000世代でストップ
-
-
-        //rawRoot:id順のルート
-
-        ArrayList<ArrayList<Room>> applicants = new ArrayList<>();
-
-        //30個ルートを作成
-        int applicants_num = 30;
-        for (int i = 0; i < applicants_num; i++) {
-
-            //1-20のセットを作成
-            int[] numset = new int[20];
-            for (int j = 1; j < 21; j++) {
-                numset[j] = j;
-            }
-
-            //1-20の順番ランダムな配列
-            for (int j = 0; j < 100; j++) {
-                Random rand = new Random();
-                int num1 = rand.nextInt(20);
-                int num2 = rand.nextInt(20);
-                int tmp = numset[num1];
-                numset[num1] = numset[num2];
-                numset[num2] = tmp;
-            }
-
-            ArrayList<Room> routes = new ArrayList<>();
-            for (int j = 0; j < numset.length; j++) {
-                routes.add(rawRoot.get(numset[j]));
-            }
-
-            applicants.add(routes);
-        }
-
-
-
-        //ルートの距離順に並び替えて、短い順に3ルート抜き出す
-        //ルートの距離を保持
-        int[] route_time = new int[applicants_num];
-        for (int i = 0; i < applicants_num; i++) {
-            route_time[i] = calculate_route_time(applicants.get(i));
-        }
-
-        //ルートの距離短い順に並べる
-        for (int i = 0; i < applicants_num; i++) {
-            for (int j = 0; j < applicants_num; j++) {
-
-                if(route_time[i] > route_time[j]){
-                    int tmp_route_time = route_time[i];
-                    route_time[i] = route_time[j];
-                    route_time[j] = tmp_route_time;
-
-                    ArrayList tmp_applicants = applicants.get(i);
-                    applicants.set(i,applicants.get(j));
-                    applicants.set(j,tmp_applicants);
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ArrayList<Room> answer_route = new ArrayList<>();
-
-        return answer_route;
+        */
     }
 
 }
