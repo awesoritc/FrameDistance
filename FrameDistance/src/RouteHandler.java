@@ -338,9 +338,21 @@ public class RouteHandler {
 
             //2. 2つの地点の組み合わせ全てを取得してスワップ
             int chk_distance;
+
+            //全部を回した後に一番いいものを取得する
+
+            for (int i = 0; i < route.size(); i++) {
+                for (int j = 0; j < route.size(); j++) {
+
+                }
+            }
+
+
             do{
 
                 chk_distance = best_distance;
+                int tmp_best_distance = best_distance;
+                ArrayList<Room> tmp_best_route = new ArrayList<>(random_route);
 
                 for (int i = 0; i < route.size(); i++) {
                     for (int j = 0; j < route.size(); j++) {
@@ -357,10 +369,16 @@ public class RouteHandler {
 
                         int tmp_distance = calculate_route_time(tmp_route);
                         if(tmp_distance < best_distance){
-                            best_distance = tmp_distance;
-                            best_route = tmp_route;
+                            tmp_best_distance = tmp_distance;
+                            tmp_best_route = tmp_route;
                         }
                     }
+                }
+
+
+                if(tmp_best_distance < best_distance){
+                    best_distance = tmp_best_distance;
+                    best_route = tmp_best_route;
                 }
 
             }while(best_distance < chk_distance);
