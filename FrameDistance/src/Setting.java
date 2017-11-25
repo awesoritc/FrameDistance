@@ -1,9 +1,8 @@
 public class Setting {
 
     //final String filename = "rooms1";
-    //final String filename = "rooms2";
-    //final String filename = "large_room";
-    final String filename = "suburb_room_75_75";
+    //final String filename = "suburb_room_75_75";
+    final String filename = "75_75_buffer";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -28,14 +27,15 @@ public class Setting {
     int[] x_top_divider = {Math.round(x_map_size/3)/*6*/, Math.round((x_map_size/3)*2)/*13*/};
     int y_divider = Math.round((y_map_size/5)*2)/*8*/;
 
+    int buffer = (int)Math.ceil(x_map_size/20);
     final int[][] area_borders =
             {
                     //{x_start, x_end, y_start, y_end} (x_start<=x<x_end && y_start<=y<y_end)
-                    {0, x_bottom_divider, 0, y_divider},
-                    {x_bottom_divider, x_map_size, 0, y_divider},
-                    {x_top_divider[1], x_map_size, y_divider, y_map_size},
-                    {x_top_divider[0], x_top_divider[1], y_divider, y_map_size},
-                    {0, x_top_divider[0], y_divider, y_map_size}
+                    {0, x_bottom_divider-buffer, 0, y_divider-buffer},//0
+                    {x_bottom_divider+buffer, x_map_size, 0, y_divider-buffer},//1
+                    {x_top_divider[1]+buffer, x_map_size, y_divider+buffer, y_map_size},//2
+                    {x_top_divider[0]+buffer, x_top_divider[1]-buffer, y_divider+buffer, y_map_size},//3
+                    {0, x_top_divider[0]-buffer, y_divider+buffer, y_map_size}//4
             };
 
     final int[] hub_point = {Math.round(x_map_size/2)/*10*/, Math.round(y_map_size/2)/*10*/};//営業所の位置
@@ -58,7 +58,6 @@ public class Setting {
     final int interval_days = 5;
     final int interval_weeks = 5;
     final int longest_interval = 25;//補充の最大間隔
-    //final int limit_expire = 40;//取り替え日数(25日を切ったら廃棄処分)
     final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
 
     //作業時間要素を追加

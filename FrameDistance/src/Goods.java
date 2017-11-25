@@ -142,7 +142,7 @@ public class Goods {
         //賞味期限チェックに引っかかるものを破棄
         int expire_count = 0;
         for (int i = itemBox.size()-1; i > -1; i--) {
-            if(itemBox.get(i).getExpire() < setting.expire_flag_day){
+            if(itemBox.get(i).getExpire() < setting.goods[goodsType][3]/3/*賞味期限の1/3*/){
                 itemBox.remove(i);
                 itemBox.add(new Item(setting.goods[goodsType][3]));
                 expire_count++;
@@ -163,7 +163,7 @@ public class Goods {
 
         //期限が迫っていればflagを立てる
         for (int i = 0; i < itemBox.size(); i++) {
-            if(itemBox.get(i).getExpire() < setting.expire_flag_day){
+            if(itemBox.get(i).getExpire() < setting.goods[goodsType][3]/3/*賞味期限の1/3*/){
                 return true;
             }
         }

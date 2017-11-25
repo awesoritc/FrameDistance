@@ -5,8 +5,6 @@ import java.util.Random;
 
 public class Executor {
 
-    //TODO:2本以上のシミュレーターを同時に走らせれるようにする？
-
     public static void main(String[] args){
 
         Setting setting = new Setting();

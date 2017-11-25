@@ -19,6 +19,12 @@ public class RoomFileCreator {
 
         String filename = setting.filename;
 
+        if(new File(filename+".csv").exists()){
+            System.out.println("");
+            System.out.println("すでにファイルが存在しています");
+            System.exit(1);
+        }
+
 
         //部屋番号、エリア番号、座標、登録する商品番号
 

@@ -292,7 +292,9 @@ public class RouteHandler {
         //1. ランダムルートを作成
         //2. 2つの地点の組み合わせを取得しスワップ
         //3. 距離を計算し、短縮されていればルート更新
-        //4. 1,2,3を繰り返し
+        //4. 2,3を繰り返し
+
+        //これらを何回か繰り返し、一番良かったものを取得
 
 
         ArrayList<Room> best_route = new ArrayList<>(route);
@@ -323,30 +325,31 @@ public class RouteHandler {
 
 
             //2.2つの地点を順番に取得してスワップ
-            ArrayList<Room> search_route = new ArrayList<>(random_route);
-            ArrayList<Room> tmp_route = new ArrayList<>(random_route);
-            for (int i = 0; i < random_route.size(); i++) {
-                for (int j = 0; j < random_route.size(); j++) {
-                    if(i < j){
-                        Room tmp_room = search_route.get(i);
-                        search_route.set(i, search_route.get(j));
-                        search_route.set(j, tmp_room);
+            int pre_best_distance;
+            do{
+                pre_best_distance = best_distance;
+                ArrayList<Room> search_route = new ArrayList<>(random_route);
+                ArrayList<Room> tmp_route = new ArrayList<>(random_route);
+                for (int i = 0; i < random_route.size(); i++) {
+                    for (int j = 0; j < random_route.size(); j++) {
+                        if(i < j){
+                            Room tmp_room = search_route.get(i);
+                            search_route.set(i, search_route.get(j));
+                            search_route.set(j, tmp_room);
 
-                        if(calculate_route_time(search_route) < best_distance){
-                            tmp_route = search_route;
+                            if(calculate_route_time(search_route) < best_distance){
+                                tmp_route = search_route;
+                            }
                         }
                     }
                 }
-            }
 
-            if(calculate_route_time(tmp_route) < best_distance){
-                best_route = tmp_route;
-                best_distance = calculate_route_time(best_route);
-            }else{
-                break;
-            }
+                if(calculate_route_time(tmp_route) < best_distance){
+                    best_route = tmp_route;
+                    best_distance = calculate_route_time(best_route);
+                }
+            }while(best_distance < pre_best_distance);
         }
-
 
 
         return best_route;
