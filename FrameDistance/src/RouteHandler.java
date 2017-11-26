@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -48,7 +49,7 @@ public class RouteHandler {
 
 
     //ルートの距離を返却
-    public int calculate_route_time(ArrayList<Room> route){
+    public int calculate_route_distance(ArrayList<Room> route){
 
         if(route.size() != 0){
 
@@ -195,6 +196,27 @@ public class RouteHandler {
             }
         }
 
+        //ここでそれぞれの部屋の状況を書き出し
+        if(simulatorType.equals(setting.simulatorType_dynamic)){
+            try{
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/rooms_condition_dy.csv"), true)));
+                for (int i = 0; i < r.length; i++) {
+                    boolean ifInRoute = false;
+                    for (Room aRooms: route){
+                        if(r[i].getRoomId() == aRooms.getRoomId()){
+                            ifInRoute = true;
+                            break;
+                        }
+                    }
+                    //(day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point)
+                    pw.write(day + "," + r[i].getRoomId() + "," + ifInRoute + "," + r[i].suf_rate() + "," + r[i].expect_shortage(current_area) + "," + r[i].getDistance_to_gravity()[current_area] + "\n");
+                }
+                pw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return route;
     }
 
@@ -276,13 +298,9 @@ public class RouteHandler {
     //何かしら経路が短くなる順に並べなおす
     private ArrayList<Room> setBetterOrder(ArrayList<Room> route){
 
-
-        /*if(simulatorType.equals(setting.simulatorType_dynamic)){
-            System.out.println("");
-            for (int i = 0; i < route.size(); i++) {
-                System.out.println(route.get(i).getRoomId());
-            }
-        }*/
+        /*for (int i = 0; i < route.size(); i++) {
+            System.out.print(route.get(i).getRoomId() + " ");
+        }System.out.println("");*/
 
 
 
@@ -298,7 +316,7 @@ public class RouteHandler {
 
 
         ArrayList<Room> best_route = new ArrayList<>(route);
-        int best_distance =calculate_route_time(best_route);
+        int best_distance = calculate_route_distance(best_route);
 
         for (int a = 0; a < 100; a++) {
             //1.ランダムルートの作成
@@ -323,126 +341,47 @@ public class RouteHandler {
                 }
             }
 
+            //ランダムルートの測定
+            ArrayList<Room> tmp_best_route = new ArrayList<>(random_route);
+            int tmp_best_distance = calculate_route_distance(tmp_best_route);
+            if(calculate_route_distance(random_route) < tmp_best_distance){
+                tmp_best_route = new ArrayList<>(random_route);
+                tmp_best_distance = calculate_route_distance(tmp_best_route);
+            }
+
 
             //2.2つの地点を順番に取得してスワップ
+            ArrayList<Room> search_route = new ArrayList<>(random_route);
+
             int pre_best_distance;
             do{
-                pre_best_distance = best_distance;
-                ArrayList<Room> search_route = new ArrayList<>(random_route);
-                ArrayList<Room> tmp_route = new ArrayList<>(random_route);
-                for (int i = 0; i < random_route.size(); i++) {
-                    for (int j = 0; j < random_route.size(); j++) {
+                pre_best_distance = tmp_best_distance;
+                for (int i = 0; i < search_route.size(); i++) {
+                    for (int j = 0; j < search_route.size(); j++) {
+                        ArrayList<Room> tmp_route = new ArrayList<>(search_route);
                         if(i < j){
-                            Room tmp_room = search_route.get(i);
-                            search_route.set(i, search_route.get(j));
-                            search_route.set(j, tmp_room);
+                            Room tmp = tmp_route.get(i);
+                            tmp_route.set(i, tmp_route.get(j));
+                            tmp_route.set(j, tmp);
 
-                            if(calculate_route_time(search_route) < best_distance){
-                                tmp_route = search_route;
+                            //tmp_routeの測定
+                            if(calculate_route_distance(tmp_route) < tmp_best_distance){
+                                tmp_best_route = new ArrayList<>(tmp_route);
+                                tmp_best_distance = calculate_route_distance(tmp_best_route);
                             }
                         }
                     }
                 }
+                search_route = new ArrayList<>(tmp_best_route);
+            }while(tmp_best_distance < pre_best_distance);
 
-                if(calculate_route_time(tmp_route) < best_distance){
-                    best_route = tmp_route;
-                    best_distance = calculate_route_time(best_route);
-                }
-            }while(best_distance < pre_best_distance);
+            if(tmp_best_distance < best_distance){
+                best_route = new ArrayList<>(tmp_best_route);
+                best_distance = calculate_route_distance(best_route);
+            }
         }
 
-
         return best_route;
-
-
-/*
-局所探索法(ミス)
-
-
-        //最良ルート
-        ArrayList<Room> best_route = new ArrayList<>(route);
-        int best_distance = calculate_route_time(route);
-
-
-        for (int a = 0; a < 100; a++) {
-
-            ArrayList<Room> random_route = new ArrayList<>(route);
-
-            //1. ランダムルートの作成
-            //地点の数乱数を発生させる
-            double[] d = new double[route.size()];
-            for (int i = 0; i < route.size(); i++) {
-                d[i] = Math.random();
-            }
-
-            //乱数の数値順に並び替える
-            for (int i = 0; i < random_route.size(); i++) {
-                for (int j = 0; j < random_route.size(); j++) {
-                    if(i < j){
-                        if(d[i] > d[j]){
-                            //数値小さい順に並べる
-                            double tmp = d[i];
-                            d[i] = d[j];
-                            d[j] = tmp;
-
-                            Room tmp_room = random_route.get(i);
-                            random_route.set(i, random_route.get(j));
-                            random_route.set(j, tmp_room);
-                        }
-                    }
-                }
-            }
-
-            //ランダムルートの距離を測定
-            int random_distance = calculate_route_time(random_route);
-            if(random_distance < best_distance){
-                best_distance = random_distance;
-                best_route = random_route;
-            }
-
-
-            //2. 2つの地点の組み合わせ全てを取得してスワップ
-            int chk_distance;
-
-            //全部を回した後に一番いいものを取得する
-            do{
-
-                chk_distance = best_distance;
-                int tmp_best_distance = best_distance;
-                ArrayList<Room> tmp_best_route = new ArrayList<>(random_route);
-
-                for (int i = 0; i < route.size(); i++) {
-                    for (int j = 0; j < route.size(); j++) {
-
-                        ArrayList<Room> tmp_route = new ArrayList<>(random_route);
-
-                        Room tmp = tmp_route.get(i);
-                        tmp_route.set(i, tmp_route.get(j));
-                        tmp_route.set(j, tmp);
-
-                        int tmp_distance = calculate_route_time(tmp_route);
-                        if(tmp_distance < best_distance){
-                            tmp_best_distance = tmp_distance;
-                            tmp_best_route = tmp_route;
-                        }
-                    }
-                }
-
-
-                if(tmp_best_distance < best_distance){
-                    best_distance = tmp_best_distance;
-                    best_route = tmp_best_route;
-                }
-
-            }while(best_distance < chk_distance);
-        }
-
-
-        return best_route;
-        //局所探索法ここまで
-*/
-
-
 
 
 
@@ -454,7 +393,7 @@ public class RouteHandler {
         ArrayList<Room> route_tmp = new ArrayList<>(route);
         Random rand = new Random();
 
-        int best = calculate_route_time(route);
+        int best = calculate_route_distance(route);
 
         for (int i = 0; i < 100000; i++) {
             int ran1 = rand.nextInt(route_tmp.size());
@@ -462,8 +401,8 @@ public class RouteHandler {
             Room tmp = route_tmp.get(ran1);
             route_tmp.set(ran1, route_tmp.get(ran2));
             route_tmp.set(ran2, tmp);
-            if(calculate_route_time(route_tmp) < best){
-                best = calculate_route_time(route_tmp);
+            if(calculate_route_distance(route_tmp) < best){
+                best = calculate_route_distance(route_tmp);
                 route = new ArrayList<>(route_tmp);
                 route_tmp = new ArrayList<>(route);
             }

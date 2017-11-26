@@ -11,7 +11,7 @@ public class Simulator {
     private String simulatiorType;
 
     //ファイル用のデータ
-    ArrayList<Integer> routeTime = new ArrayList<>();
+    ArrayList<Integer> routeDistance = new ArrayList<>();
     ArrayList<ArrayList<Room>> routeHistory = new ArrayList<>();
     ArrayList<Integer> salesHistory = new ArrayList<>();
     ArrayList<Integer> shortageHistory = new ArrayList<>();
@@ -45,22 +45,7 @@ public class Simulator {
             rooms[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
                     gravity_points, setting, simulatiorType);
 
-
-            /*//それぞれの部屋にランダムで商品を登録->上の階層で行って統一させる
-            for (int j = 0; j < setting.goodsNum_per_room; j++) {
-                Random rand = new Random();
-                int random = rand.nextInt(setting.goodsNum_per_room);
-                int version;
-                if(random < setting.goods_distribution[0]){
-                    version = 0;
-                }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
-                    version = 1;
-                }else{
-                    version = 2;
-                }
-                rooms[i].register_goods(version);
-            }*/
-
+            //Executorで作成した番号リストに従って商品を登録する
             for (int j = 0; j < setting.goodsNum_per_room; j++) {
                 rooms[i].register_goods(goods_alloc.get((i*10)+j));
             }
@@ -75,13 +60,7 @@ public class Simulator {
             room_expire[i] = 0;
         }
 
-        try{
-            FileWriter w = new FileWriter(new File("shortage_day_room.csv"));
-            w.write("simulatorType,day,roomId,shortage\n");
-            w.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -97,11 +76,11 @@ public class Simulator {
         //巡回した時の距離を計算
         RouteHandler handle = new RouteHandler(day, setting, simulatiorType);
         ArrayList<Room> route = handle.route_creator(rooms);
-        //if(simulatiorType.equals(setting.simulatorType_static)) System.out.println(handle.calculate_route_time(route));//1日のルート距離を出力
-        routeTime.add(handle.calculate_route_time(route));
+        //if(simulatiorType.equals(setting.simulatorType_static)) System.out.println(handle.calculate_route_distance(route));//1日のルート距離を出力
+        routeDistance.add(handle.calculate_route_distance(route));
 
         //稼働率を計算
-        double availability = ((handle.calculate_route_time(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room)) / setting.work_time;
+        double availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room)) / setting.work_time;
         //if(simulatiorType.equals(setting.simulatorType_static))System.out.println(availability);//stの稼働率を出力
         availabilityHistory.add(availability);
 
@@ -173,14 +152,14 @@ public class Simulator {
 
     public int getTotal_time(){
         int time = 0;
-        for (int t: routeTime) {
+        for (int t: routeDistance) {
             time += t;
         }
         return time;
     }
 
-    public ArrayList<Integer> getRouteTime() {
-        return routeTime;
+    public ArrayList<Integer> getRouteDistance() {
+        return routeDistance;
     }
 
     public ArrayList<ArrayList<Room>> getRouteHistory() {

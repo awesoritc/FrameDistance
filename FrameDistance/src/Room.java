@@ -53,7 +53,7 @@ public class Room {
             this.distance_to_gravity[i] = distance;
         }
 
-        if(simulatorType.equals(setting.simulatorType_dynamic)) Util.write_gravity(roomId, areaNumber, distance_to_gravity);
+        //if(simulatorType.equals(setting.simulatorType_dynamic)) Util.write_gravity(roomId, areaNumber, distance_to_gravity);
 
     }
 
@@ -72,8 +72,8 @@ public class Room {
 
         //TODO:日にちごとに不足個数を書き出し
         try{
-            FileWriter w = new FileWriter(new File("shortage_day_room.csv"), true);
-            w.write( simulatiorType + "," + day + "," + roomId + "," + shortage + "\n");
+            FileWriter w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/shortage_day_room.csv"), true);
+            w.write( simulatiorType + "," + last_replenishment + "," + day + "," + roomId + "," + shortage + "\n");
             w.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +109,19 @@ public class Room {
         }
     }
 
+
+
+    //不足個数を返す
+    public int expect_shortage(int current_area){
+        int interval = Util.get_interval(current_area, areaNumber);
+
+        int expect = 0;
+        for (Goods aGoods_list : goodsList) {
+            expect += aGoods_list.expect_shortage_goods(interval);
+        }
+
+        return expect;
+    }
 
 
 
@@ -176,6 +189,10 @@ public class Room {
 
     public int getY_pos() {
         return y_pos;
+    }
+
+    public int[] getDistance_to_gravity() {
+        return distance_to_gravity;
     }
 
     public ArrayList<Goods> getGoodsList() {

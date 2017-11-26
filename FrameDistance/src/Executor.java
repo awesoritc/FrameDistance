@@ -9,40 +9,27 @@ public class Executor {
 
         Setting setting = new Setting();
 
+        //出力ファイルの初期化
+        try{
+            FileWriter w;
 
-        //ファイルから読み込んで、部屋を作成
-        /*String filename = setting.filename;
-        Room[] rooms_static =  new Room[setting.room];
-        Room[] rooms_dynamic =  new Room[setting.room];
-        int[][] room_element = Util.read_room_file(filename + ".csv", setting);
-        int[][] gravity_points = Util.read_gravity_file(filename + "_gravity.csv", setting);
+            w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/rooms_condition_dy.csv"));
+            w.write("day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point\n");
+            w.close();
+            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_dynamic.csv")).write("");
+            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv")).write("");
+            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/day_based.csv")).write("");
+            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/room_based.csv")).write("");
+            w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/shortage_day_room.csv"));
+            w.write("simulatorType,last_rep_day,day,roomId,shortage\n");
+            w.close();
 
-        for (int i = 0; i < setting.room; i++) {
-            //同じ部屋群をそれぞれに割り当て
-            rooms_static[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
-                    gravity_points, setting, setting.simulatorType_static);
-            rooms_dynamic[i] = new Room(room_element[i][0], room_element[i][1], room_element[i][2], room_element[i][3], room_element[i][4],
-                    gravity_points, setting, setting.simulatorType_dynamic);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-            //それぞれの部屋にランダムで商品を登録
-            for (int j = 0; j < setting.goodsNum_per_room; j++) {
-                Random rand = new Random();
-                int random = rand.nextInt(10);
-                int version;
-                if(random < setting.goods_distribution[0]){
-                    version = 0;
-                }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
-                    version = 1;
-                }else{
-                    version = 2;
-                }
-                rooms_static[i].register_goods(version);
-                rooms_dynamic[i].register_goods(version);
-            }
-        }*/
-
-        //それぞれの部屋にランダムで商品を登録
+        //それぞれの部屋に登録する商品の番号をセット(登録はSimulatorで行う)
         ArrayList<Integer> goods_alloc = new ArrayList<>();
         for (int i = 0; i < setting.room; i++) {
             for (int j = 0; j < setting.goodsNum_per_room; j++) {
@@ -100,13 +87,13 @@ public class Executor {
 
 
         //結果の書き出し
-        ArrayList<Integer> time_st = simulator_static.getRouteTime();
-        ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
 
-        ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
-        ArrayList<ArrayList<Room>> time_route_st = simulator_static.getRouteHistory();
 
+        /*//日毎の移動距離
         try{
+            ArrayList<Integer> time_st = simulator_static.getRouteTime();
+            ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
+
             new FileWriter(new File("time.csv")).write("");
             PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("time.csv"), true)));
             pw_time.write("day,time_static,time_dynamic\n");
@@ -117,12 +104,13 @@ public class Executor {
             pw_time.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        //部屋ごとのルート(dy)
         try{
+            ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
 
-            new FileWriter(new File("Route_dynamic.csv")).write("");
-            PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_dynamic.csv"), true)));
+            PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_dynamic.csv"), true)));
             pw_route_dy.write("roomId,pos,day\n");
             for (int i = 0; i < time_route_dy.size(); i++) {
                 ArrayList<Room> tmp = time_route_dy.get(i);
@@ -138,10 +126,12 @@ public class Executor {
             e.printStackTrace();
         }
 
+        //部屋ごとのルート(st)
         try{
+            ArrayList<ArrayList<Room>> time_route_st = simulator_static.getRouteHistory();
 
-            new FileWriter(new File("Route_static.csv")).write("");
-            PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("Route_static.csv"), true)));
+            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv")).write("");
+            PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv"), true)));
             pw_route_st.write("roomId,pos,day\n");
             for (int i = 0; i < time_route_st.size(); i++) {
                 ArrayList<Room> tmp = time_route_st.get(i);
@@ -157,7 +147,7 @@ public class Executor {
             e.printStackTrace();
         }
 
-
+        /*//日毎のss
         try{
             ArrayList<Integer> sales_st = simulator_static.getSalesHistory();
             ArrayList<Integer> shortage_st = simulator_static.getShortageHistory();
@@ -165,9 +155,9 @@ public class Executor {
             ArrayList<Integer> shortage_dy = simulator_dynamic.getShortageHistory();
             new FileWriter(new File("ss.csv")).write("");
             PrintWriter pw_history_ss = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss.csv"), true)));
-            pw_history_ss.write("sales_static,shortage_static,sales_dynamic,shortage_dynamic" + "\n");
+            pw_history_ss.write("day,sales_static,shortage_static,sales_dynamic,shortage_dynamic" + "\n");
             for (int i = 0; i < sales_st.size(); i++) {
-                pw_history_ss.write(sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "\n");
+                pw_history_ss.write(i + "," + sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "\n");
             }
             pw_history_ss.write("\n");
             pw_history_ss.close();
@@ -198,7 +188,7 @@ public class Executor {
         }
 
 
-        //廃棄ロスを書き出し
+        //日毎の廃棄ロスを書き出し
         try{
             new FileWriter(new File("expire_loss.csv")).write("");
 
@@ -237,7 +227,7 @@ public class Executor {
             e.printStackTrace();
         }
 
-        //稼働率書き出し
+        //日毎の稼働率書き出し
         try{
             new FileWriter(new File("availability.csv")).write("");
             ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
@@ -251,6 +241,68 @@ public class Executor {
                 pw_availability.write(i + "," +  availability_st.get(i) + "," + availability_dy.get(i) + "\n");
             }
             pw_availability.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+
+
+
+
+
+
+        //整理したもの
+
+        //日
+        try{
+
+            ArrayList<Integer> time_st = simulator_static.getRouteDistance();
+            ArrayList<Integer> time_dy = simulator_dynamic.getRouteDistance();
+            ArrayList<Integer> sales_st = simulator_static.getSalesHistory();
+            ArrayList<Integer> shortage_st = simulator_static.getShortageHistory();
+            ArrayList<Integer> sales_dy = simulator_dynamic.getSalesHistory();
+            ArrayList<Integer> shortage_dy = simulator_dynamic.getShortageHistory();
+            ArrayList<Integer> loss_st = simulator_static.getExpire_countHistory();
+            ArrayList<Integer> loss_dy = simulator_dynamic.getExpire_countHistory();
+            ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
+            ArrayList<Double> availability_dy = simulator_dynamic.getAvailabilityHistory();
+
+            PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/day_based.csv"), true)));
+            pw_time.write("day,time_static,time_dynamic,sales_static,shortage_static,sales_dynamic,shortage_dynamic,loss_static,loss_dynamic,availability_static,availability_dynamic\n");
+            for (int i = 0; i < time_st.size(); i++) {
+                //System.out.println(time_st.get(i));
+                pw_time.write(i + "," +  time_st.get(i) + "," + time_dy.get(i) + "," +
+                        sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "," +
+                        loss_st.get(i) + "," + loss_dy.get(i) + "," +
+                        availability_st.get(i) + "," + availability_dy.get(i) +  "\n");
+            }
+            pw_time.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //部屋
+        try{
+
+            int[] sales_st = simulator_static.getSales_rooms();
+            int[] shortage_st = simulator_static.getShortage_rooms();
+            int[] sales_dy = simulator_dynamic.getSales_rooms();
+            int[] shortage_dy = simulator_dynamic.getShortage_rooms();
+            ArrayList<Integer> loss_st = new ArrayList<>(Arrays.asList(simulator_static.getRoom_expire()));
+            ArrayList<Integer> loss_dy = new ArrayList<>(Arrays.asList(simulator_dynamic.getRoom_expire()));
+
+
+            PrintWriter pw_room = new PrintWriter(new BufferedWriter(new FileWriter(new File(
+                    "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/room_based.csv"), true)));
+
+            pw_room.write("roomId,sales_st,shortage_st,sales_dy,shortage_dy,loss_static,loss_dynamic\n");
+
+            for (int i = 0; i < sales_st.length; i++) {
+                pw_room.write(i + "," +  + sales_st[i] + "," + shortage_st[i] + "," + sales_dy[i] + "," + shortage_dy[i] + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
+            }
+            pw_room.close();
 
         } catch (IOException e) {
             e.printStackTrace();
