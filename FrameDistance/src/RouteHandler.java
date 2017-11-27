@@ -198,7 +198,7 @@ public class RouteHandler {
         //ここでそれぞれの部屋の状況を書き出し
         if(simulatorType.equals(setting.simulatorType_dynamic)){
             try{
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/rooms_condition_dy.csv"), true)));
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/rooms_condition_dy.csv"), true)));
                 for (int i = 0; i < r.length; i++) {
                     boolean ifInRoute = false;
                     for (Room aRooms: route){

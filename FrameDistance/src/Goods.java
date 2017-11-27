@@ -39,7 +39,9 @@ public class Goods {
 
 
         if(setting.ad_average){
+            //TODO:掛け算ではなく、平行移動させる
             this.average = (int)Math.round(setting.goods[goodsType][0]*ratio);
+            //this.average = (int)Math.round(setting.goods[goodsType][0]+ratio);
         }
 
         if(setting.ad_max){
@@ -166,12 +168,12 @@ public class Goods {
     //ルート作成用のメソッド
     //商品の欠品予想数を計算
     //TODO:在庫が0の場合には以前の予測数を使う
-    private int prev_expect_shortage = 0;
+    private double prev_exp = 0;
     public int expect_shortage_goods(int interval){
 
 
         if(stock == 0){
-            return prev_expect_shortage;
+            return (int)Math.round(prev_exp * interval);
         }
 
         double tmp = 0;
@@ -183,11 +185,13 @@ public class Goods {
                 tmp += sales_history.get(sales_history.size()-(i+1));
             }
 
-            int cons = Math.round((int)((double)Math.round(tmp / weeks) * interval));
+            double exp_per_day = (double)Math.round(tmp / weeks);
+            int consume_til_next = (int)Math.round(exp_per_day * interval);
 
-            if(cons > stock){
-                int expect = cons - stock;
-                prev_expect_shortage = expect;
+            prev_exp = exp_per_day;
+
+            if(consume_til_next > stock){
+                int expect = consume_til_next - stock;
                 return expect;
             }else{
                 return 0;
@@ -204,11 +208,13 @@ public class Goods {
                 return 0;
             }
 
-            int consume_til_next = (int)Math.round((tmp / days) * interval);
+            double exp_per_day = (tmp / days);
+            int consume_til_next = (int)Math.round(exp_per_day * interval);
+
+            prev_exp = exp_per_day;
 
             if(consume_til_next > stock){
                 int expect = consume_til_next - stock;
-                prev_expect_shortage = expect;
                 return expect;
             }
 

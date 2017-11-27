@@ -13,14 +13,14 @@ public class Executor {
         try{
             FileWriter w;
 
-            w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/rooms_condition_dy.csv"));
+            w = new FileWriter(new File("./Data/rooms_condition_dy.csv"));
             w.write("day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point\n");
             w.close();
-            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_dynamic.csv")).write("");
-            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv")).write("");
-            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/day_based.csv")).write("");
-            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/room_based.csv")).write("");
-            w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/shortage_day_room.csv"));
+            new FileWriter(new File("./Data/Route_dynamic.csv")).write("");
+            new FileWriter(new File("./Data/Route_static.csv")).write("");
+            new FileWriter(new File("./Data/day_based.csv")).write("");
+            new FileWriter(new File("./Data/room_based.csv")).write("");
+            w = new FileWriter(new File("./Data/shortage_day_room.csv"));
             w.write("simulatorType,last_rep_day,day,roomId,roomType,shortage\n");
             w.close();
 
@@ -112,7 +112,7 @@ public class Executor {
         try{
             ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
 
-            PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_dynamic.csv"), true)));
+            PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/Route_dynamic.csv"), true)));
             pw_route_dy.write("roomId,pos,day\n");
             for (int i = 0; i < time_route_dy.size(); i++) {
                 ArrayList<Room> tmp = time_route_dy.get(i);
@@ -132,8 +132,8 @@ public class Executor {
         try{
             ArrayList<ArrayList<Room>> time_route_st = simulator_static.getRouteHistory();
 
-            new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv")).write("");
-            PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/Route_static.csv"), true)));
+            new FileWriter(new File("./Data/Route_static.csv")).write("");
+            PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/Route_static.csv"), true)));
             pw_route_st.write("roomId,pos,day\n");
             for (int i = 0; i < time_route_st.size(); i++) {
                 ArrayList<Room> tmp = time_route_st.get(i);
@@ -270,7 +270,7 @@ public class Executor {
             ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
             ArrayList<Double> availability_dy = simulator_dynamic.getAvailabilityHistory();
 
-            PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/day_based.csv"), true)));
+            PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/day_based.csv"), true)));
             pw_time.write("day,time_static,time_dynamic,sales_static,shortage_static,sales_dynamic,shortage_dynamic,loss_static,loss_dynamic,availability_static,availability_dynamic\n");
             for (int i = 0; i < time_st.size(); i++) {
                 //System.out.println(time_st.get(i));
@@ -297,7 +297,7 @@ public class Executor {
 
 
             PrintWriter pw_room = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/room_based.csv"), true)));
+                    "./Data/room_based.csv"), true)));
 
             pw_room.write("roomId,sales_st,shortage_st,sales_dy,shortage_dy,loss_static,loss_dynamic\n");
 
