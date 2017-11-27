@@ -21,7 +21,7 @@ public class Executor {
             new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/day_based.csv")).write("");
             new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/room_based.csv")).write("");
             w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/shortage_day_room.csv"));
-            w.write("simulatorType,last_rep_day,day,roomId,shortage\n");
+            w.write("simulatorType,last_rep_day,day,roomId,roomType,shortage\n");
             w.close();
 
         } catch (IOException e) {
@@ -55,6 +55,8 @@ public class Executor {
 
             int day = i;
 
+            System.out.println(i);
+
             simulator_static.create_route(day);
             simulator_static.do_consume_simulator(day);
             simulator_static.do_replenishment_simulator(day);
@@ -80,7 +82,7 @@ public class Executor {
         System.out.println(simulator_dynamic.getTotal_time());
 
 
-
+        simulator_dynamic.write_goods_shortage();
 
 
 

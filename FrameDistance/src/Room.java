@@ -73,7 +73,7 @@ public class Room {
         //TODO:日にちごとに不足個数を書き出し
         try{
             FileWriter w = new FileWriter(new File("/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Data/shortage_day_room.csv"), true);
-            w.write( simulatiorType + "," + last_replenishment + "," + day + "," + roomId + "," + shortage + "\n");
+            w.write( simulatiorType + "," + last_replenishment + "," + day + "," + roomId + "," + roomType + "," + shortage + "\n");
             w.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,6 +126,7 @@ public class Room {
 
 
     //補充優先度を返す
+    //TODO:修正
     public double rep_value(int current_area){
 
 

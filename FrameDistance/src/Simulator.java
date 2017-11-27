@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -137,6 +135,34 @@ public class Simulator {
 
 
 
+
+
+    //使い捨て
+
+    //商品ごとの累積の不足数を書き出し
+    public void write_goods_shortage(){
+
+        try{
+            new FileWriter(new File("ac_goods_shortage_" + simulatiorType +".csv")).write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < rooms.length; i++) {
+            Room room = rooms[i];
+            ArrayList<Goods> goodslist = room.getGoodsList();
+            try{
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("ac_goods_shortage_" + simulatiorType +".csv"), true)));
+                for (int j = 0; j < goodslist.size(); j++) {
+                    //(simulatorType,roomID,goodsNumber,ac_shortage)
+                    pw.write(simulatiorType + "," + room.getRoomId() + ","  + j + "," + goodslist.get(j).getAc_shortage() + "\n");
+                }
+                pw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 

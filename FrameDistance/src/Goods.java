@@ -19,6 +19,8 @@ public class Goods {
 
     private ArrayList<Item> itemBox;
 
+    private int ac_shortage = 0;//累積の不足個数
+
     Goods(int roomType, int goodsType, Setting setting, String simulatorType){
 
         this.goodsType = goodsType;
@@ -78,20 +80,6 @@ public class Goods {
             demand = 0;
         }
 
-
-
-        /*//需要数の確認の為の書き出し
-        try{
-            FileWriter writer = new FileWriter(new File("nd_test.csv"), true);
-            writer.write(String.valueOf(demand) + "\n");
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-
-
         int sales;
         int shortage;
 
@@ -124,6 +112,8 @@ public class Goods {
         sales_history.add(sales);
         shortage_history.add(shortage);
         demand_history.add(demand);
+
+        ac_shortage += shortage;
 
         return new int[]{sales, shortage};
     }
@@ -248,6 +238,10 @@ public class Goods {
 
     public int getMax() {
         return max;
+    }
+
+    public int getAc_shortage() {
+        return ac_shortage;
     }
 
     public ArrayList<Integer> getSales_history() {
