@@ -24,6 +24,10 @@ public class Executor {
             w.write("simulatorType,last_rep_day,day,roomId,roomType,shortage\n");
             w.close();
 
+            w = new FileWriter(new File("./Data/ac_goods_ss_dynamic.csv"));
+            w.write("simulatorType,roomID,goodsNumber,roomType,goodsType,ac_sales,ac_shortage\n");
+            w.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,11 +79,13 @@ public class Executor {
         System.out.println(simulator_static.getTotal_sales());
         System.out.println(simulator_static.getTotal_shortage());
         System.out.println(simulator_static.getTotal_time());
+        System.out.println(simulator_static.getTotal_expire_loss());
         System.out.println();
         System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
         System.out.println(simulator_dynamic.getTotal_shortage());
         System.out.println(simulator_dynamic.getTotal_time());
+        System.out.println(simulator_dynamic.getTotal_expire_loss());
 
 
         simulator_dynamic.write_goods_shortage();
@@ -113,12 +119,12 @@ public class Executor {
             ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
 
             PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/Route_dynamic.csv"), true)));
-            pw_route_dy.write("roomId,pos,day\n");
+            pw_route_dy.write("day,roomId,areaNum,pos\n");
             for (int i = 0; i < time_route_dy.size(); i++) {
                 ArrayList<Room> tmp = time_route_dy.get(i);
                 //pw_route_dy.write("Day:" + i + "\n");
                 for (int j = 0; j < tmp.size(); j++) {
-                    pw_route_dy.write(tmp.get(j).getRoomId() + ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")," + i + "\n");
+                    pw_route_dy.write(i + "," + tmp.get(j).getRoomId() + "," + tmp.get(j).getAreaNumber() +  ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")" + "\n");
                 }
                 //pw_route_dy.write("\n");
             }
@@ -134,12 +140,12 @@ public class Executor {
 
             new FileWriter(new File("./Data/Route_static.csv")).write("");
             PrintWriter pw_route_st = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/Route_static.csv"), true)));
-            pw_route_st.write("roomId,pos,day\n");
+            pw_route_st.write("day,roomId,areaNum,pos\n");
             for (int i = 0; i < time_route_st.size(); i++) {
                 ArrayList<Room> tmp = time_route_st.get(i);
                 //pw_route_st.write("Day:" + i + "\n");
                 for (int j = 0; j < tmp.size(); j++) {
-                    pw_route_st.write(tmp.get(j).getRoomId() + ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")," + i + "\n");
+                    pw_route_st.write( i + "," +tmp.get(j).getRoomId() + "," + tmp.get(j).getAreaNumber() + ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")" + "\n");
                 }
                 //pw_route_st.write("\n");
             }

@@ -36,7 +36,7 @@ public class RouteHandler {
             //変動のルート
             if(setting.routeType.equals(setting.routeType_value)){
                 route = setBetterOrder(setIdOrder(basedOnValue(rooms, current_area)));
-                //route = setBetterOrder(setIdOrder(staticBase(rooms, current_area)));
+                //route = setBetterOrder(setIdOrder(basedOnProfit(rooms, current_area)));
             }else if(setting.routeType.equals(setting.routeType_greedy)){
                 route = setBetterOrder(setIdOrder(basedOnSuf_rate(rooms, current_area)));
             }
@@ -238,7 +238,7 @@ public class RouteHandler {
         for (int i = 0; i < room.size(); i++) {
             for (int j = 0; j < room.size(); j++) {
                 if(i < j){
-                    if(room.get(i).suf_rate() > r[j].suf_rate()){
+                    if(room.get(i).suf_rate() > room.get(j).suf_rate()){
                         Room tmp = room.get(i);
                         room.set(i, room.get(j));
                         room.set(j, tmp);
@@ -257,6 +257,62 @@ public class RouteHandler {
             }
 
             if(room.get(i).suf_rate() < 1){
+                route.add(room.get(i));
+                if(route.size() >= setting.limit){
+                    break;
+                }
+            }
+        }
+
+        //補充しなければいけない場所がなければ、エリア補充をする
+        if(route.size() == 0){
+            for (int i = 0; i < setting.rooms_area; i++) {
+                route.add(r[i+(current_area*setting.rooms_area)]);
+            }
+        }
+
+        return route;
+    }
+
+
+
+    //機会損失回避のメリットと、補充の人件費を考慮した金額ベースの補充優先度
+    public ArrayList<Room> basedOnProfit(Room[] r, int current_area){
+
+        ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
+        ArrayList<Room> route = new ArrayList<>();
+
+        ArrayList<Integer> array = new ArrayList<>();
+        for (int i = 0; i < room.size(); i++) {
+            if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
+                route.add(room.get(i));
+                array.add(room.get(i).getRoomId());
+            }
+        }
+
+        //profit大きい順に並べる
+        for (int i = 0; i < room.size(); i++) {
+            for (int j = 0; j < room.size(); j++) {
+                if(i < j){
+                    if(room.get(i).profit(current_area) < room.get(j).profit(current_area)){
+                        Room tmp = room.get(i);
+                        room.set(i, room.get(j));
+                        room.set(j, tmp);
+                    }
+                }
+            }
+        }
+
+        //ルート追加
+        outside: for (int i = 0; i < room.size(); i++) {
+
+            for (int j = 0; j < array.size(); j++) {
+                if(room.get(i).getRoomId() == array.get(j)){
+                    continue outside;
+                }
+            }
+
+            if(room.get(i).profit(current_area) > 0){
                 route.add(room.get(i));
                 if(route.size() >= setting.limit){
                     break;
@@ -297,12 +353,6 @@ public class RouteHandler {
     //何かしら経路が短くなる順に並べなおす
     private ArrayList<Room> setBetterOrder(ArrayList<Room> route){
 
-        /*for (int i = 0; i < route.size(); i++) {
-            System.out.print(route.get(i).getRoomId() + " ");
-        }System.out.println("");*/
-
-
-
         //TODO:局所探索法に変更(要修正)
 
         //局所探索法
@@ -317,7 +367,7 @@ public class RouteHandler {
         ArrayList<Room> best_route = new ArrayList<>(route);
         int best_distance = calculate_route_distance(best_route);
 
-        for (int a = 0; a < 100; a++) {
+        for (int a = 0; a < 1000; a++) {
             //1.ランダムルートの作成
             ArrayList<Room> random_route = new ArrayList<>(route);
             double[] d = new double[route.size()];

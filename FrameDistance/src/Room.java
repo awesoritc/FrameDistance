@@ -127,7 +127,6 @@ public class Room {
     //TODO:修正
     public double rep_value(int current_area){
 
-
         int interval = Util.get_interval(current_area, areaNumber);
 
         double expect = 0;
@@ -151,6 +150,19 @@ public class Room {
         }
 
         return amount / max;
+    }
+
+
+    public double profit(int current_area){
+
+        int interval = Util.get_interval(current_area, areaNumber);
+
+        double expect = 0;
+        for (Goods aGoods_list : goodsList) {
+            expect += aGoods_list.expect_shortage_goods(interval);
+        }
+
+        return (100 * expect * setting.profit_rate) - distance_to_gravity[current_area]*setting.move_time_per_1*setting.payment_per_min;
     }
 
 

@@ -8,9 +8,9 @@ public class Goods {
     private String simulationType;
 
     //商品の設定
-    private int average, variance, max;
+    private int max;
     private int c_value;//部屋ごとの補正値
-    private double ratio;
+    private double average, variance, ratio;
 
     //動かすもの
     private int stock;
@@ -19,20 +19,22 @@ public class Goods {
 
     private ArrayList<Item> itemBox;
 
+    private int ac_sales = 0;//累積の売上個数
     private int ac_shortage = 0;//累積の不足個数
 
     Goods(int roomType, int goodsType, Setting setting, String simulatorType){
 
-        this.goodsType = goodsType;
         this.setting = setting;
+
         this.simulationType = simulatorType;
+        this.goodsType = goodsType;
+        this.roomType = roomType;
+        this.ratio = setting.demand_mul[roomType];
 
         this.average = setting.goods[goodsType][0];
         this.variance = setting.goods[goodsType][1];
         this.max = setting.goods[goodsType][2];
 
-        this.roomType = roomType;
-        this.ratio = setting.demand_mul[roomType];
         /*//補正値による調整
         this.c_value = setting.c_value[roomType];
         this.average = this.average + this.c_value;*/
@@ -40,12 +42,17 @@ public class Goods {
 
         if(setting.ad_average){
             //TODO:掛け算ではなく、平行移動させる
-            this.average = (int)Math.round(setting.goods[goodsType][0]*ratio);
-            //this.average = (int)Math.round(setting.goods[goodsType][0]+ratio);
+            this.average = (setting.goods[goodsType][0])*ratio;
+            //this.average = (int)Math.round(setting.goods[goodsType][0]+setting.c_value[roomType]);
         }
 
         if(setting.ad_max){
             this.max = (int)Math.round(setting.goods[goodsType][2]*ratio);
+        }
+
+        if(setting.ad_c_value){
+            this.average = setting.goods[goodsType][0] + (setting.c_value_average[goodsType]*ratio);
+            this.variance = setting.goods[goodsType][1] + (setting.c_value_variance[goodsType]*ratio);
         }
 
         this.stock = max;
@@ -63,6 +70,8 @@ public class Goods {
     private ArrayList<Integer> demand_history = new ArrayList<>();//需要個数の履歴
     private ArrayList<Integer> stock_before_history = new ArrayList<>();//消費前の在庫数の履歴
 
+
+    private ArrayList<Integer> sales_history_stock = new ArrayList<>();//ストックが十分にある場合の売上個数
 
 
 
@@ -96,6 +105,9 @@ public class Goods {
             for (int i = 0; i < demand; i++) {
                 itemBox.remove(0);
             }
+
+            sales_history_stock.add(sales);
+
         }else if(stock > 0){
             shortage = demand - stock;
             sales = stock;
@@ -115,6 +127,7 @@ public class Goods {
         shortage_history.add(shortage);
         demand_history.add(demand);
 
+        ac_sales += sales;
         ac_shortage += shortage;
 
         return new int[]{sales, shortage};
@@ -179,10 +192,11 @@ public class Goods {
         double tmp = 0;
         int days = setting.interval_days;
         int weeks = setting.interval_weeks * setting.interval_days;
-        if(sales_history.size() >= weeks){
+
+        /*if(sales_history_stock.size() >= weeks){
             //25以上売り上げデータがある時
             for(int i = 0; i < weeks; i++){
-                tmp += sales_history.get(sales_history.size()-(i+1));
+                tmp += sales_history_stock.get(sales_history_stock.size()-(i+1));
             }
 
             double exp_per_day = (double)Math.round(tmp / weeks);
@@ -197,12 +211,12 @@ public class Goods {
                 return 0;
             }
 
-        }else if(sales_history.size() >= 5){
+        }else*/ if(sales_history_stock.size() >= 5){
             //5以上売り上げデータがある時
 
-            if(sales_history.size() > days){
+            if(sales_history_stock.size() > days){
                 for(int i = 0; i < days; i++){
-                    tmp += sales_history.get(sales_history.size()-(i+1));
+                    tmp += sales_history_stock.get(sales_history_stock.size()-(i+1));
                 }
             }else{
                 return 0;
@@ -221,9 +235,57 @@ public class Goods {
             return 0;
 
         }else{
-            //売り上げデータがないとき
-            return 0;
+
+
+            /*if(sales_history.size() >= weeks){
+                //25以上売り上げデータがある時
+                for(int i = 0; i < weeks; i++){
+                    tmp += sales_history.get(sales_history.size()-(i+1));
+                }
+
+                double exp_per_day = (double)Math.round(tmp / weeks);
+                int consume_til_next = (int)Math.round(exp_per_day * interval);
+
+                prev_exp = exp_per_day;
+
+                if(consume_til_next > stock){
+                    int expect = consume_til_next - stock;
+                    return expect;
+                }else{
+                    return 0;
+                }
+
+            }else*/ if(sales_history.size() >= 5){
+                //5以上売り上げデータがある時
+
+                if(sales_history.size() > days){
+                    for(int i = 0; i < days; i++){
+                        tmp += sales_history.get(sales_history.size()-(i+1));
+                    }
+                }else{
+                    return 0;
+                }
+
+                double exp_per_day = (tmp / days);
+                int consume_til_next = (int)Math.round(exp_per_day * interval);
+
+                prev_exp = exp_per_day;
+
+                if(consume_til_next > stock){
+                    int expect = consume_til_next - stock;
+                    return expect;
+                }
+
+                return 0;
+
+            }else{
+                //売り上げデータがないとき
+                return 0;
+            }
+
+
         }
+
 
     }
 
@@ -248,6 +310,10 @@ public class Goods {
 
     public int getGoodsType() {
         return goodsType;
+    }
+
+    public int getAc_sales() {
+        return ac_sales;
     }
 
     public int getAc_shortage() {

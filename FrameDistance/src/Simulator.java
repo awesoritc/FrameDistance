@@ -111,6 +111,8 @@ public class Simulator {
     }
 
 
+    int total_expire_loss = 0;
+
     public void do_replenishment_simulator(int day){
         routeHistory.add(rep_route);
 
@@ -119,6 +121,7 @@ public class Simulator {
             int room_exp = rep_route.get(i).do_replenishment_room(day);
             expire_count += room_exp;
             room_expire[rep_route.get(i).getRoomId()] += room_exp;
+            total_expire_loss += room_exp;
         }
 
         expire_countHistory.add(expire_count);
@@ -142,20 +145,14 @@ public class Simulator {
     //商品ごとの累積の不足数を書き出し
     public void write_goods_shortage(){
 
-        try{
-            new FileWriter(new File("ac_goods_shortage_" + simulatiorType +".csv")).write("");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         for (int i = 0; i < rooms.length; i++) {
             Room room = rooms[i];
             ArrayList<Goods> goodslist = room.getGoodsList();
             try{
-                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("ac_goods_shortage_" + simulatiorType +".csv"), true)));
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/ac_goods_ss_" + simulatiorType +".csv"), true)));
                 for (int j = 0; j < goodslist.size(); j++) {
-                    //(simulatorType,roomID,goodsNumber,goodsType,ac_shortage)
-                    pw.write(simulatiorType + "," + room.getRoomId() + ","  + j + "," + goodslist.get(j).getGoodsType() + "," + goodslist.get(j).getAc_shortage() + "\n");
+                    //(simulatorType,roomID,goodsNumber,roomType,goodsType,ac_shortage)
+                    pw.write(simulatiorType + "," + room.getRoomId() + ","  + j + "," + room.getRoomType() + "," + goodslist.get(j).getGoodsType() + "," + goodslist.get(j).getAc_sales() + goodslist.get(j).getAc_shortage() + "\n");
                 }
                 pw.close();
             } catch (IOException e) {
@@ -174,6 +171,10 @@ public class Simulator {
 
     public int getTotal_shortage() {
         return total_shortage;
+    }
+
+    public int getTotal_expire_loss() {
+        return total_expire_loss;
     }
 
     public int getTotal_time(){

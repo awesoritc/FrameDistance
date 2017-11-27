@@ -43,14 +43,15 @@ public class Setting {
 
     final int goodsNum_per_room = 10;//部屋あたりの商品数
     final int[][] goods = {{0, 1, 10, 90}, {1, 1, 10, 90}, {2, 2, 10, 90}};//商品(7:2:1)
+    final double[] c_value_average = {0.1, 1, 2};
+    final double[] c_value_variance = {0.1, 2, 10};
     final int[] goods_distribution = {7, 2, 1};
     final int[] room_max = {30, 100, 400};//部屋ごとの最大の商品数(5:3:2) 実際はもう少し正確に
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
-    final boolean ad_average = true;//averageに調整値を入れるかどうか((sμ, σ) にするかどうか)
-    final boolean ad_max = true;
-    //TODO:倍率ではなく、需要の発生確率の平均に、売れやすい部屋では数字を足す
-    final int[] c_value = {-1, 0, 2};
     final int[] rooms_distribution = {5, 3, 2};
+    final boolean ad_average = true;//averageに調整値を入れるかどうか((sμ, σ) にするかどうか)
+    final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
+    final boolean ad_c_value = false;//補正値による需要調整を入れるかどうか
 
 
 
@@ -64,4 +65,7 @@ public class Setting {
     final int work_time = 390;//1日の労働時間
     final double service_time_per_room = 10;//1部屋あたりの細かい移動・補充の時間
     final double move_time_per_1 = 0.5;
+    final double payment_per_min = 1000/60;
+
+    final double profit_rate = 0.3;
 }
