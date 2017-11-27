@@ -240,6 +240,10 @@ public class Goods {
         return max;
     }
 
+    public int getGoodsType() {
+        return goodsType;
+    }
+
     public int getAc_shortage() {
         return ac_shortage;
     }
