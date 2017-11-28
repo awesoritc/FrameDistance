@@ -177,12 +177,12 @@ public class Simulator {
         return total_expire_loss;
     }
 
-    public int getTotal_time(){
-        int time = 0;
+    public int getTotal_distance(){
+        int distance = 0;
         for (int t: routeDistance) {
-            time += t;
+            distance += t;
         }
-        return time;
+        return distance;
     }
 
     public ArrayList<Integer> getRouteDistance() {

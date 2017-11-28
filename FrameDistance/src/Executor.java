@@ -5,6 +5,18 @@ import java.util.Random;
 
 public class Executor {
 
+    /*TODO:
+    * 他のエリアに近い部屋が絶対に発生しないところまでbufferを広げる
+    * 　エリア判別のJavaファイルを共有
+    * Goods: 需要の発生をポアソン分布に変更
+    * Data_room_condition: 当日エリアで回らなかったところで、次に回ってくるまでにどの程度品切れを起こしているかを確認
+    * RouteHandler: 他エリアを回る時にペナルティを設定する（回る)エリアの数が増えれば増えるほど
+    * RouteHandler: 回る部屋を選択する時に、全域木を利用して部屋選択・ルート距離計算を回して、効率的なルートを作成する
+    *
+    */
+
+
+
     public static void main(String[] args){
 
         Setting setting = new Setting();
@@ -78,13 +90,13 @@ public class Executor {
         System.out.println("static");
         System.out.println(simulator_static.getTotal_sales());
         System.out.println(simulator_static.getTotal_shortage());
-        System.out.println(simulator_static.getTotal_time());
+        System.out.println(simulator_static.getTotal_distance());
         System.out.println(simulator_static.getTotal_expire_loss());
         System.out.println();
         System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
         System.out.println(simulator_dynamic.getTotal_shortage());
-        System.out.println(simulator_dynamic.getTotal_time());
+        System.out.println(simulator_dynamic.getTotal_distance());
         System.out.println(simulator_dynamic.getTotal_expire_loss());
 
 

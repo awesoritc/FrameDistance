@@ -2,7 +2,10 @@ public class Setting {
 
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/rooms1";
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/suburb_room_75_75";
-    final String filename = "./Rooms/75_75_buffer";
+    final String filename = "./Rooms/75_75_buffer";//(bufferの大きさは ceil(x_max/20)(4))
+
+    //TODO:他のエリアに近い部屋が発生しないところまでbufferを大きくする
+    //final String filename = "./Rooms/75_75_buffer_TEST";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";

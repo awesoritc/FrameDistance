@@ -118,7 +118,6 @@ public class RouteHandler {
 
 
 
-
     //ルート作成用のメソッド
 
     //補充優先度
@@ -462,6 +461,39 @@ public class RouteHandler {
         return route;
 
         */
+    }
+
+
+
+
+
+
+
+
+    //根本的なルート作成方法の変更
+    //TODO:ルートの作成を ルート選択・最適度計算 を回して最適なルートを作成する
+    public void route_create_agile(Room[] rooms){
+        //何かしらの基準で部屋を取得
+
+        //距離と回収できる不足個数を兼ねた評価基準での評価
+        //TODO:評価値の作成
+
+        //評価値が高いかどうかを
+    }
+
+
+    //近似解のルートを作成するのに時間がかかるので、ルートを作成せずに距離が長いか短いかを全域木を利用して大体計測する。
+    public int calc_about_distance(ArrayList<Room> selected_rooms/*選択された部屋群*/, int current_area){
+
+        //全ての部屋の (current_areaの重心との距離*2) を足し合わせたものを、最悪距離として返却
+        int worst_distance = 0;
+
+        ArrayList<Room> tmp = new ArrayList<>(selected_rooms);
+        for (int i = 0; i < tmp.size(); i++) {
+            worst_distance += tmp.get(i).getDistance_to_gravity()[current_area];
+        }
+
+        return worst_distance;
     }
 
 }

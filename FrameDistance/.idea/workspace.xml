@@ -12,40 +12,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Executor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Executor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1517">
-              <caret line="132" column="33" lean-forward="true" selection-start-line="132" selection-start-column="33" selection-end-line="132" selection-end-column="33" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Simulator.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Simulator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="153" column="31" lean-forward="true" selection-start-line="153" selection-start-column="31" selection-end-line="153" selection-end-column="31" />
+            <state relative-caret-position="283">
+              <caret line="179" column="34" lean-forward="false" selection-start-line="179" selection-start-column="34" selection-end-line="179" selection-end-column="34" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5364#5365#0" expanded="true" />
-                <element signature="e#5404#5405#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Goods.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Goods.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="314" column="30" lean-forward="false" selection-start-line="314" selection-start-column="30" selection-end-line="314" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8305#8306#0" expanded="true" />
+                <element signature="method#getTotal_distance#0;class#Simulator#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -54,24 +27,31 @@
       <file leaf-file-name="RouteHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/RouteHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="368" column="0" lean-forward="true" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
+            <state relative-caret-position="375">
+              <caret line="493" column="9" lean-forward="false" selection-start-line="493" selection-start-column="9" selection-end-line="493" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#RouteHandler#0;class#RouteHandler#0" expanded="false" />
+                <element signature="method#route_creator#0;class#RouteHandler#0" expanded="false" />
                 <element signature="method#calculate_route_distance#0;class#RouteHandler#0" expanded="false" />
+                <element signature="method#basedOnValue#0;class#RouteHandler#0" expanded="false" />
+                <element signature="method#basedOnSuf_rate#0;class#RouteHandler#0" expanded="false" />
+                <element signature="method#basedOnProfit#0;class#RouteHandler#0" expanded="false" />
                 <element signature="method#setIdOrder#0;class#RouteHandler#0" expanded="false" />
+                <element signature="method#setBetterOrder#0;class#RouteHandler#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Route_dynamic.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Data/Route_dynamic.csv">
+      <file leaf-file-name="Executor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Executor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-              <folding />
+            <state relative-caret-position="1320">
+              <caret line="88" column="29" lean-forward="true" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -79,49 +59,9 @@
       <file leaf-file-name="Setting.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Setting.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="53" column="36" lean-forward="false" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
+            <state relative-caret-position="180">
+              <caret line="12" column="43" lean-forward="true" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ac_goods_shortage_dynamic.csv" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Data/ac_goods_shortage_dynamic.csv">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="52" lean-forward="true" selection-start-line="0" selection-start-column="52" selection-end-line="0" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Room.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Room.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="73" column="112" lean-forward="false" selection-start-line="73" selection-start-column="112" selection-end-line="73" selection-end-column="112" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <marker date="1511776912000" expanded="false" signature="4313:4323" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4386:4392" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4609:4620" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4634:4640" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4672:4683" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4701:4707" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4734:4745" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4758:4764" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4791:4802" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4815:4821" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4864:4875" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4902:4908" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="4952:4963" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="4980:4986" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="5016:5027" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="5043:5049" ph=" }" />
-                <marker date="1511776912000" expanded="false" signature="5085:5096" ph=" { " />
-                <marker date="1511776912000" expanded="false" signature="5115:5121" ph=" }" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -137,7 +77,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>println</find>
       <find>goods</find>
       <find>goodsList</find>
       <find>out</find>
@@ -167,6 +106,7 @@
       <find>shortage_day</find>
       <find>ac_</find>
       <find>ac_goods</find>
+      <find>getTotal_time</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -200,9 +140,9 @@
         <option value="$PROJECT_DIR$/Data/Route_static.csv" />
         <option value="$PROJECT_DIR$/Data/Route_dynamic.csv" />
         <option value="$PROJECT_DIR$/ac_goods_shortage.csv" />
-        <option value="$PROJECT_DIR$/src/Setting.java" />
         <option value="$PROJECT_DIR$/src/Room.java" />
         <option value="$PROJECT_DIR$/src/Goods.java" />
+        <option value="$PROJECT_DIR$/src/Setting.java" />
         <option value="$PROJECT_DIR$/src/Simulator.java" />
         <option value="$PROJECT_DIR$/src/Executor.java" />
         <option value="$PROJECT_DIR$/src/RouteHandler.java" />
@@ -216,10 +156,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="2024" />
-    <option name="y" value="57" />
+    <option name="x" value="33" />
+    <option name="y" value="23" />
     <option name="width" value="1534" />
-    <option name="height" value="899" />
+    <option name="height" value="797" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -236,10 +176,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -255,12 +191,21 @@
             <path>
               <item name="FrameDistance" type="b2602c69:ProjectViewProjectNode" />
               <item name="FrameDistance" type="462c0819:PsiDirectoryNode" />
+              <item name="Rooms" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FrameDistance" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FrameDistance" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -432,7 +377,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="2024" y="57" width="1534" height="899" extended-state="0" />
+    <frame x="33" y="23" width="1534" height="797" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -442,13 +387,13 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297587" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29104477" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2910345" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32943925" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20509383" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2053455" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -469,7 +414,6 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32965517" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -516,19 +460,19 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="14" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/RouteHandler.java</url>
+          <line>280</line>
+          <properties />
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ss_dynamic.csv" />
-    <entry file="file://$PROJECT_DIR$/1107/p2_1107/ss.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/1107/p2_1107/time.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -591,30 +535,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+          <folding>
+            <element signature="e#74#75#0" expanded="false" />
+            <element signature="e#110#111#0" expanded="false" />
+            <element signature="e#142#143#0" expanded="false" />
+            <element signature="e#166#167#0" expanded="false" />
+            <element signature="e#197#198#0" expanded="false" />
+            <element signature="e#226#227#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ac_goods_shortage_dynamic.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2335">
-          <caret line="731" column="0" lean-forward="false" selection-start-line="731" selection-start-column="0" selection-end-line="739" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/RoomFileCreator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="22" column="32" lean-forward="false" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/ac_goods_shortage_dynamic.csv" />
     <entry file="file://$PROJECT_DIR$/Data/Route_static.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -630,11 +566,67 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Data/day_based.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Goods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="28" column="26" lean-forward="false" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#8426#8427#0" expanded="false" />
+            <element signature="e#8462#8463#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data/shortage_day_room.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22224">
+          <caret line="2001" column="0" lean-forward="false" selection-start-line="2001" selection-start-column="0" selection-end-line="2001" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data/ac_goods_shortage_dynamic.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="52" lean-forward="true" selection-start-line="0" selection-start-column="52" selection-end-line="0" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Data/Route_dynamic.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RoomFileCreator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="22" column="32" lean-forward="false" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rooms/75_75_buffer_TEST_gravity.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Rooms/75_75_buffer_TEST.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -644,106 +636,66 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Room.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="73" column="112" lean-forward="false" selection-start-line="73" selection-start-column="112" selection-end-line="73" selection-end-column="112" />
+        <state relative-caret-position="645">
+          <caret line="118" column="9" lean-forward="false" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1511776912000" expanded="false" signature="4313:4323" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4386:4392" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4609:4620" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4634:4640" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4672:4683" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4701:4707" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4734:4745" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4758:4764" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4791:4802" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4815:4821" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4864:4875" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4902:4908" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="4952:4963" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="4980:4986" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="5016:5027" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="5043:5049" ph=" }" />
-            <marker date="1511776912000" expanded="false" signature="5085:5096" ph=" { " />
-            <marker date="1511776912000" expanded="false" signature="5115:5121" ph=" }" />
+            <marker date="1511840945437" expanded="false" signature="4313:4323" ph=" { " />
+            <marker date="1511840945437" expanded="false" signature="4386:4392" ph=" }" />
+            <marker date="1511840945437" expanded="false" signature="4609:4620" ph=" { " />
+            <marker date="1511840945437" expanded="false" signature="4634:4640" ph=" }" />
+            <marker date="1511840945437" expanded="false" signature="4672:4683" ph=" { " />
+            <marker date="1511840945437" expanded="false" signature="4701:4707" ph=" }" />
+            <marker date="1511840945437" expanded="false" signature="4734:4745" ph=" { " />
+            <marker date="1511840945437" expanded="false" signature="4758:4764" ph=" }" />
+            <marker date="1511840945437" expanded="false" signature="4791:4802" ph=" { " />
+            <marker date="1511840945437" expanded="false" signature="4815:4821" ph=" }" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Goods.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="314" column="30" lean-forward="false" selection-start-line="314" selection-start-column="30" selection-end-line="314" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8305#8306#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data/shortage_day_room.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="16" lean-forward="true" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Setting.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="53" column="36" lean-forward="false" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
+        <state relative-caret-position="180">
+          <caret line="12" column="43" lean-forward="true" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data/ac_goods_shortage_dynamic.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="52" lean-forward="true" selection-start-line="0" selection-start-column="52" selection-end-line="0" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Data/Route_dynamic.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Executor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1517">
-          <caret line="132" column="33" lean-forward="true" selection-start-line="132" selection-start-column="33" selection-end-line="132" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Simulator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="153" column="31" lean-forward="true" selection-start-line="153" selection-start-column="31" selection-end-line="153" selection-end-column="31" />
+        <state relative-caret-position="283">
+          <caret line="179" column="34" lean-forward="false" selection-start-line="179" selection-start-column="34" selection-end-line="179" selection-end-column="34" />
+          <folding>
+            <element signature="method#getTotal_distance#0;class#Simulator#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Executor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1320">
+          <caret line="88" column="29" lean-forward="true" selection-start-line="88" selection-start-column="29" selection-end-line="88" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5364#5365#0" expanded="true" />
-            <element signature="e#5404#5405#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RouteHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="368" column="0" lean-forward="true" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
+        <state relative-caret-position="375">
+          <caret line="493" column="9" lean-forward="false" selection-start-line="493" selection-start-column="9" selection-end-line="493" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#RouteHandler#0;class#RouteHandler#0" expanded="false" />
+            <element signature="method#route_creator#0;class#RouteHandler#0" expanded="false" />
             <element signature="method#calculate_route_distance#0;class#RouteHandler#0" expanded="false" />
+            <element signature="method#basedOnValue#0;class#RouteHandler#0" expanded="false" />
+            <element signature="method#basedOnSuf_rate#0;class#RouteHandler#0" expanded="false" />
+            <element signature="method#basedOnProfit#0;class#RouteHandler#0" expanded="false" />
             <element signature="method#setIdOrder#0;class#RouteHandler#0" expanded="false" />
+            <element signature="method#setBetterOrder#0;class#RouteHandler#0" expanded="false" />
           </folding>
         </state>
       </provider>
