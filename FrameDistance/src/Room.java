@@ -51,7 +51,7 @@ public class Room {
             this.distance_to_gravity[i] = distance;
         }
 
-        //if(simulatorType.equals(setting.simulatorType_dynamic)) Util.write_gravity(roomId, areaNumber, distance_to_gravity);
+        if(simulatorType.equals(setting.simulatorType_dynamic)) Util.write_gravity(roomId, areaNumber, distance_to_gravity);
 
     }
 

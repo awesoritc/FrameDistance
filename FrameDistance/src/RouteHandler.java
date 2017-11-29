@@ -366,7 +366,7 @@ public class RouteHandler {
         ArrayList<Room> best_route = new ArrayList<>(route);
         int best_distance = calculate_route_distance(best_route);
 
-        for (int a = 0; a < 1000; a++) {
+        for (int a = 0; a < 100; a++) {
             //1.ランダムルートの作成
             ArrayList<Room> random_route = new ArrayList<>(route);
             double[] d = new double[route.size()];
