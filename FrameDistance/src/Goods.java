@@ -1,3 +1,4 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -81,15 +82,33 @@ public class Goods {
 
         NormalDistribution nd = new NormalDistribution(average, variance);
         int demand;
-        if(setting.ad_average){
-            demand = (int) Math.round(nd.random());
+
+        //TODO:需要の発生をポアソン分布による確率分布に従わせる
+            //todo:ポアソン分布の時に需要がきちんと発生しているかどうかを確認
+        if(setting.use_poisson){
+            demand = nd.poisson();
+            //ファイルに書き出して需要がきちんと発生しているかどうかを確認する
+            if(average == 2){
+                try{
+                    BufferedWriter br = new BufferedWriter(new FileWriter(new File("tmp.csv")));
+                    br.write(demand);
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }else{
-            demand = (int) (Math.round(nd.random()) * ratio);
+            if(setting.ad_average){
+                demand = (int) Math.round(nd.random());
+            }else{
+                demand = (int) (Math.round(nd.random()) * ratio);
+            }
+
+            if(demand < 0){
+                demand = 0;
+            }
         }
 
-        if(demand < 0){
-            demand = 0;
-        }
 
         int sales;
         int shortage;
@@ -180,7 +199,6 @@ public class Goods {
 
     //ルート作成用のメソッド
     //商品の欠品予想数を計算
-    //TODO:在庫が0の場合には以前の予測数を使う
     private double prev_exp = 0;
     public int expect_shortage_goods(int interval){
 
@@ -288,14 +306,6 @@ public class Goods {
 
 
     }
-
-
-    //TODO:商品設置数の調整用メソッド
-    public void adjust_goods(){}
-
-
-
-
 
 
     //getter,setter
