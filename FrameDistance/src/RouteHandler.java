@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -472,8 +473,17 @@ public class RouteHandler {
 
     //根本的なルート作成方法の変更
     //TODO:ルートの作成を ルート選択・最適度計算 を回して最適なルートを作成する
-    public void route_create_agile(Room[] rooms){
+    public void route_create_agile(Room[] rooms, int current_area){
+
+        ArrayList<Room> rooms_d = new ArrayList<>(Arrays.asList(rooms));
+
+        ArrayList<Room> route = new ArrayList<>();
         //何かしらの基準で部屋を取得
+        for (int i = 0; i < rooms_d.size(); i++) {
+            if(rooms_d.get(i).getAreaNumber() == current_area){
+                route.add(rooms_d.get(i));
+            }
+        }
 
         //距離と回収できる不足個数を兼ねた評価基準での評価
         //TODO:評価値の作成
