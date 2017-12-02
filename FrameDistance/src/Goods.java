@@ -1,7 +1,4 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Goods {
@@ -90,9 +87,9 @@ public class Goods {
             //ファイルに書き出して需要がきちんと発生しているかどうかを確認する
             if(average == 2){
                 try{
-                    BufferedWriter br = new BufferedWriter(new FileWriter(new File("tmp.csv")));
-                    br.write(demand);
-                    br.close();
+                    PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
+                    pw.write(demand + "\n");
+                    pw.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
