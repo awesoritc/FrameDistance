@@ -53,8 +53,8 @@ public class Setting {
     final double[] demand_mul = {0.3, 1.0, 4.0};//需要の倍率(5:3:2)
     final int[] rooms_distribution = {5, 3, 2};
     final boolean ad_average = true;//averageに調整値を入れるかどうか((sμ, σ) にするかどうか)
-    final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
     final boolean ad_c_value = false;//補正値による需要調整を入れるかどうか
+    final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
 

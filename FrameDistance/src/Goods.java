@@ -85,7 +85,7 @@ public class Goods {
         if(setting.use_poisson){
             demand = nd.poisson();
             //ファイルに書き出して需要がきちんと発生しているかどうかを確認する
-            if(average == 2){
+            if(average == 0){
                 try{
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
                     pw.write(demand + "\n");

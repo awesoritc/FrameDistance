@@ -39,6 +39,9 @@ public final class NormalDistribution {
     //ポアソン分布
     public int poisson(){
 
+        //TODO:修正
+        //平均が大きかった時にきちんとした値を返すことができない
+
         double lambda = mean;//平均
         ArrayList<Integer> array = new ArrayList<>();//ポアソン分布の確率分布
 
