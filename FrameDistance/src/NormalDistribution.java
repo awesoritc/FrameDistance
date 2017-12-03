@@ -54,7 +54,7 @@ public final class NormalDistribution {
             }
             //System.out.println(i + ":" + Math.floor(percent * 10000));
             array.add((int)Math.floor(percent * 10000));
-            if(Math.floor(percent * 10000) < 1 ){
+            if(array_cont(array) > 9990){
                 break;
             }
         }
@@ -90,5 +90,17 @@ public final class NormalDistribution {
         }
 
         return new double[]{fact, e};
+    }
+
+
+    private int array_cont(ArrayList<Integer> array){
+
+        int tmp = 0;
+
+        for (int i = 0; i < array.size(); i++) {
+            tmp += array.get(i);
+        }
+
+        return tmp;
     }
 }
