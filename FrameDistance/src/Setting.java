@@ -56,7 +56,7 @@ public class Setting {
     final boolean ad_c_value = false;//補正値による需要調整を入れるかどうか
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
-    final boolean use_poisson = true;//ポアソン分布を使うかどうか
+    final boolean use_poisson = false;//ポアソン分布を使うかどうか
 
 
 

@@ -71,7 +71,7 @@ public class Room {
         //TODO:日にちごとに不足個数を書き出し
         try{
             FileWriter w = new FileWriter(new File("./Data/shortage_day_room.csv"), true);
-            w.write( simulatiorType + "," + last_replenishment + "," + day + "," + roomId + "," + roomType + "," + shortage + "\n");
+            w.write( day + "," + roomId + "," + areaNumber + "," + simulatiorType + "," + last_replenishment + "," + roomType + "," + shortage + "\n");
             w.close();
         } catch (IOException e) {
             e.printStackTrace();

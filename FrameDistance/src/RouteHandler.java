@@ -477,16 +477,26 @@ public class RouteHandler {
 
         ArrayList<Room> rooms_d = new ArrayList<>(Arrays.asList(rooms));
 
-        ArrayList<Room> route = new ArrayList<>();
+        ArrayList<Room> route_st = new ArrayList<>();
         //何かしらの基準で部屋を取得
         for (int i = 0; i < rooms_d.size(); i++) {
             if(rooms_d.get(i).getAreaNumber() == current_area){
-                route.add(rooms_d.get(i));
+                route_st.add(rooms_d.get(i));
             }
+        }
+
+        //
+        int expect_shortage_st = 0;
+        int about_distance_st = calc_about_distance(route_st, current_area);
+        for (int i = 0; i < route_st.size(); i++) {
+            expect_shortage_st += route_st.get(i).expect_shortage(current_area);
         }
 
         //距離と回収できる不足個数を兼ねた評価基準での評価
         //TODO:評価値の作成(不足予測個数がなるべく少なくなるように(稼働率8割以下になるように))
+        //不足個数の多さ、距離の長さでそれぞれ点数をつけて、回るエリアの数でペナルティをつける足したものを総合点数とする (routeと比較して点数をつける)
+
+
 
 
         //評価値が高いかどうかを

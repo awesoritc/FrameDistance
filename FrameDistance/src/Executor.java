@@ -7,9 +7,8 @@ public class Executor {
 
     /*TODO:
     * 他のエリアに近い部屋が絶対に発生しないところまでbufferを広げる
-    * 　エリア判別のJavaファイルを共有
-    * Goods: 需要の発生をポアソン分布に変更
-    * Data_room_condition: 当日エリアで回らなかったところで、次に回ってくるまでにどの程度品切れを起こしているかを確認->mコマンドで行う
+    * Goods: 需要の発生をポアソン分布に変更 -> 変更した後に分析と需要の調整をいれる
+    * Data_room_condition: 当日エリアで回らなかったところで、次に回ってくるまでにどの程度品切れを起こしているかを確認 -> shortage_day_roomのlast_rep_dayから変数を作れる (Roomに変数をつけて、それをrooms_conditionファイルに書き出す)
     * RouteHandler: 他エリアを回る時にペナルティを設定する（回る)エリアの数が増えれば増えるほど
     * RouteHandler: 回る部屋を選択する時に、全域木を利用して部屋選択・ルート距離計算を回して、効率的なルートを作成する
     *
@@ -33,7 +32,7 @@ public class Executor {
             new FileWriter(new File("./Data/day_based.csv")).write("");
             new FileWriter(new File("./Data/room_based.csv")).write("");
             w = new FileWriter(new File("./Data/shortage_day_room.csv"));
-            w.write("simulatorType,last_rep_day,day,roomId,roomType,shortage\n");
+            w.write("day,roomId,areaNum,simulatorType,last_rep_day,roomType,shortage\n");
             w.close();
 
             w = new FileWriter(new File("./Data/ac_goods_ss_dynamic.csv"));

@@ -53,6 +53,11 @@ public class Goods {
             this.variance = setting.goods[goodsType][1] + (setting.c_value_variance[goodsType]*ratio);
         }
 
+        if(setting.use_poisson){
+            //TODO:averageとvarianceを調整する
+
+        }
+
         this.stock = max;
 
         itemBox = new ArrayList<>();
