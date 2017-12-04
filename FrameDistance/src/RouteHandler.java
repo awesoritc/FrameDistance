@@ -126,8 +126,6 @@ public class RouteHandler {
 
         ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
 
-        ArrayList<Room> tmp_room = new ArrayList<>(Arrays.asList(r));
-
 
         ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
 
@@ -137,11 +135,11 @@ public class RouteHandler {
         ArrayList<Integer> array = new ArrayList<>();
         for (int i = 0; i < room.size(); i++) {
             if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
+                route.add(room.get(i));
+                array.add(room.get(i).getRoomId());
                 if(route.size() >= setting.limit){
                     return route;
                 }
-                route.add(room.get(i));
-                array.add(room.get(i).getRoomId());
             }
         }
 
@@ -177,7 +175,7 @@ public class RouteHandler {
                 }
             }
 
-            if(room.get(i).rep_value(current_area) > setting.border_rep_value && room.get(i).expect_shortage(current_area) >= setting.border_expected_shortage){
+            if(room.get(i).rep_value(current_area) > setting.border_rep_value && room.get(i).expect_shortage(current_area) >= setting.border_expected_shortage && room.get(i).getDistance_to_gravity()[current_area] < setting.border_distance){
                 route.add(room.get(i));
             }
 
@@ -486,16 +484,17 @@ public class RouteHandler {
         }
 
         //
-        int expect_shortage_st = 0;
-        int about_distance_st = calc_about_distance(route_st, current_area);
-        for (int i = 0; i < route_st.size(); i++) {
-            expect_shortage_st += route_st.get(i).expect_shortage(current_area);
-        }
+        //やること
+        //予測不足個数の多い順に並べる
+        //
 
         //距離と回収できる不足個数を兼ねた評価基準での評価
-        //TODO:評価値の作成(不足予測個数がなるべく少なくなるように(稼働率8割以下になるように))
-        //不足個数の多さ、距離の長さでそれぞれ点数をつけて、回るエリアの数でペナルティをつける足したものを総合点数とする (routeと比較して点数をつける)
+        //TODO:回収する不足予想個数を最大化(subject to (availabirity < 0.9))
+        ArrayList<ArrayList<Room>> potential_routes = new ArrayList<>();
+        //10パターンのルートを確認し、一番いいものを追加
+        for (int i = 0; i < 10; i++) {
 
+        }
 
 
 

@@ -92,12 +92,21 @@ public class Executor {
         System.out.println(simulator_static.getTotal_distance());
         System.out.println(simulator_static.getTotal_expire_loss());
         System.out.println();
+
+
         System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
         System.out.println(simulator_dynamic.getTotal_shortage());
         System.out.println(simulator_dynamic.getTotal_distance());
         System.out.println(simulator_dynamic.getTotal_expire_loss());
-
+        /*
+        int rooms_n = 0;
+        ArrayList<ArrayList<Room>> a = simulator_dynamic.getRouteHistory();
+        for (int i = 0; i < a.size(); i++) {
+            rooms_n += a.get(i).size();
+        }
+        System.out.println(simulator_dynamic.getTotal_sales() * 100 * setting.profit_rate - (simulator_dynamic.getTotal_expire_loss() * 100) - ((rooms_n * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
+        */
 
         simulator_dynamic.write_goods_shortage();
 

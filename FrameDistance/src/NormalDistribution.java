@@ -63,13 +63,14 @@ public final class NormalDistribution {
         Random rand = new Random();
         int tmp = rand.nextInt(10000);
         int accum = 0;
-        for(int i = 0; i < array.size(); i++){
+        int i;
+        for(i = 0; i < array.size(); i++){
             accum += array.get(i);
             if(tmp < accum){
                 return i;
             }
         }
-        return array.get(array.size()-1);
+        return i;
     }
 
 
