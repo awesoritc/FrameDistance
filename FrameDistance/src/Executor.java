@@ -91,6 +91,16 @@ public class Executor {
         System.out.println(simulator_static.getTotal_shortage());
         System.out.println(simulator_static.getTotal_distance());
         System.out.println(simulator_static.getTotal_expire_loss());
+
+        int rooms_n_st = 0;
+        ArrayList<ArrayList<Room>> a_st = simulator_static.getRouteHistory();
+        for (int i = 0; i < a_st.size(); i++) {
+            rooms_n_st += a_st.get(i).size();
+        }
+        System.out.println(((rooms_n_st * setting.service_time_per_room * setting.payment_per_min) + (simulator_static.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
+
+
+
         System.out.println();
 
 
@@ -99,14 +109,14 @@ public class Executor {
         System.out.println(simulator_dynamic.getTotal_shortage());
         System.out.println(simulator_dynamic.getTotal_distance());
         System.out.println(simulator_dynamic.getTotal_expire_loss());
-        /*
-        int rooms_n = 0;
-        ArrayList<ArrayList<Room>> a = simulator_dynamic.getRouteHistory();
-        for (int i = 0; i < a.size(); i++) {
-            rooms_n += a.get(i).size();
+
+        int rooms_n_dy = 0;
+        ArrayList<ArrayList<Room>> a_dy = simulator_dynamic.getRouteHistory();
+        for (int i = 0; i < a_dy.size(); i++) {
+            rooms_n_dy += a_dy.get(i).size();
         }
-        System.out.println(simulator_dynamic.getTotal_sales() * 100 * setting.profit_rate - (simulator_dynamic.getTotal_expire_loss() * 100) - ((rooms_n * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
-        */
+        System.out.println(((rooms_n_dy * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
+
 
         simulator_dynamic.write_goods_shortage();
 

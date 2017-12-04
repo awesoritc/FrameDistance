@@ -37,6 +37,8 @@ public class RouteHandler {
             //変動のルート
             if(setting.routeType.equals(setting.routeType_value)){
                 route = setBetterOrder(setIdOrder(basedOnValue(rooms, current_area)));
+                //route = setBetterOrder(setIdOrder(route_create_dynamic_p(rooms, current_area)));
+
                 //route = setBetterOrder(setIdOrder(basedOnProfit(rooms, current_area)));
             }else if(setting.routeType.equals(setting.routeType_greedy)){
                 route = setBetterOrder(setIdOrder(basedOnSuf_rate(rooms, current_area)));
@@ -219,7 +221,7 @@ public class RouteHandler {
 
 
     //商品が少なくなったところを回る
-    public ArrayList<Room> basedOnSuf_rate(Room[] r, int current_area){
+    private ArrayList<Room> basedOnSuf_rate(Room[] r, int current_area){
 
         ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
         ArrayList<Room> route = new ArrayList<>();
@@ -275,7 +277,7 @@ public class RouteHandler {
 
 
     //機会損失回避のメリットと、補充の人件費を考慮した金額ベースの補充優先度
-    public ArrayList<Room> basedOnProfit(Room[] r, int current_area){
+    private ArrayList<Room> basedOnProfit(Room[] r, int current_area){
 
         ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
         ArrayList<Room> route = new ArrayList<>();
@@ -471,30 +473,62 @@ public class RouteHandler {
 
     //根本的なルート作成方法の変更
     //TODO:ルートの作成を ルート選択・最適度計算 を回して最適なルートを作成する
-    public void route_create_agile(Room[] rooms, int current_area){
+    private ArrayList<Room> route_create_dynamic_p(Room[] r, int current_area){
 
-        ArrayList<Room> rooms_d = new ArrayList<>(Arrays.asList(rooms));
+        ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
+        ArrayList<Room> route = new ArrayList<>();
 
-        ArrayList<Room> route_st = new ArrayList<>();
-        //何かしらの基準で部屋を取得
-        for (int i = 0; i < rooms_d.size(); i++) {
-            if(rooms_d.get(i).getAreaNumber() == current_area){
-                route_st.add(rooms_d.get(i));
+        //expire_flagがtrueの部屋を必ず回る(最大日数は削除)
+        ArrayList<Integer> array = new ArrayList<>();
+        for (int i = 0; i < room.size(); i++) {
+            if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
+                route.add(room.get(i));
+                array.add(room.get(i).getRoomId());
             }
         }
 
-        //
-        //やること
+
         //予測不足個数の多い順に並べる
-        //
+        for (int i = 0; i < room.size(); i++) {
+            for (int j = 0; j < room.size(); j++) {
+                if(i < j){
+                    if(room.get(i).expect_shortage(current_area) < room.get(j).expect_shortage(current_area)){
+                        Room tmp = room.get(i);
+                        room.set(i, room.get(j));
+                        room.set(j, tmp);
+                    }
+                }
+            }
+        }
+
+        //availabilityが0.9ぎりぎりになるように選択
+        outside: for (int i = 0; i < room.size(); i++) {
+            //とりあえず30部屋追加
+            for (int j = 0; j < array.size(); j++) {
+                if(room.get(i).getRoomId() == array.get(j)){
+                    continue outside;
+                }
+            }
+            route.add(room.get(i));
+            if(route.size() >= 30){
+                break;
+            }
+        }
+
+        double availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
+
+        while(availability > 0.9){
+            //System.out.println(availability);
+            route.remove(route.size()-1);
+            availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
+        }
+
+        return route;
 
         //距離と回収できる不足個数を兼ねた評価基準での評価
         //TODO:回収する不足予想個数を最大化(subject to (availabirity < 0.9))
-        ArrayList<ArrayList<Room>> potential_routes = new ArrayList<>();
-        //10パターンのルートを確認し、一番いいものを追加
-        for (int i = 0; i < 10; i++) {
+        //ArrayList<ArrayList<Room>> potential_routes = new ArrayList<>();
 
-        }
 
 
 
@@ -503,7 +537,7 @@ public class RouteHandler {
 
 
     //近似解のルートを作成するのに時間がかかるので、ルートを作成せずに距離が長いか短いかを全域木を利用して大体計測する。
-    public int calc_about_distance(ArrayList<Room> selected_rooms/*選択された部屋群*/, int current_area){
+    private int calc_about_distance(ArrayList<Room> selected_rooms/*選択された部屋群*/, int current_area){
 
         //全ての部屋の (current_areaの重心との距離*2) を足し合わせたものを、最悪距離として返却
         int worst_distance = 0;

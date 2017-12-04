@@ -57,9 +57,9 @@ public class Setting {
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
-    //final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
-    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {1.0, 3.0, 6.0}};//λ [roomType][goodsType]
-    final int[] max_poisson = {20, 20, 20};
+    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
+    //final double[][] lambda_poisson = {{0.1, 0.5, 1.0}, {0.1, 2.0, 4.0}, {1.0, 4.0, 8.0}};//λ [roomType][goodsType]
+    final int[] max_poisson = {10, 10, 10};
 
 
 
@@ -70,7 +70,7 @@ public class Setting {
 
     final double border_rep_value = 0.07;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
     final int border_expected_shortage = 0;//補充に行くかどうかを決定する不足予想個数の閾値(最悪ライン)
-    final int border_distance = 100;//補充に行くかどうかを決定する距離の閾値(最悪ライン)
+    final int border_distance = 10000;//補充に行くかどうかを決定する距離の閾値(最悪ライン)
 
     //作業時間要素を追加
     final int work_time = 390;//1日の労働時間
