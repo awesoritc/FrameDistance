@@ -133,7 +133,7 @@ public class RouteHandler {
 
 
         //最大日数を超えて補充に回っていない部屋を追加
-        //TODO:expire_flagがtrueの部屋を必ず回る(最大日数は削除)
+        //expire_flagがtrueの部屋を必ず回る(最大日数は削除)
         ArrayList<Integer> array = new ArrayList<>();
         for (int i = 0; i < room.size(); i++) {
             if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
@@ -177,7 +177,7 @@ public class RouteHandler {
                 }
             }
 
-            if(room.get(i).rep_value(current_area) > 0){
+            if(room.get(i).rep_value(current_area) > setting.border_rep_value && room.get(i).expect_shortage(current_area) >= setting.border_expected_shortage){
                 route.add(room.get(i));
             }
 
@@ -208,7 +208,7 @@ public class RouteHandler {
                         }
                     }
                     //(day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point)
-                    pw.write(day + "," + r[i].getRoomId() + "," + ifInRoute + "," + r[i].suf_rate() + "," + r[i].expect_shortage(current_area) + "," + r[i].getDistance_to_gravity()[current_area] + "\n");
+                    pw.write(day + "," + r[i].getRoomId() + "," + ifInRoute + "," + r[i].suf_rate() + "," + r[i].expect_shortage(current_area) + "," + r[i].getDistance_to_gravity()[current_area] + "," + r[i].rep_value(current_area) + "\n");
                 }
                 pw.close();
             } catch (IOException e) {

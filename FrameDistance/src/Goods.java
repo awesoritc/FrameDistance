@@ -54,8 +54,10 @@ public class Goods {
         }
 
         if(setting.use_poisson){
-            //TODO:averageとvarianceを調整する
-
+            //TODO:averageを調整する
+                //todo:goodsTypeによる調整を入れる
+            this.average = setting.lambda_poisson[roomType][goodsType];
+            this.max = setting.max_poisson[roomType];
         }
 
         this.stock = max;

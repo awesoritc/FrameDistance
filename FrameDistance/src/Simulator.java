@@ -152,7 +152,7 @@ public class Simulator {
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/ac_goods_ss_" + simulatiorType +".csv"), true)));
                 for (int j = 0; j < goodslist.size(); j++) {
                     //(simulatorType,roomID,goodsNumber,roomType,goodsType,ac_shortage)
-                    pw.write(simulatiorType + "," + room.getRoomId() + ","  + j + "," + room.getRoomType() + "," + goodslist.get(j).getGoodsType() + "," + goodslist.get(j).getAc_sales() + goodslist.get(j).getAc_shortage() + "\n");
+                    pw.write(simulatiorType + "," + room.getRoomId() + ","  + j + "," + room.getRoomType() + "," + goodslist.get(j).getGoodsType() + "," + goodslist.get(j).getAc_sales() + "," + goodslist.get(j).getAc_shortage() + "\n");
                 }
                 pw.close();
             } catch (IOException e) {

@@ -25,7 +25,7 @@ public class Executor {
             FileWriter w;
 
             w = new FileWriter(new File("./Data/rooms_condition_dy.csv"));
-            w.write("day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point\n");
+            w.write("day,roomId,ifInRoute,suf_rate,expect_shortage,dis_from_point,rep_value\n");
             w.close();
             new FileWriter(new File("./Data/Route_dynamic.csv")).write("");
             new FileWriter(new File("./Data/Route_static.csv")).write("");

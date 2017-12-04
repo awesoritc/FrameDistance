@@ -56,7 +56,9 @@ public class Setting {
     final boolean ad_c_value = false;//補正値による需要調整を入れるかどうか
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
-    final boolean use_poisson = false;//ポアソン分布を使うかどうか
+    final boolean use_poisson = true;//ポアソン分布を使うかどうか
+    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
+    final int[] max_poisson = {3, 5, 40};
 
 
 
@@ -64,6 +66,9 @@ public class Setting {
     final int interval_weeks = 5;
     final int longest_interval = 25;//補充の最大間隔
     final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
+
+    final double border_rep_value = 0.09;//補充に行くかどうかを決定する補充優先度の閾値
+    final int border_expected_shortage = 0;//補充に行くかどうかを決定する不足予想個数の閾値
 
     //作業時間要素を追加
     final int work_time = 390;//1日の労働時間
