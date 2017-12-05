@@ -59,8 +59,10 @@ public class Setting {
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
     final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
     //final double[][] lambda_poisson = {{0.1, 0.5, 1.0}, {0.1, 2.0, 4.0}, {1.0, 4.0, 8.0}};//λ [roomType][goodsType]
-    final int[] max_poisson = {10, 10, 10};
+    final int[] max_poisson = {3, 8, 20};
 
+
+    final boolean goods_fix = true;//商品の種類・登録数を固定するかどうか
 
 
     final int interval_days = 5;

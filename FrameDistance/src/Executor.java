@@ -6,11 +6,7 @@ import java.util.Random;
 public class Executor {
 
     /*TODO:
-    * 他のエリアに近い部屋が絶対に発生しないところまでbufferを広げる
-    * Goods: 需要の発生をポアソン分布に変更 -> 変更した後に分析と需要の調整をいれる
-    * Data_room_condition: 当日エリアで回らなかったところで、次に回ってくるまでにどの程度品切れを起こしているかを確認 -> shortage_day_roomのlast_rep_dayから変数を作れる (Roomに変数をつけて、それをrooms_conditionファイルに書き出す)
-    * RouteHandler: 他エリアを回る時にペナルティを設定する（回る)エリアの数が増えれば増えるほど
-    * RouteHandler: 回る部屋を選択する時に、全域木を利用して部屋選択・ルート距離計算を回して、効率的なルートを作成する
+    * 部屋ごとに設置する商品の種類とその数は固定にする
     *
     */
 
@@ -46,19 +42,35 @@ public class Executor {
 
         //それぞれの部屋に登録する商品の番号をセット(登録はSimulatorで行う)
         ArrayList<Integer> goods_alloc = new ArrayList<>();
-        for (int i = 0; i < setting.room; i++) {
-            for (int j = 0; j < setting.goodsNum_per_room; j++) {
-                Random rand = new Random();
-                int random = rand.nextInt(10);
-                int version;
-                if(random < setting.goods_distribution[0]){
-                    version = 0;
-                }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
-                    version = 1;
-                }else{
-                    version = 2;
+        if(setting.goods_fix){
+            for (int i = 0; i < setting.room; i++) {
+                for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                    int version;
+                    if(j < setting.goods_distribution[0]){
+                        version = 0;
+                    }else if(j < (setting.goods_distribution[0] + setting.goods_distribution[1])){
+                        version = 1;
+                    }else{
+                        version = 2;
+                    }
+                    goods_alloc.add(version);
                 }
-                goods_alloc.add(version);
+            }
+        }else{
+            for (int i = 0; i < setting.room; i++) {
+                for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                    Random rand = new Random();
+                    int random = rand.nextInt(10);
+                    int version;
+                    if(random < setting.goods_distribution[0]){
+                        version = 0;
+                    }else if(random < setting.goods_distribution[0] + setting.goods_distribution[1]){
+                        version = 1;
+                    }else{
+                        version = 2;
+                    }
+                    goods_alloc.add(version);
+                }
             }
         }
 
@@ -100,7 +112,6 @@ public class Executor {
         System.out.println(((rooms_n_st * setting.service_time_per_room * setting.payment_per_min) + (simulator_static.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
 
 
-
         System.out.println();
 
 
@@ -125,24 +136,6 @@ public class Executor {
 
 
         //結果の書き出し
-
-
-        /*//日毎の移動距離
-        try{
-            ArrayList<Integer> time_st = simulator_static.getRouteTime();
-            ArrayList<Integer> time_dy = simulator_dynamic.getRouteTime();
-
-            new FileWriter(new File("time.csv")).write("");
-            PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("time.csv"), true)));
-            pw_time.write("day,time_static,time_dynamic\n");
-            for (int i = 0; i < time_st.size(); i++) {
-                //System.out.println(time_st.get(i));
-                pw_time.write(i + "," +  time_st.get(i) + "," + time_dy.get(i) + "\n");
-            }
-            pw_time.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         //部屋ごとのルート(dy)
         try{
@@ -184,110 +177,6 @@ public class Executor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        /*//日毎のss
-        try{
-            ArrayList<Integer> sales_st = simulator_static.getSalesHistory();
-            ArrayList<Integer> shortage_st = simulator_static.getShortageHistory();
-            ArrayList<Integer> sales_dy = simulator_dynamic.getSalesHistory();
-            ArrayList<Integer> shortage_dy = simulator_dynamic.getShortageHistory();
-            new FileWriter(new File("ss.csv")).write("");
-            PrintWriter pw_history_ss = new PrintWriter(new BufferedWriter(new FileWriter(new File("ss.csv"), true)));
-            pw_history_ss.write("day,sales_static,shortage_static,sales_dynamic,shortage_dynamic" + "\n");
-            for (int i = 0; i < sales_st.size(); i++) {
-                pw_history_ss.write(i + "," + sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "\n");
-            }
-            pw_history_ss.write("\n");
-            pw_history_ss.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //部屋ごとの売上と不足個数を書き出し
-        try{
-            new FileWriter(new File("ss_rooms.csv")).write("");
-            PrintWriter pw_room = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "ss_rooms.csv"), true)));
-
-            pw_room.write("roomId,sales_st,shortage_st,sales_dy,shortage_dy\n");
-
-            int[] sales_st = simulator_static.getSales_rooms();
-            int[] shortage_st = simulator_static.getShortage_rooms();
-            int[] sales_dy = simulator_dynamic.getSales_rooms();
-            int[] shortage_dy = simulator_dynamic.getShortage_rooms();
-            for (int i = 0; i < sales_st.length; i++) {
-                pw_room.write(i + "," +  + sales_st[i] + "," + shortage_st[i] + "," + sales_dy[i] + "," + shortage_dy[i] + "\n");
-            }
-            pw_room.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        //日毎の廃棄ロスを書き出し
-        try{
-            new FileWriter(new File("expire_loss.csv")).write("");
-
-            ArrayList<Integer> loss_st = simulator_static.getExpire_countHistory();
-            ArrayList<Integer> loss_dy = simulator_dynamic.getExpire_countHistory();
-            PrintWriter pw_loss = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "expire_loss.csv"), true)));
-
-            pw_loss.write("day,loss_static,loss_dynamic\n");
-
-            for (int i = 0; i < loss_st.size(); i++) {
-                pw_loss.write(i + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
-            }
-            pw_loss.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //部屋ごとの廃棄ロスを書き出し
-        try{
-            new FileWriter(new File("expire_loss_room.csv")).write("");
-            ArrayList<Integer> loss_st = new ArrayList<>(Arrays.asList(simulator_static.getRoom_expire()));
-            ArrayList<Integer> loss_dy = new ArrayList<>(Arrays.asList(simulator_dynamic.getRoom_expire()));
-            PrintWriter pw_loss = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "expire_loss_room.csv"), true)));
-
-            pw_loss.write("roomId,loss_static,loss_dynamic\n");
-
-            for (int i = 0; i < loss_st.size(); i++) {
-                pw_loss.write(i + "," +  loss_st.get(i) + "," + loss_dy.get(i) + "\n");
-            }
-            pw_loss.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //日毎の稼働率書き出し
-        try{
-            new FileWriter(new File("availability.csv")).write("");
-            ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
-            ArrayList<Double> availability_dy = simulator_dynamic.getAvailabilityHistory();
-            PrintWriter pw_availability = new PrintWriter(new BufferedWriter(new FileWriter(new File(
-                    "availability.csv"), true)));
-
-            pw_availability.write("day,availability_static,availability_dynamic\n");
-
-            for (int i = 0; i < availability_st.size(); i++) {
-                pw_availability.write(i + "," +  availability_st.get(i) + "," + availability_dy.get(i) + "\n");
-            }
-            pw_availability.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-
-
-
 
 
         //整理したもの
