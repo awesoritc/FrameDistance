@@ -46,6 +46,9 @@ public class Executor {
         if(setting.goods_fix){
             for (int i = 0; i < setting.room; i++) {
                 for (int j = 0; j < setting.goodsNum_per_room; j++) {
+                    //todo:登録する商品の種類を1種類に固定して検証
+                    int version = 0;
+                    /*
                     int version;
                     if(j < setting.goods_distribution[0]){
                         version = 0;
@@ -53,7 +56,7 @@ public class Executor {
                         version = 1;
                     }else{
                         version = 2;
-                    }
+                    }*/
                     goods_alloc.add(version);
                 }
             }
