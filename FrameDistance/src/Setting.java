@@ -57,8 +57,9 @@ public class Setting {
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
+    //TODO:最大値と需要の値をルート固定の時の売上と不足の割合で設定する(8:2, or 7:3 程度？)
+    //todo:登録する商品をの需要を1種類にして行ってみる
     final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
-    //final double[][] lambda_poisson = {{0.1, 0.5, 1.0}, {0.1, 2.0, 4.0}, {1.0, 4.0, 8.0}};//λ [roomType][goodsType]
     final int[] max_poisson = {3, 8, 20};
 
 
