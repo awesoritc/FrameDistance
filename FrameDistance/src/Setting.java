@@ -2,10 +2,8 @@ public class Setting {
 
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/rooms1";
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/suburb_room_75_75";
-    final String filename = "./Rooms/75_75_buffer";//(bufferの大きさは ceil(x_max/20)(4))
-
-    //TODO:他のエリアに近い部屋が発生しないところまでbufferを大きくする
-    //final String filename = "./Rooms/75_75_buffer_TEST";
+    //final String filename = "./Rooms/75_75_buffer";//(bufferの大きさは ceil(x_max/20)(4))
+    final String filename = "./Rooms/version1";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -57,10 +55,11 @@ public class Setting {
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
-    //TODO:最大値と需要の値をルート固定の時の売上と不足の割合で設定する(8:2, or 7:3 程度？)
+    //TODO:最大値と需要の値をルート固定の時の売上と不足の割合で設定する(9:1 程度？)
     //todo:登録する商品をの需要を1種類にして行ってみる
-    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.1, 0.3, 1.0}, {0.3, 1.2, 4.0}};//λ [roomType][goodsType]
-    final int[] max_poisson = {3, 8, 20};
+    final double tmp_lambda = 1.8;
+    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {tmp_lambda,tmp_lambda,tmp_lambda}/*{0.09, 0.3, 0.9}*/, {0.27, 0.9, 2.7}};//λ [roomType][goodsType]
+    final int[] max_poisson = {3, 9, 27};
 
 
     final boolean goods_fix = true;//商品の種類・登録数を固定するかどうか

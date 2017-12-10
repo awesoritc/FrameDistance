@@ -22,7 +22,7 @@ public class RoomFileCreator {
         if(new File(filename+".csv").exists()){
             System.out.println("");
             System.out.println("すでにファイルが存在しています");
-            System.exit(1);
+            System.exit(50);
         }
 
 
@@ -55,13 +55,16 @@ public class RoomFileCreator {
                     Random rand = new Random();
                     int ranInt = rand.nextInt(10);
                     int roomType;
-                    if(ranInt < setting.rooms_distribution[0]){
+
+                    roomType = 2;
+
+                    /*if(ranInt j % 10 < setting.rooms_distribution[0]){
                         roomType = 0;
-                    }else if(ranInt < setting.rooms_distribution[0] + setting.rooms_distribution[1]){
+                    }else if(ranInt j % 10 < setting.rooms_distribution[0] + setting.rooms_distribution[1]){
                         roomType = 1;
                     }else{
                         roomType = 2;
-                    }
+                    }*/
 
                     // id,area_number,(x_pos:y_pos),roomType
                     pw_rooms.write(String.valueOf(a) + "," + String.valueOf(i) + "," +

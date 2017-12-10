@@ -6,8 +6,10 @@ import java.util.Random;
 public class Executor {
 
     /*TODO:
+    * エリアごとの部屋規模を固定する(10部屋ごとに割合で固定した値にする)
     * 部屋ごとに設置する商品の種類とその数は固定にする
     * それぞれの部屋タイプ・商品タイプで、どの需要にすれば売上と不足のバランスが取れるかを確認しで設定
+    * 補充優先度のグラフを書いて分布確認(切るポイントを見つけるため)
     *
     */
 
@@ -47,8 +49,8 @@ public class Executor {
             for (int i = 0; i < setting.room; i++) {
                 for (int j = 0; j < setting.goodsNum_per_room; j++) {
                     //todo:登録する商品の種類を1種類に固定して検証
-                    int version = 0;
-                    /*
+                    //int version = 0;
+
                     int version;
                     if(j < setting.goods_distribution[0]){
                         version = 0;
@@ -56,7 +58,7 @@ public class Executor {
                         version = 1;
                     }else{
                         version = 2;
-                    }*/
+                    }
                     goods_alloc.add(version);
                 }
             }
@@ -117,7 +119,7 @@ public class Executor {
 
 
         System.out.println();
-
+/*
 
         System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
@@ -131,7 +133,7 @@ public class Executor {
             rooms_n_dy += a_dy.get(i).size();
         }
         System.out.println(((rooms_n_dy * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
-
+*/
 
         simulator_dynamic.write_goods_shortage();
 
