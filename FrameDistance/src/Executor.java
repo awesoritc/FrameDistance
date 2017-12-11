@@ -119,7 +119,7 @@ public class Executor {
 
 
         System.out.println();
-/*
+
 
         System.out.println("dynamic");
         System.out.println(simulator_dynamic.getTotal_sales());
@@ -133,7 +133,7 @@ public class Executor {
             rooms_n_dy += a_dy.get(i).size();
         }
         System.out.println(((rooms_n_dy * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
-*/
+
 
         simulator_dynamic.write_goods_shortage();
 

@@ -56,15 +56,15 @@ public class RoomFileCreator {
                     int ranInt = rand.nextInt(10);
                     int roomType;
 
-                    roomType = 2;
+                    //roomType = 2;
 
-                    /*if(ranInt j % 10 < setting.rooms_distribution[0]){
+                    if(j % 10 < setting.rooms_distribution[0]){
                         roomType = 0;
-                    }else if(ranInt j % 10 < setting.rooms_distribution[0] + setting.rooms_distribution[1]){
+                    }else if(j % 10 < setting.rooms_distribution[0] + setting.rooms_distribution[1]){
                         roomType = 1;
                     }else{
                         roomType = 2;
-                    }*/
+                    }
 
                     // id,area_number,(x_pos:y_pos),roomType
                     pw_rooms.write(String.valueOf(a) + "," + String.valueOf(i) + "," +

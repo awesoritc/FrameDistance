@@ -2,8 +2,8 @@ public class Setting {
 
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/rooms1";
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/suburb_room_75_75";
-    //final String filename = "./Rooms/75_75_buffer";//(bufferの大きさは ceil(x_max/20)(4))
-    final String filename = "./Rooms/version1";
+    final String filename = "./Rooms/75_75_buffer";//(bufferの大きさは ceil(x_max/20)(5))
+    //final String filename = "./Rooms/version0";
 
     final String simulatorType_dynamic = "dynamic";
     final String simulatorType_static = "static";
@@ -55,10 +55,10 @@ public class Setting {
     final boolean ad_max = true;//最大値を部屋倍率に合わせるかどうか
 
     final boolean use_poisson = true;//ポアソン分布を使うかどうか
-    //TODO:最大値と需要の値をルート固定の時の売上と不足の割合で設定する(9:1 程度？)
-    //todo:登録する商品をの需要を1種類にして行ってみる
-    final double tmp_lambda = 1.8;
-    final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {tmp_lambda,tmp_lambda,tmp_lambda}/*{0.09, 0.3, 0.9}*/, {0.27, 0.9, 2.7}};//λ [roomType][goodsType]
+    final double tmp_lambda = 0.02;
+    //final double[][] lambda_poisson = {{0.03, 0.1, 0.3}, {0.09, 0.3, 0.9}, {tmp_lambda,tmp_lambda,tmp_lambda}/*{0.27, 0.9, 2.7}*/};//λ [roomType][goodsType]
+    //final double[][] lambda_poisson = {{0.08, 0.4, 0.6}, {0.18, 1.7, 1.9},{0.43, 5.6, 6.3}};//真ん中の不足が全体の需要に対して10%, 廃棄が1%
+    final double[][] lambda_poisson = {{0.09, 0.2, 0.7}, {0.19, 0.3, 2.1}, {0.47, 2.2, 6.7}};//真ん中の不足が0(0のところは廃棄が0), 廃棄が1%
     final int[] max_poisson = {3, 9, 27};
 
 
@@ -70,7 +70,8 @@ public class Setting {
     final int longest_interval = 25;//補充の最大間隔
     final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
 
-    final double border_rep_value = 0.07;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
+    //TODO:優先度の値をグラフ化して、ちょうどいい閾値を設定
+    final double border_rep_value = 0.1;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
     final int border_expected_shortage = 0;//補充に行くかどうかを決定する不足予想個数の閾値(最悪ライン)
     final int border_distance = 10000;//補充に行くかどうかを決定する距離の閾値(最悪ライン)
 
