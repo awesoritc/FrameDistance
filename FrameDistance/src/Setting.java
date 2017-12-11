@@ -71,7 +71,7 @@ public class Setting {
     final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
 
     //TODO:優先度の値をグラフ化して、ちょうどいい閾値を設定
-    final double border_rep_value = 0.1;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
+    final double border_rep_value = 0.3;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
     final int border_expected_shortage = 0;//補充に行くかどうかを決定する不足予想個数の閾値(最悪ライン)
     final int border_distance = 10000;//補充に行くかどうかを決定する距離の閾値(最悪ライン)
 
