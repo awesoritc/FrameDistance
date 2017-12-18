@@ -168,6 +168,21 @@ public class RouteHandler {
             }
         }
 
+/*
+        for (int i = 0; i < setting.room; i++) {
+            if(isIncluded(route, room.get(i).getRoomId())){
+                continue;
+            }
+            if(room.get(i).getAreaNumber() == current_area){
+                route.add(room.get(i));
+            }
+            if(route.size() >= 5){
+                break;
+            }
+        }
+*/
+
+
         //ルートに優先度の高い部屋を追加
         outside: for (int i = 0; i < setting.room; i++) {
 
@@ -465,6 +480,17 @@ public class RouteHandler {
     }
 
 
+    //ルートの中にすでに入っているかをチェックする
+    private boolean isIncluded(ArrayList<Room> route, int roomId){
+        for (int i = 0; i < route.size(); i++) {
+            if(route.get(i).getRoomId() == roomId){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 
 
@@ -501,6 +527,10 @@ public class RouteHandler {
             }
         }
 
+        //TODO:動的計画法によってナップサック問題をとく
+        //Max:回収できる不足予想個数
+        //Subject to:availability <= 0.8
+
         //availabilityが0.9ぎりぎりになるように選択
         outside: for (int i = 0; i < room.size(); i++) {
             //とりあえず30部屋追加
@@ -517,7 +547,7 @@ public class RouteHandler {
 
         double availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
 
-        while(availability > 0.9){
+        while(availability > 0.8){
             //System.out.println(availability);
             route.remove(route.size()-1);
             availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
