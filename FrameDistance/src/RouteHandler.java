@@ -35,6 +35,7 @@ public class RouteHandler {
 
         }else if(simulatorType.equals(setting.simulatorType_dynamic)){
             //変動のルート
+            //エリアを回る順番を変更する
             if(setting.routeType.equals(setting.routeType_value)){
                 route = setBetterOrder(setIdOrder(basedOnValue(rooms, current_area)));
                 //route = setBetterOrder(setIdOrder(route_create_dynamic_p(rooms, current_area)));
@@ -168,20 +169,32 @@ public class RouteHandler {
             }
         }
 
-/*
+
         for (int i = 0; i < setting.room; i++) {
             if(isIncluded(route, room.get(i).getRoomId())){
                 continue;
             }
-            if(room.get(i).getAreaNumber() == current_area){
+            if(room.get(i).getRoomType() == 2 && (room.get(i).getAreaNumber() == current_area || room.get(i).getAreaNumber() == (current_area+3)%5)){
                 route.add(room.get(i));
             }
-            if(route.size() >= 5){
+            if(route.size() >= 20){
                 break;
             }
         }
-*/
 
+        for (int i = 0; i < setting.room; i++) {
+            if(isIncluded(route, room.get(i).getRoomId())){
+                continue;
+            }
+
+            route.add(room.get(i));
+
+            if(route.size() >= 20){
+                break;
+            }
+        }
+
+/*
 
         //ルートに優先度の高い部屋を追加
         outside: for (int i = 0; i < setting.room; i++) {
@@ -208,7 +221,7 @@ public class RouteHandler {
                     route.add(r[i]);
                 }
             }
-        }
+        }*/
 
         //ここでそれぞれの部屋の状況を書き出し
         if(simulatorType.equals(setting.simulatorType_dynamic)){
