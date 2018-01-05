@@ -20,10 +20,6 @@ public class Util {
 
 
 
-
-
-
-
     public static int[][] read_room_file(String filename, Setting setting){
 
         //room_file読み込み

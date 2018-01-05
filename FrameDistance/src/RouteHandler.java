@@ -22,6 +22,10 @@ public class RouteHandler {
     public ArrayList<Room> route_creator(Room[] rooms){
 
         int current_area = day%setting.area;
+
+        current_area = setting.order_rep[day%setting.area];
+        int current_area_num = day%setting.area;
+
         ArrayList<Room> route = new ArrayList<>();
 
         if(simulatorType.equals(setting.simulatorType_static)){
@@ -170,39 +174,11 @@ public class RouteHandler {
         }
 
 
-        for (int i = 0; i < setting.room; i++) {
-            if(isIncluded(route, room.get(i).getRoomId())){
-                continue;
-            }
-            if(room.get(i).getRoomType() == 2 && (room.get(i).getAreaNumber() == current_area || room.get(i).getAreaNumber() == (current_area+3)%5)){
-                route.add(room.get(i));
-            }
-            if(route.size() >= 20){
-                break;
-            }
-        }
-
-        for (int i = 0; i < setting.room; i++) {
-            if(isIncluded(route, room.get(i).getRoomId())){
-                continue;
-            }
-
-            route.add(room.get(i));
-
-            if(route.size() >= 20){
-                break;
-            }
-        }
-
-/*
-
         //ルートに優先度の高い部屋を追加
         outside: for (int i = 0; i < setting.room; i++) {
 
-            for (int j = 0; j < array.size(); j++) {
-                if(room.get(i).getRoomId() == array.get(j)){
-                    continue outside;
-                }
+            if(isIncluded(route, room.get(i).getRoomId())){
+                continue;
             }
 
             if(room.get(i).rep_value(current_area) > setting.border_rep_value && room.get(i).expect_shortage(current_area) >= setting.border_expected_shortage && room.get(i).getDistance_to_gravity()[current_area] < setting.border_distance){
@@ -221,7 +197,7 @@ public class RouteHandler {
                     route.add(r[i]);
                 }
             }
-        }*/
+        }
 
         //ここでそれぞれの部屋の状況を書き出し
         if(simulatorType.equals(setting.simulatorType_dynamic)){

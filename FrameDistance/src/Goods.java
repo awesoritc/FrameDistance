@@ -54,8 +54,6 @@ public class Goods {
         }
 
         if(setting.use_poisson){
-            //TODO:averageを調整する
-                //todo:goodsTypeによる調整を入れる
             this.average = setting.lambda_poisson[roomType][goodsType];
             this.max = setting.max_poisson[roomType];
         }
@@ -87,11 +85,8 @@ public class Goods {
         NormalDistribution nd = new NormalDistribution(average, variance);
         int demand;
 
-        //TODO:需要の発生をポアソン分布による確率分布に従わせる
-            //todo:ポアソン分布の時に需要がきちんと発生しているかどうかを確認
         if(setting.use_poisson){
             demand = nd.poisson();
-            //ファイルに書き出して需要がきちんと発生しているかどうかを確認する
             if(average == 0){
                 try{
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
