@@ -90,13 +90,44 @@ public class Executor {
 
             System.out.println(i);
 
+            //TODO:ここで9種類の需要を生成して、2つのシミュレーターに同じ値を渡してみる
+            //todo:1000個の需要をここで作成する(100部屋×10種類)
+            double[][] lambda = setting.lambda_poisson;
+            int[][] demand = new int[setting.room][setting.goodsNum_per_room];
+            for (int j = 0; j < setting.room; j++) {
+                int roomType;
+                if(j%10 < 5){
+                    roomType = 0;
+                }else if(j%10 < 8){
+                    roomType = 1;
+                }else{
+                    roomType = 2;
+                }
+                for (int k = 0; k < setting.goodsNum_per_room; k++) {
+                    int goodsType;
+                    if(k < 7){
+                        goodsType = 0;
+                    }else if(k < 9){
+                        goodsType = 1;
+                    }else{
+                        goodsType = 2;
+                    }
+                    NormalDistribution nd = new NormalDistribution(0, 0, lambda[roomType][goodsType]);
+                    demand[j][k] = nd.poisson();
+                    //System.out.print(" " + demand[j][k]);
+                    //System.out.println(roomType + ":" + goodsType);
+                }
+                //System.out.println();
+            }
+
+
             simulator_static.create_route(day);
-            simulator_static.do_consume_simulator(day);
+            simulator_static.do_consume_simulator(day, demand);
             simulator_static.do_replenishment_simulator(day);
             simulator_static.finish_day();
 
             simulator_dynamic.create_route(day);
-            simulator_dynamic.do_consume_simulator(day);
+            simulator_dynamic.do_consume_simulator(day, demand);
             simulator_dynamic.do_replenishment_simulator(day);
             simulator_dynamic.finish_day();
         }

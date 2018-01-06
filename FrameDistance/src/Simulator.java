@@ -89,13 +89,13 @@ public class Simulator {
     }
 
 
-    public void do_consume_simulator(int day){
+    public void do_consume_simulator(int day, int demand[][]){
 
         int sales = 0;
         int shortage = 0;
 
         for (int i = 0; i < rooms.length; i++) {
-            int[] tmp = rooms[i].do_consume_room(day);
+            int[] tmp = rooms[i].do_consume_room(day, demand);
             sales += tmp[0];
             shortage += tmp[1];
             //部屋ごとの値を保持

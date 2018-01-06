@@ -8,10 +8,7 @@ public class Goods {
     //商品の設定
     private int max;
     private int c_value;//部屋ごとの補正値
-    private double average, variance, ratio;
-
-    //動かすもの
-    private int stock;
+    private double average, variance, ratio, lambda;
 
     private int goodsType, roomType;
 
@@ -39,7 +36,6 @@ public class Goods {
 
 
         if(setting.ad_average){
-            //TODO:掛け算ではなく、平行移動させる
             this.average = (setting.goods[goodsType][0])*ratio;
             //this.average = (int)Math.round(setting.goods[goodsType][0]+setting.c_value[roomType]);
         }
@@ -56,14 +52,16 @@ public class Goods {
         if(setting.use_poisson){
             this.average = setting.lambda_poisson[roomType][goodsType];
             this.max = setting.max_poisson[roomType];
+            this.lambda = setting.lambda_poisson[roomType][goodsType];
         }
 
-        this.stock = max;
-
         itemBox = new ArrayList<>();
-        for (int i = 0; i < max; i++) {
+        /*for (int i = 0; i < max; i++) {
             Item item = new Item(setting.goods[goodsType][3]);
             itemBox.add(item);
+        }*/
+        while(itemBox.size() < max){
+            itemBox.add(new Item(setting.goods[goodsType][3], 0));
         }
     }
 
@@ -78,11 +76,11 @@ public class Goods {
 
 
 
-    public int[] do_consume_goods(){
+    public int[] do_consume_goods(int demand_uniform){
 
-        stock_before_history.add(stock);
+        stock_before_history.add(itemBox.size());
 
-        NormalDistribution nd = new NormalDistribution(average, variance);
+        NormalDistribution nd = new NormalDistribution(average, variance, lambda);
         int demand;
 
         if(setting.use_poisson){
@@ -96,6 +94,8 @@ public class Goods {
                     e.printStackTrace();
                 }
             }
+
+            demand = demand_uniform;
         }else{
             if(setting.ad_average){
                 demand = (int) Math.round(nd.random());
@@ -112,10 +112,9 @@ public class Goods {
         int sales;
         int shortage;
 
-        if(stock > demand){
+        if(itemBox.size() > demand){
             shortage = 0;
             sales = demand;
-            stock -= demand;
 
             if(itemBox.get(0).getExpire() < 0){
                 throw new RuntimeException("賞味期限切れの商品を消費しました");
@@ -126,15 +125,14 @@ public class Goods {
 
             sales_history_stock.add(sales);
 
-        }else if(stock > 0){
-            shortage = demand - stock;
-            sales = stock;
-            stock = 0;
+        }else if(itemBox.size() > 0){
+            shortage = demand - itemBox.size();
+            sales = itemBox.size();
 
             if(itemBox.get(0).getExpire() < 0){
                 throw new RuntimeException("賞味期限切れの商品を消費しました");
             }
-            for (int i = 0; i < itemBox.size()-1; i++) {
+            while(itemBox.size() > 0){
                 itemBox.remove(0);
             }
         }else{
@@ -155,22 +153,28 @@ public class Goods {
 
 
     //賞味期限切れになった個数を返す
-    public int do_replenishment_goods(){
-        stock = max;
-
-        while(itemBox.size() < max){
-            itemBox.add(new Item(setting.goods[goodsType][3]));
-        }
+    public int do_replenishment_goods(int day){
 
         //賞味期限チェックに引っかかるものを破棄
         int expire_count = 0;
-        for (int i = itemBox.size()-1; i > -1; i--) {
-            if(itemBox.get(i).getExpire() < setting.goods[goodsType][3]/3/*賞味期限の1/3*/){
+        while(itemBox.size() > 0 && itemBox.get(0).getExpire() < setting.goods[goodsType][3]/3){
+            itemBox.remove(0);
+            expire_count++;
+        }
+
+        while(itemBox.size() < max){
+            itemBox.add(new Item(setting.goods[goodsType][3], day));
+        }
+
+
+        /*for (int i = itemBox.size()-1; i > -1; i--) {
+            if(itemBox.get(i).getExpire() < setting.goods[goodsType][3]/3/*賞味期限の1/3){
                 itemBox.remove(i);
                 itemBox.add(new Item(setting.goods[goodsType][3]));
                 expire_count++;
             }
-        }
+        }*/
+
 
         return expire_count;
     }
@@ -201,8 +205,8 @@ public class Goods {
     private double prev_exp = 0;
     public int expect_shortage_goods(int interval){
 
-
-        if(stock == 0){
+        //在庫切れのときは以前の売上履歴を利用して予測する
+        if(itemBox.size() == 0){
             return (int)Math.round(prev_exp * interval);
         }
 
@@ -244,8 +248,8 @@ public class Goods {
 
             prev_exp = exp_per_day;
 
-            if(consume_til_next > stock){
-                int expect = consume_til_next - stock;
+            if(consume_til_next > itemBox.size()){
+                int expect = consume_til_next - itemBox.size();
                 return expect;
             }
 
@@ -288,8 +292,8 @@ public class Goods {
 
                 prev_exp = exp_per_day;
 
-                if(consume_til_next > stock){
-                    int expect = consume_til_next - stock;
+                if(consume_til_next > itemBox.size()){
+                    int expect = consume_til_next - itemBox.size();
                     return expect;
                 }
 
@@ -310,7 +314,7 @@ public class Goods {
     //getter,setter
 
     public int getStock() {
-        return stock;
+        return itemBox.size();
     }
 
     public int getMax() {

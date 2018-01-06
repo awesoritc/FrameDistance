@@ -5,16 +5,18 @@ public final class NormalDistribution {
 
     private final double mean;
     private final double variance;
+    private final double lambda;
 
 
     //正規分布
-    public NormalDistribution(double mean, double variance){
+    public NormalDistribution(double mean, double variance, double lambda){
         if(variance < 0.0){
             //分散は正の値しか認めない
             throw new  IllegalArgumentException("Variance must be non-negative. Given variance: " + variance);
         }
         this.mean = mean;
         this.variance = variance;
+        this.lambda = lambda;
     }
 
     public double frequencyOf(double value){
@@ -42,7 +44,7 @@ public final class NormalDistribution {
         //TODO:修正
         //平均が大きかった時にきちんとした値を返すことができない
 
-        double lambda = mean;//平均
+        double lambda = this.lambda;//平均
         ArrayList<Integer> array = new ArrayList<>();//ポアソン分布の確率分布
 
         //ポアソン分布の確率分布を作成

@@ -51,26 +51,26 @@ public class Room {
             this.distance_to_gravity[i] = distance;
         }
 
-        if(simulatorType.equals(setting.simulatorType_dynamic)) {
+        /*if(simulatorType.equals(setting.simulatorType_dynamic)) {
             Util.write_gravity(roomId, areaNumber, distance_to_gravity);
-        }
+        }*/
 
     }
 
 
     //メインで使うもの
 
-    public int[] do_consume_room(int day){
+    public int[] do_consume_room(int day, int[][] demand){
 
         int sales = 0;
         int shortage = 0;
-        for(Goods aGoods: goodsList){
-            int tmp[] = aGoods.do_consume_goods();
+        for (int i = 0; i < goodsList.size(); i++) {
+            int tmp[] = goodsList.get(i).do_consume_goods(demand[roomId][i]);
             sales += tmp[0];
             shortage += tmp[1];
         }
 
-        //TODO:日にちごとに不足個数を書き出し
+        //日にちごとに不足個数を書き出し
         try{
             FileWriter w = new FileWriter(new File("./Data/shortage_day_room.csv"), true);
             w.write( day + "," + roomId + "," + areaNumber + "," + simulatiorType + "," + last_replenishment + "," + roomType + "," + shortage + "\n");
@@ -89,7 +89,7 @@ public class Room {
 
         int expire_count = 0;
         for(Goods aGoods: goodsList){
-            expire_count += aGoods.do_replenishment_goods();
+            expire_count += aGoods.do_replenishment_goods(day);
         }
 
         last_replenishment = day;
