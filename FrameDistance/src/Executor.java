@@ -83,15 +83,14 @@ public class Executor {
         Simulator simulator_static = new Simulator(/*rooms_static, */goods_alloc, setting, setting.simulatorType_static);
         Simulator simulator_dynamic = new Simulator(/*rooms_dynamic, */goods_alloc, setting, setting.simulatorType_dynamic);
 
-
         for (int i = 0; i < setting.day; i++) {
 
             int day = i;
 
             System.out.println(i);
 
-            //TODO:ここで9種類の需要を生成して、2つのシミュレーターに同じ値を渡してみる
-            //todo:1000個の需要をここで作成する(100部屋×10種類)
+            //2つのシミュレーターに同じ値を渡す
+            //1000個の需要をここで作成する(100部屋×10種類)
             double[][] lambda = setting.lambda_poisson;
             int[][] demand = new int[setting.room][setting.goodsNum_per_room];
             for (int j = 0; j < setting.room; j++) {
@@ -146,7 +145,7 @@ public class Executor {
         for (int i = 0; i < a_st.size(); i++) {
             rooms_n_st += a_st.get(i).size();
         }
-        System.out.println(((rooms_n_st * setting.service_time_per_room * setting.payment_per_min) + (simulator_static.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
+        System.out.println(((rooms_n_st * setting.service_time_per_room_static * setting.payment_per_min) + (simulator_static.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
 
 
         System.out.println();
@@ -163,7 +162,7 @@ public class Executor {
         for (int i = 0; i < a_dy.size(); i++) {
             rooms_n_dy += a_dy.get(i).size();
         }
-        System.out.println(((rooms_n_dy * setting.service_time_per_room * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
+        System.out.println(((rooms_n_dy * setting.service_time_per_room_dynamic * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
 
 
         simulator_dynamic.write_goods_shortage();
@@ -179,12 +178,12 @@ public class Executor {
             ArrayList<ArrayList<Room>> time_route_dy = simulator_dynamic.getRouteHistory();
 
             PrintWriter pw_route_dy = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/Route_dynamic.csv"), true)));
-            pw_route_dy.write("day,roomId,areaNum,pos\n");
+            pw_route_dy.write("day,area,roomId,areaNum,pos\n");
             for (int i = 0; i < time_route_dy.size(); i++) {
                 ArrayList<Room> tmp = time_route_dy.get(i);
                 //pw_route_dy.write("Day:" + i + "\n");
                 for (int j = 0; j < tmp.size(); j++) {
-                    pw_route_dy.write(i + "," + tmp.get(j).getRoomId() + "," + tmp.get(j).getAreaNumber() +  ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")" + "\n");
+                    pw_route_dy.write(i + "," + setting.order_rep[i%5] + "," + tmp.get(j).getRoomId() + "," + tmp.get(j).getAreaNumber() +  ",(" + tmp.get(j).getX_pos() + ":" + tmp.get(j).getY_pos() + ")" + "\n");
                 }
                 //pw_route_dy.write("\n");
             }

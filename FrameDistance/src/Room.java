@@ -10,6 +10,7 @@ public class Room {
     private int[] distance_to_gravity;
     private int last_replenishment = 0;//最後に補充された日
     private boolean expire_flag = false;
+    private boolean just_replenished = false;
 
     private final ArrayList<Goods> goodsList = new ArrayList<>();
 
@@ -79,6 +80,14 @@ public class Room {
             e.printStackTrace();
         }
 
+        if(roomId == 19){
+            int amount = 0;
+            for (int i = 0; i < goodsList.size(); i++) {
+                amount += goodsList.get(i).getStock();
+            }
+        }
+
+        just_replenished = false;
 
         return new int[]{sales, shortage};
     }
@@ -94,6 +103,9 @@ public class Room {
 
         last_replenishment = day;
         expire_flag = false;
+
+        //前日に補充した部屋は次の日には補充しない
+        just_replenished = true;
 
         return expire_count;
     }
@@ -218,5 +230,9 @@ public class Room {
 
     public boolean isExpire_flag() {
         return expire_flag;
+    }
+
+    public boolean isJust_replenished() {
+        return just_replenished;
     }
 }

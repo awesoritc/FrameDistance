@@ -81,6 +81,9 @@ public class Goods {
         stock_before_history.add(itemBox.size());
 
         NormalDistribution nd = new NormalDistribution(average, variance, lambda);
+        if(simulationType.equals(setting.simulatorType_dynamic)){
+            nd = new NormalDistribution(average, variance, lambda*setting.increse_sales);
+        }
         int demand;
 
         if(setting.use_poisson){
@@ -95,7 +98,7 @@ public class Goods {
                 }
             }
 
-            demand = demand_uniform;
+            //demand = demand_uniform;
         }else{
             if(setting.ad_average){
                 demand = (int) Math.round(nd.random());
@@ -165,16 +168,6 @@ public class Goods {
         while(itemBox.size() < max){
             itemBox.add(new Item(setting.goods[goodsType][3], day));
         }
-
-
-        /*for (int i = itemBox.size()-1; i > -1; i--) {
-            if(itemBox.get(i).getExpire() < setting.goods[goodsType][3]/3/*賞味期限の1/3){
-                itemBox.remove(i);
-                itemBox.add(new Item(setting.goods[goodsType][3]));
-                expire_count++;
-            }
-        }*/
-
 
         return expire_count;
     }

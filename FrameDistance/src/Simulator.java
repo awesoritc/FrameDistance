@@ -78,7 +78,12 @@ public class Simulator {
         routeDistance.add(handle.calculate_route_distance(route));
 
         //稼働率を計算
-        double availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room)) / setting.work_time;
+        double availability;
+        if(simulatiorType.equals(setting.simulatorType_static)){
+            availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_static)) / setting.work_time;
+        }else{
+            availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_dynamic)) / setting.work_time;
+        }
         //if(simulatiorType.equals(setting.simulatorType_static))System.out.println(availability);//stの稼働率を出力
         availabilityHistory.add(availability);
 

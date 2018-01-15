@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -110,7 +109,7 @@ public class RouteHandler {
 
             //ルートを回ることによってかかる時間を計算
             double time = 0;
-            time += route.size()*setting.service_time_per_room;
+            time += route.size()*setting.service_time_per_room_dynamic;
             time += routetime*setting.move_time_per_1;
             //System.out.println(time/setting.work_time);
 
@@ -177,12 +176,18 @@ public class RouteHandler {
         //ルートに優先度の高い部屋を追加
         outside: for (int i = 0; i < setting.room; i++) {
 
-            if(isIncluded(route, room.get(i).getRoomId())){
+            if(isIncluded(route, room.get(i).getRoomId()) || room.get(i).isJust_replenished()){
                 continue;
             }
 
             if(room.get(i).rep_value(current_area) > setting.border_rep_value && room.get(i).expect_shortage(current_area) >= setting.border_expected_shortage && room.get(i).getDistance_to_gravity()[current_area] < setting.border_distance){
                 route.add(room.get(i));
+
+                /*//todo
+                int[] search_area = {setting.order_rep[(current_area+2)%5], setting.order_rep[(current_area+3)%5]};
+                if(room.get(i).getAreaNumber() == search_area[0] || room.get(i).getAreaNumber() == search_area[1] || room.get(i).getAreaNumber() == current_area){
+                    route.add(room.get(i));
+                }*/
             }
 
             if(route.size() >= setting.limit){
@@ -477,81 +482,6 @@ public class RouteHandler {
             }
         }
         return false;
-    }
-
-
-
-
-
-
-
-
-    //根本的なルート作成方法の変更
-    //TODO:ルートの作成を ルート選択・最適度計算 を回して最適なルートを作成する
-    private ArrayList<Room> route_create_dynamic_p(Room[] r, int current_area){
-
-        ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
-        ArrayList<Room> route = new ArrayList<>();
-
-        //expire_flagがtrueの部屋を必ず回る(最大日数は削除)
-        ArrayList<Integer> array = new ArrayList<>();
-        for (int i = 0; i < room.size(); i++) {
-            if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
-                route.add(room.get(i));
-                array.add(room.get(i).getRoomId());
-            }
-        }
-
-
-        //予測不足個数の多い順に並べる
-        for (int i = 0; i < room.size(); i++) {
-            for (int j = 0; j < room.size(); j++) {
-                if(i < j){
-                    if(room.get(i).expect_shortage(current_area) < room.get(j).expect_shortage(current_area)){
-                        Room tmp = room.get(i);
-                        room.set(i, room.get(j));
-                        room.set(j, tmp);
-                    }
-                }
-            }
-        }
-
-        //TODO:動的計画法によってナップサック問題をとく
-        //Max:回収できる不足予想個数
-        //Subject to:availability <= 0.8
-
-        //availabilityが0.9ぎりぎりになるように選択
-        outside: for (int i = 0; i < room.size(); i++) {
-            //とりあえず30部屋追加
-            for (int j = 0; j < array.size(); j++) {
-                if(room.get(i).getRoomId() == array.get(j)){
-                    continue outside;
-                }
-            }
-            route.add(room.get(i));
-            if(route.size() >= 30){
-                break;
-            }
-        }
-
-        double availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
-
-        while(availability > 0.8){
-            //System.out.println(availability);
-            route.remove(route.size()-1);
-            availability = ((route.size()*setting.service_time_per_room) + (calculate_route_distance(setBetterOrder(route))*setting.move_time_per_1)) / setting.work_time;
-        }
-
-        return route;
-
-        //距離と回収できる不足個数を兼ねた評価基準での評価
-        //TODO:回収する不足予想個数を最大化(subject to (availabirity < 0.9))
-        //ArrayList<ArrayList<Room>> potential_routes = new ArrayList<>();
-
-
-
-
-        //評価値が高いかどうかを
     }
 
 
