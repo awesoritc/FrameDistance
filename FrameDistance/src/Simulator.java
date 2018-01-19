@@ -167,6 +167,15 @@ public class Simulator {
     }
 
 
+    public void test_print(){
+        int a = 0;
+        for (int i = 0; i < rooms.length; i++) {
+            a += rooms[i].test;
+        }
+
+        System.out.println(a);
+    }
+
 
     //getter,setter
 

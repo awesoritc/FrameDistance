@@ -20,9 +20,9 @@ public class RouteHandler {
 
     public ArrayList<Room> route_creator(Room[] rooms){
 
-        int current_area = day%setting.area;
+        //int current_area = day%setting.area;
 
-        current_area = setting.order_rep[day%setting.area];
+        int current_area = setting.order_rep[day%setting.area];
         int current_area_num = day%setting.area;
 
         ArrayList<Room> route = new ArrayList<>();
@@ -132,17 +132,13 @@ public class RouteHandler {
 
         ArrayList<Room> room = new ArrayList<>(Arrays.asList(r));
 
-
         ArrayList<Room> route = new ArrayList<>();//補充に回る部屋の集合
 
-
         //最大日数を超えて補充に回っていない部屋を追加
-        //expire_flagがtrueの部屋を必ず回る(最大日数は削除)
-        ArrayList<Integer> array = new ArrayList<>();
+        //当日エリアでexpire_flagがtrueの部屋を必ず回る(最大日数は削除)
         for (int i = 0; i < room.size(); i++) {
             if(room.get(i).getAreaNumber() == current_area && room.get(i).isExpire_flag()){
                 route.add(room.get(i));
-                array.add(room.get(i).getRoomId());
                 if(route.size() >= setting.limit){
                     return route;
                 }

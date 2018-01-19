@@ -98,7 +98,7 @@ public class Goods {
                 }
             }
 
-            //demand = demand_uniform;
+            demand = demand_uniform;
         }else{
             if(setting.ad_average){
                 demand = (int) Math.round(nd.random());
@@ -156,11 +156,15 @@ public class Goods {
 
 
     //賞味期限切れになった個数を返す
-    public int do_replenishment_goods(int day){
+    public int[] do_replenishment_goods(int day){
 
         //賞味期限チェックに引っかかるものを破棄
         int expire_count = 0;
+        int test = 0;
         while(itemBox.size() > 0 && itemBox.get(0).getExpire() < setting.goods[goodsType][3]/3){
+            if(itemBox.get(0).getDay_displayed() == 0){
+                test++;
+            }
             itemBox.remove(0);
             expire_count++;
         }
@@ -169,7 +173,8 @@ public class Goods {
             itemBox.add(new Item(setting.goods[goodsType][3], day));
         }
 
-        return expire_count;
+        //return expire_count;
+        return new int[]{expire_count, test};
     }
 
 
@@ -291,17 +296,40 @@ public class Goods {
                 }
 
                 return 0;
-
             }else{
                 //売り上げデータがないとき
                 return 0;
             }
-
-
         }
-
-
     }
+
+
+    /*public void loss_check(int day, int roomId, int goodsId){
+
+        //TODO:初日に設置したもので廃棄になった個数を比べる
+
+        //初日に設置した個数の残っている数を数える
+        int count = 0;
+        for (Item anItemBox : itemBox) {
+            if (anItemBox.getDay_displayed() == 0) {
+                count++;
+            }
+        }
+        String path = "./Data/loss_test.csv";
+        if(simulationType.equals(setting.simulatorType_static)){
+            path = "./Data/loss_test_st.csv";
+        }else if(simulationType.equals(setting.simulatorType_dynamic)){
+            path = "./Data/loss_test_dy.csv";
+        }
+        try{
+            PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter(new File(path), true)));
+            //day,simulationType, roomId, goodsId, num
+            p.write(day + "," + simulationType + "," + roomId + "," + goodsId + "," + count + "\n");
+            p.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
 
     //getter,setter

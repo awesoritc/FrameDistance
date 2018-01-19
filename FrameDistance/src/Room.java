@@ -89,16 +89,26 @@ public class Room {
 
         just_replenished = false;
 
+        /*//消費終了時点での初日設置商品がいくつ残っているかを出力する
+        //終了時点で初日設置商品が幾つ廃棄されたかを比較する
+        for (int i = 0; i < goodsList.size(); i++) {
+            goodsList.get(i).loss_check(day, roomId, i);
+        }*/
+
         return new int[]{sales, shortage};
     }
 
 
     //部屋での賞味期限切れになった個数を返す
+    int test = 0;
     public int do_replenishment_room(int day){
 
         int expire_count = 0;
         for(Goods aGoods: goodsList){
-            expire_count += aGoods.do_replenishment_goods(day);
+            //expire_count += aGoods.do_replenishment_goods(day);
+            int[] tnp = aGoods.do_replenishment_goods(day);
+            expire_count += tnp[0];
+            test += tnp[1];
         }
 
         last_replenishment = day;
@@ -106,6 +116,14 @@ public class Room {
 
         //前日に補充した部屋は次の日には補充しない
         just_replenished = true;
+
+        try{
+            PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
+            p.write(simulatiorType + "," + day + "," + roomId + "," + test + "\n");
+            p.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return expire_count;
     }
@@ -123,7 +141,7 @@ public class Room {
 
 
 
-    //不足個数を返す
+    //不足予想個数を返す
     public int expect_shortage(int current_area){
         int interval = Util.get_interval(current_area, areaNumber);
 
@@ -138,7 +156,6 @@ public class Room {
 
 
     //補充優先度を返す
-    //TODO:修正
     public double rep_value(int current_area){
 
         int interval = Util.get_interval(current_area, areaNumber);
