@@ -15,7 +15,7 @@ public class Setting {
 
     final String routeType = routeType_value;
 
-    final int day = 100;//日数
+    final int day = 1000;//日数
     final int room = 100;//部屋の数
     final int area = 5;//エリア数
     final int rooms_area = Math.round(room/area);//エリアあたりの部屋数
@@ -72,7 +72,7 @@ public class Setting {
     final int longest_interval = 25;//補充の最大間隔
     final int expire_flag_day = 20;//賞味期限のフラグを立てる日数
 
-    //TODO:ちょうどいい閾値を設定
+    //閾値を設定
     final double border_rep_value = 0;//補充に行くかどうかを決定する補充優先度の閾値(最悪ライン)
     final int border_expected_shortage = 0;//補充に行くかどうかを決定する不足予想個数の閾値(最悪ライン)
     final int border_distance = 10000;//補充に行くかどうかを決定する距離の閾値(最悪ライン)
@@ -80,7 +80,7 @@ public class Setting {
     //作業時間要素を追加
     final int work_time = 390;//1日の労働時間
     final double service_time_per_room_static = 10;//1部屋あたりの細かい移動・補充の時間
-    final double service_time_per_room_dynamic = 10;//8;//1部屋あたりの細かい移動・補充の時間
+    final double service_time_per_room_dynamic = 10;//10;//1部屋あたりの細かい移動・補充の時間
     final double move_time_per_1 = 0.5;
     final double payment_per_min = 1000/60;
 
@@ -88,5 +88,9 @@ public class Setting {
 
 
     final int[] order_rep = {0, 2, 1, 4, 3};
-    final double increse_sales = 1.00;//1.15;//どの程度で成り立つか
+    final double increase_sales = 1.00;//1.00;//どの程度で成り立つか
+
+    final double payment_service_fee = 0.035;
+
+    final boolean use_same_demand = (increase_sales == 1.00);
 }

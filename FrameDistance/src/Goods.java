@@ -82,7 +82,7 @@ public class Goods {
 
         NormalDistribution nd = new NormalDistribution(average, variance, lambda);
         if(simulationType.equals(setting.simulatorType_dynamic)){
-            nd = new NormalDistribution(average, variance, lambda*setting.increse_sales);
+            nd = new NormalDistribution(average, variance, lambda*setting.increase_sales);
         }
         int demand;
 
@@ -98,7 +98,9 @@ public class Goods {
                 }
             }
 
-            demand = demand_uniform;
+            if(setting.use_same_demand){
+                demand = demand_uniform;
+            }
         }else{
             if(setting.ad_average){
                 demand = (int) Math.round(nd.random());
@@ -167,6 +169,24 @@ public class Goods {
             }
             itemBox.remove(0);
             expire_count++;
+        }
+
+        if(simulationType.equals(setting.simulatorType_dynamic)){
+            //TODO:明らかに廃棄になりそうなら補充をしない
+            boolean enough_flag = false;
+            if(sales_history.size() > 20){
+                int sales_in_20days = 0;
+                for (int i = 0; i < 20; i++) {
+                    sales_in_20days += sales_history.get(sales_history.size()-1-i);
+                }
+                if(sales_in_20days*5 < itemBox.size()){
+                    enough_flag = true;
+                    //System.out.println("sales_in:" + sales_in_20days + ", itembox:" + itemBox.size());
+                }
+            }
+            if(enough_flag){
+                return new int[]{expire_count, test};
+            }
         }
 
         while(itemBox.size() < max){

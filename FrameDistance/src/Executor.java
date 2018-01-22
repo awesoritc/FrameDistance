@@ -93,6 +93,7 @@ public class Executor {
             //1000個の需要をここで作成する(100部屋×10種類)
             double[][] lambda = setting.lambda_poisson;
             int[][] demand = new int[setting.room][setting.goodsNum_per_room];
+            int[][] demand_dynamic = new int[setting.room][setting.goodsNum_per_room];
             for (int j = 0; j < setting.room; j++) {
                 int roomType;
                 if(j%10 < 5){
@@ -113,10 +114,7 @@ public class Executor {
                     }
                     NormalDistribution nd = new NormalDistribution(0, 0, lambda[roomType][goodsType]);
                     demand[j][k] = nd.poisson();
-                    //System.out.print(" " + demand[j][k]);
-                    //System.out.println(roomType + ":" + goodsType);
                 }
-                //System.out.println();
             }
 
 
@@ -157,13 +155,15 @@ public class Executor {
         System.out.println(simulator_dynamic.getTotal_distance());
         System.out.println(simulator_dynamic.getTotal_expire_loss());
 
-        int rooms_n_dy = 0;
+        /*int rooms_n_dy = 0;
         ArrayList<ArrayList<Room>> a_dy = simulator_dynamic.getRouteHistory();
         for (int i = 0; i < a_dy.size(); i++) {
             rooms_n_dy += a_dy.get(i).size();
         }
         System.out.println(((rooms_n_dy * setting.service_time_per_room_dynamic * setting.payment_per_min) + (simulator_dynamic.getTotal_distance() * setting.move_time_per_1 * setting.payment_per_min)));
-
+        */
+        System.out.println("手数料:" + Math.ceil(simulator_dynamic.getTotal_sales()*100*setting.payment_service_fee));
+        System.out.println("残業時間(分):" + simulator_dynamic.getOverworktime());
 
         simulator_dynamic.write_goods_shortage();
 
@@ -230,12 +230,14 @@ public class Executor {
             ArrayList<Integer> loss_dy = simulator_dynamic.getExpire_countHistory();
             ArrayList<Double> availability_st = simulator_static.getAvailabilityHistory();
             ArrayList<Double> availability_dy = simulator_dynamic.getAvailabilityHistory();
+            ArrayList<Integer> work_time_st = simulator_static.getWork_timeHistory();
+            ArrayList<Integer> work_time_dy = simulator_dynamic.getWork_timeHistory();
 
             PrintWriter pw_time = new PrintWriter(new BufferedWriter(new FileWriter(new File("./Data/day_based.csv"), true)));
-            pw_time.write("day,time_static,time_dynamic,sales_static,shortage_static,sales_dynamic,shortage_dynamic,loss_static,loss_dynamic,availability_static,availability_dynamic\n");
+            pw_time.write("day,distance_static,distance_dynamic,work_time_static,work_time_dynamic,sales_static,shortage_static,sales_dynamic,shortage_dynamic,loss_static,loss_dynamic,availability_static,availability_dynamic\n");
             for (int i = 0; i < time_st.size(); i++) {
                 //System.out.println(time_st.get(i));
-                pw_time.write(i + "," +  time_st.get(i) + "," + time_dy.get(i) + "," +
+                pw_time.write(i + "," +  time_st.get(i) + "," + time_dy.get(i) + "," + work_time_st.get(i) + "," + work_time_dy.get(i) +
                         sales_st.get(i) + "," + shortage_st.get(i) + "," + sales_dy.get(i) + "," + shortage_dy.get(i) + "," +
                         loss_st.get(i) + "," + loss_dy.get(i) + "," +
                         availability_st.get(i) + "," + availability_dy.get(i) +  "\n");
@@ -270,5 +272,12 @@ public class Executor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        //ここで今動かしている変数を確認
+        System.out.println();
+        System.out.println("需要:" + setting.increase_sales);
+        System.out.println("作業時間:" + setting.service_time_per_room_dynamic);
+        System.out.println("決済手数料:" + setting.payment_service_fee);
     }
 }

@@ -9,13 +9,15 @@ public class Simulator {
     private String simulatiorType;
 
     //ファイル用のデータ
-    ArrayList<Integer> routeDistance = new ArrayList<>();
-    ArrayList<ArrayList<Room>> routeHistory = new ArrayList<>();
-    ArrayList<Integer> salesHistory = new ArrayList<>();
-    ArrayList<Integer> shortageHistory = new ArrayList<>();
-    ArrayList<Integer> expire_countHistory = new ArrayList<>();//賞味期限切れの個数
-    Integer[] room_expire;//部屋ごとの賞味期限切れの個数
-    ArrayList<Double> availabilityHistory = new ArrayList<>();//稼働率の推移
+    private ArrayList<Integer> routeDistance = new ArrayList<>();
+    private ArrayList<ArrayList<Room>> routeHistory = new ArrayList<>();
+    private ArrayList<Integer> salesHistory = new ArrayList<>();
+    private ArrayList<Integer> shortageHistory = new ArrayList<>();
+    private ArrayList<Integer> expire_countHistory = new ArrayList<>();//賞味期限切れの個数
+    private Integer[] room_expire;//部屋ごとの賞味期限切れの個数
+    private ArrayList<Double> availabilityHistory = new ArrayList<>();//稼働率の推移
+    private ArrayList<Integer> work_timeHistory = new ArrayList<>();//作業時間の推移
+    private int overworktime;////残業時間
 
     //部屋ごとの売上・不足を保持
     private int[] sales_rooms = new int[100];
@@ -78,13 +80,20 @@ public class Simulator {
         routeDistance.add(handle.calculate_route_distance(route));
 
         //稼働率を計算
+        int work_time;
         double availability;
         if(simulatiorType.equals(setting.simulatorType_static)){
+            work_time = (int) Math.ceil((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_static));
             availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_static)) / setting.work_time;
         }else{
+            work_time = (int) Math.ceil(((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_dynamic)));
             availability = ((handle.calculate_route_distance(route)*setting.move_time_per_1) + (route.size()*setting.service_time_per_room_dynamic)) / setting.work_time;
+            if(work_time > 310){
+                overworktime += Math.round((work_time/0.8)) - 390;
+            }
         }
         //if(simulatiorType.equals(setting.simulatorType_static))System.out.println(availability);//stの稼働率を出力
+        work_timeHistory.add(work_time);
         availabilityHistory.add(availability);
 
         //TODO:稼働率を書き出し・廃棄ロスと合わせて損失を計算・dyがよくなるような方法を考える
@@ -128,7 +137,6 @@ public class Simulator {
             room_expire[rep_route.get(i).getRoomId()] += room_exp;
             total_expire_loss += room_exp;
         }
-
         expire_countHistory.add(expire_count);
     }
 
@@ -172,7 +180,6 @@ public class Simulator {
         for (int i = 0; i < rooms.length; i++) {
             a += rooms[i].test;
         }
-
         System.out.println(a);
     }
 
@@ -233,5 +240,13 @@ public class Simulator {
 
     public int[] getShortage_rooms() {
         return shortage_rooms;
+    }
+
+    public ArrayList<Integer> getWork_timeHistory() {
+        return work_timeHistory;
+    }
+
+    public int getOverworktime() {
+        return overworktime;
     }
 }
