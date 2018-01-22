@@ -15,7 +15,7 @@ public class Setting {
 
     final String routeType = routeType_value;
 
-    final int day = 1000;//日数
+    final int day = 100;//日数
     final int room = 100;//部屋の数
     final int area = 5;//エリア数
     final int rooms_area = Math.round(room/area);//エリアあたりの部屋数
