@@ -117,13 +117,13 @@ public class Room {
         //前日に補充した部屋は次の日には補充しない
         just_replenished = true;
 
-        try{
+        /*try{
             PrintWriter p = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
             p.write(simulatiorType + "," + day + "," + roomId + "," + test + "\n");
             p.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return expire_count;
     }

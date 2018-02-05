@@ -88,7 +88,7 @@ public class Goods {
 
         if(setting.use_poisson){
             demand = nd.poisson();
-            if(average == 0){
+            /*if(average == 0){
                 try{
                     PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("tmp.csv"), true)));
                     pw.write(demand + "\n");
@@ -96,7 +96,7 @@ public class Goods {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
             if(setting.use_same_demand){
                 demand = demand_uniform;

@@ -1,3 +1,4 @@
+
 public class Setting {
 
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/rooms1";
@@ -94,3 +95,4 @@ public class Setting {
 
     final boolean use_same_demand = (increase_sales == 1.00);
 }
+
