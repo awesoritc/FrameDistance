@@ -81,7 +81,7 @@ public class Setting {
     //作業時間要素を追加
     final int work_time = 390;//1日の労働時間
     final double service_time_per_room_static = 10;//1部屋あたりの細かい移動・補充の時間
-    final double service_time_per_room_dynamic = 9;//10;//1部屋あたりの細かい移動・補充の時間
+    /*final*/ double service_time_per_room_dynamic = 9;//10;//1部屋あたりの細かい移動・補充の時間
     final double move_time_per_1 = 0.5;
     final double payment_per_min = 1000/60;
 
@@ -89,9 +89,19 @@ public class Setting {
 
 
     final int[] order_rep = {0, 2, 1, 4, 3};
-    final double increase_sales = 1.10;//1.00;//どの程度で成り立つか
+    /*final*/ double increase_sales = 1.05;//1.00;//どの程度で成り立つか
 
     final double payment_service_fee = 0.035;
 
     final boolean use_same_demand = (increase_sales == 1.00);
+
+
+
+    public setService_time_per_room_dynamic(int t){
+      service_time_per_room_dynamic = t;
+    }
+
+    public setIncrease_sales(double t){
+      increase_sales = t;
+    }
 }

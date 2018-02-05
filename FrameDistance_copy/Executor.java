@@ -17,7 +17,16 @@ public class Executor {
 
     public static void main(String[] args){
 
+
         Setting setting = new Setting();
+
+        if(args[0] != null && args[1] != null){
+          String min = args[0];
+          String demand = args[1];
+
+          setting.setService_time_per_room_dynamic(Integer.parseInt(min));
+          setting.setIncrease_sales(Double.parseDouble(demand));
+        }
 
         //出力ファイルの初期化
         try{
