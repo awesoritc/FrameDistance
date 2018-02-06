@@ -1,6 +1,8 @@
 
 public class Setting {
 
+  Setting(){};
+
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/rooms1";
     //final String filename = "/Users/takuyamorimatsu/Documents/GitHub/FrameDistance/FrameDistance/Rooms/suburb_room_75_75";
     //final String filename = "./Rooms/version0";
@@ -97,11 +99,11 @@ public class Setting {
 
 
 
-    public setService_time_per_room_dynamic(int t){
+    public void setService_time_per_room_dynamic(int t){
       service_time_per_room_dynamic = t;
     }
 
-    public setIncrease_sales(double t){
+    public void setIncrease_sales(double t){
       increase_sales = t;
     }
 }

@@ -7,9 +7,9 @@ public class CallExecutor{
     int[] min = {10,9,8,7};
     double[] demand = {1.00,1.05,1.10,1.15};
 
-    for(int i = 0; i < min.length; i++){
+    for(int k = 0; k < min.length; k++){
       for(int j = 0; j < demand.length; j++){
-        String s_min = String.valueOf(min[i]);
+        String s_min = String.valueOf(min[k]);
         String s_demand = String.valueOf(demand[j]);
         String filename = "test_" + s_min + "_" + s_demand + ".csv";
 
